@@ -1,35 +1,67 @@
-# Magento Admin Activity Log
+# Mage-OS Admin Activity Log
 
-Created by [KiwiCommerce](https://kiwicommerce.co.uk/), maintained by [Mage-OS](https://mage-os.org)
+[![Latest Stable Version](https://poser.pugx.org/mage-os/module-admin-activity-log/v/stable)](https://packagist.org/packages/mage-os/module-admin-activity-log)
+[![License](https://poser.pugx.org/mage-os/module-admin-activity-log/license)](https://packagist.org/packages/mage-os/module-admin-activity-log)
+[![Total Downloads](https://poser.pugx.org/mage-os/module-admin-activity-log/downloads)](https://packagist.org/packages/mage-os/module-admin-activity-log)
 
-- Easily track every admin activity like add, edit, delete, print, view, mass update etc.
-- Failed attempts of admin login are recorded as well. You get access to the user’s login information and IP address.
-- Track page visit history of admin.
-- Track fields that have been changed from the backend.
-- Allow administrator to revert the modification.
+A comprehensive admin activity logging extension for Mage-OS and Magento 2 that provides complete audit trails for
+administrative actions, login attempts, and page visits.
 
-## **Installation**
+Huge thanks to KiwiCommerce for publishing this extension, and for their support and contributions. This extension is a 
+fork of the original [Magento Admin Activity Log](https://github.com/kiwicommerce/magento2-admin-activity) by KiwiCommerce.
+
+## ✨ Key Features
+
+- **Admin Action Logging**: Track all admin activities including add, edit, delete, print, view, and mass update operations
+- **Login Monitoring**: Record successful and failed login attempts with detailed information
+- **Field-Level Changes**: Track specific field modifications with before/after values
+- **IP Address Logging**: Capture IP addresses and user agent information for security analysis
+
+## 📋 Requirements
+
+| Component | Version |
+|-----------|---------|
+| **Magento Open Source** | 2.4.x |
+| **Mage-OS** | 1.0+ |
+| **PHP** | 8.1+ |
+
+## 🚀 Installation
 
 ```bash
 composer require mage-os/module-admin-activity-log
-bin/magento setup:upgrade
+php bin/magento setup:upgrade
 ```
 
-## Where will it appear in the Admin Panel
+## ⚙️ Configuration
 
-### Admin Activity Log
+### Basic Configuration
 
-Go to **System > Admin Activity > Admin Activity Logs**. Here you can see the list of admin activity logs and page visit
-history.
+Navigate to **Stores → Configuration → Advanced → Admin → Admin Activity**
 
-### Login Activity
+#### General Settings
+- **Enable Module**: Enable/disable the extension
+- **Enable Login Logging**: Track login and logout activities
+- **Enable Page Visit History**: Monitor admin page navigation
+- **Log Retention Period**: Set how many days to keep logs (default: 90 days)
 
-Go to **System > Admin Activity > Admin Login Logs**. Here you can See the list of login activity logs.
+#### Module-Specific Logging
+Configure which modules to monitor:
+- ✅ **Orders**: Track order-related activities
+- ✅ **Products**: Monitor product changes
+- ✅ **Categories**: Log category modifications
+- ✅ **Customers**: Track customer data changes
+- ✅ **System Configuration**: Monitor config changes
+- ✅ **Admin Users**: Log user management activities
+- ✅ **CMS Pages & Blocks**: Track content changes
 
-## Configuration
+## 📖 Usage Guide
 
-Go to **Stores > Configuration > Advanced > Admin > Admin Activity**
+### Viewing Activity Logs
 
-### Compatibility
+Navigate to **System → Admin Activity → Admin Activity Logs**
 
-- Magento 2.4
+Click View on any log entry to see detailed info.
+
+### Login Activity Monitoring
+
+Go to **System → Admin Activity → Admin Login Logs**
