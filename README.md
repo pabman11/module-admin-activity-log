@@ -1,4 +1,5 @@
 # Magento Admin Activity Log
+
 Created by [KiwiCommerce](https://kiwicommerce.co.uk/), maintained by [Mage-OS](https://mage-os.org)
 
 - Easily track every admin activity like add, edit, delete, print, view, mass update etc.
@@ -15,14 +16,20 @@ bin/magento setup:upgrade
 ```
 
 ## Where will it appear in the Admin Panel
+
 ### Admin Activity Log
-Go to **System > Admin Activity > Admin Activity Logs**. Here you can see the list of admin activity logs and page visit history.
+
+Go to **System > Admin Activity > Admin Activity Logs**. Here you can see the list of admin activity logs and page visit
+history.
 
 ### Login Activity
+
 Go to **System > Admin Activity > Admin Login Logs**. Here you can See the list of login activity logs.
 
 ## Configuration
+
 Go to **Stores > Configuration > Advanced > Admin > Admin Activity**
 
 ### Compatibility
-  - Magento 2.4
+
+- Magento 2.4

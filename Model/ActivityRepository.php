@@ -91,7 +91,7 @@ class ActivityRepository implements ActivityRepositoryInterface
      */
     public function __construct(
         ActivityFactory $activityFactory,
-        \MageOS\AdminActivityLog\Model\ResourceModel\Activity\CollectionFactory $collectionFactory,
+        ResourceModel\Activity\CollectionFactory $collectionFactory,
         ActivityLogDetailFactory $activityLogDetailFactory,
         ActivityLogFactory $activityLogFactory,
         CollectionFactory $LogCollectionFactory,
