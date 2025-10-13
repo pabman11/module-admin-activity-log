@@ -7,53 +7,59 @@
  * Please contact us https://kiwicommerce.co.uk/contacts.
  *
  * @category   KiwiCommerce
- * @package    KiwiCommerce_AdminActivity
+ * @package    MageOS_AdminActivityLog
  * @copyright  Copyright (C) 2018 Kiwi Commerce Ltd (https://kiwicommerce.co.uk/)
  * @license    https://kiwicommerce.co.uk/magento2-extension-license/
  */
-namespace KiwiCommerce\AdminActivity\Helper;
+
+namespace MageOS\AdminActivityLog\Helper;
+
+use Magento\Framework\App\Helper\AbstractHelper;
+use Magento\Framework\App\Helper\Context;
+use MageOS\AdminActivityLog\Model\Activity\SystemConfig;
+use MageOS\AdminActivityLog\Model\Activity\ThemeConfig;
 
 /**
  * Class Data
- * @package KiwiCommerce\AdminActivity\Helper
+ * @package MageOS\AdminActivityLog\Helper
  */
-class TrackField extends \Magento\Framework\App\Helper\AbstractHelper
+class TrackField extends AbstractHelper
 {
     /**
      * @var string;
      */
-    const SYSTEM_METHOD = 'getSystemConfigFieldData';
+    public const SYSTEM_METHOD = 'getSystemConfigFieldData';
 
     /**
      * @var string;
      */
-    const THEME_METHOD = 'getThemeConfigFieldData';
+    public const THEME_METHOD = 'getThemeConfigFieldData';
 
     /**
      * @var string;
      */
-    const PRODUCT_METHOD = 'getProductFieldData';
+    public const PRODUCT_METHOD = 'getProductFieldData';
 
     /**
-     * @var \KiwiCommerce\AdminActivity\Model\Activity\SystemConfig
+     * @var SystemConfig
      */
     public $systemConfig;
 
     /**
-     * @var \KiwiCommerce\AdminActivity\Model\Activity\ThemeConfig
+     * @var ThemeConfig
      */
     public $themeConfig;
 
     /**
      * TrackField constructor.
-     * @param \Magento\Framework\App\Helper\Context $context
-     * @param \KiwiCommerce\AdminActivity\Model\Activity\SystemConfig $systemConfig
-     * @param \KiwiCommerce\AdminActivity\Model\Activity\ThemeConfig $themeConfig
+     * @param Context $context
+     * @param SystemConfig $systemConfig
+     * @param ThemeConfig $themeConfig
      */
     public function __construct(
-        \Magento\Framework\App\Helper\Context $context,
-        \KiwiCommerce\AdminActivity\Model\Activity\SystemConfig $systemConfig,
-        \KiwiCommerce\AdminActivity\Model\Activity\ThemeConfig $themeConfig
+        Context $context,
+        SystemConfig $systemConfig,
+        ThemeConfig $themeConfig
     ) {
         parent::__construct($context);
         $this->systemConfig = $systemConfig;
@@ -134,8 +140,8 @@ class TrackField extends \Magento\Framework\App\Helper\AbstractHelper
     public function getCustomerGroupFieldData()
     {
         return [
-          'customer_group_id',
-          'check_if_is_new'
+            'customer_group_id',
+            'check_if_is_new'
         ];
     }
 
@@ -589,10 +595,10 @@ class TrackField extends \Magento\Framework\App\Helper\AbstractHelper
         $fieldArray = $this->getFields($method);
         $skipFieldArray = $this->getSkipEditFieldData();
 
-        if (\KiwiCommerce\AdminActivity\Helper\Data::isWildCardModel($model)) {
-            if ($method==self::SYSTEM_METHOD) {
+        if (Data::isWildCardModel($model)) {
+            if ($method == self::SYSTEM_METHOD) {
                 return $this->systemConfig->getEditData($model, $fieldArray);
-            } elseif ($method==self::THEME_METHOD) {
+            } elseif ($method == self::THEME_METHOD) {
                 return $this->themeConfig->getEditData($model, $fieldArray);
             }
         }

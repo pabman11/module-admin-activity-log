@@ -7,39 +7,47 @@
  * Please contact us https://kiwicommerce.co.uk/contacts.
  *
  * @category   KiwiCommerce
- * @package    KiwiCommerce_AdminActivity
+ * @package    MageOS_AdminActivityLog
  * @copyright  Copyright (C) 2018 Kiwi Commerce Ltd (https://kiwicommerce.co.uk/)
  * @license    https://kiwicommerce.co.uk/magento2-extension-license/
  */
-namespace KiwiCommerce\AdminActivity\Test\Unit\Block\Adminhtml;
+
+namespace MageOS\AdminActivityLog\Test\Unit\Block\Adminhtml;
+
+use Magento\Framework\TestFramework\Unit\Helper\ObjectManager;
+use Magento\Framework\UrlInterface;
+use MageOS\AdminActivityLog\Block\Adminhtml\Selector;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class SelectorTest
- * @package KiwiCommerce\AdminActivity\Test\Unit\Block\Adminhtml
+ * @package MageOS\AdminActivityLog\Test\Unit\Block\Adminhtml
  */
-class SelectorTest extends \PHPUnit\Framework\TestCase
+class SelectorTest extends TestCase
 {
     public $urlBuiler;
 
     public $revertUrl = 'http://magento.com/adminactivity/activity/revert';
 
     public $selector;
+
     /**
      * @requires PHP 7.0
      */
     public function setUp()
     {
-        $objectManager = new \Magento\Framework\TestFramework\Unit\Helper\ObjectManager($this);
+        $objectManager = new ObjectManager($this);
 
-        $this->urlBuiler = $this->createMock(\Magento\Framework\UrlInterface::class);
+        $this->urlBuiler = $this->createMock(UrlInterface::class);
 
         $this->selector = $objectManager->getObject(
-            \KiwiCommerce\AdminActivity\Block\Adminhtml\Selector::class,
+            Selector::class,
             [
                 '_urlBuilder' => $this->urlBuiler,
             ]
         );
     }
+
     /**
      * @requires PHP 7.0
      */

@@ -7,25 +7,27 @@
  * Please contact us https://kiwicommerce.co.uk/contacts.
  *
  * @category   KiwiCommerce
- * @package    KiwiCommerce_AdminActivity
+ * @package    MageOS_AdminActivityLog
  * @copyright  Copyright (C) 2018 Kiwi Commerce Ltd (https://kiwicommerce.co.uk/)
  * @license    https://kiwicommerce.co.uk/magento2-extension-license/
  */
-namespace KiwiCommerce\AdminActivity\Model\Config;
+
+namespace MageOS\AdminActivityLog\Model\Config;
 
 use Magento\Framework\Config\SchemaLocatorInterface;
 use Magento\Framework\Module\Dir;
+use Magento\Framework\Module\Dir\Reader;
 
 /**
  * Class SchemaLocator
- * @package KiwiCommerce\AdminActivity\Model\Config
+ * @package MageOS\AdminActivityLog\Model\Config
  */
 class SchemaLocator implements SchemaLocatorInterface
 {
     /**
      * XML schema for config file.
      */
-    const CONFIG_FILE_SCHEMA = 'adminactivity.xsd';
+    public const CONFIG_FILE_SCHEMA = 'adminactivity.xsd';
 
     /**
      * Path to corresponding XSD file with validation rules for merged config
@@ -41,11 +43,11 @@ class SchemaLocator implements SchemaLocatorInterface
 
     /**
      * SchemaLocator constructor.
-     * @param Dir\Reader $moduleReader
+     * @param Reader $moduleReader
      */
-    public function __construct(\Magento\Framework\Module\Dir\Reader $moduleReader)
+    public function __construct(Reader $moduleReader)
     {
-        $configDir = $moduleReader->getModuleDir(Dir::MODULE_ETC_DIR, 'KiwiCommerce_AdminActivity');
+        $configDir = $moduleReader->getModuleDir(Dir::MODULE_ETC_DIR, 'MageOS_AdminActivityLog');
         $this->schema = $configDir . DIRECTORY_SEPARATOR . self::CONFIG_FILE_SCHEMA;
         $this->perFileSchema = $configDir . DIRECTORY_SEPARATOR . self::CONFIG_FILE_SCHEMA;
     }

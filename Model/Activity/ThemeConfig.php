@@ -7,51 +7,58 @@
  * Please contact us https://kiwicommerce.co.uk/contacts.
  *
  * @category   KiwiCommerce
- * @package    KiwiCommerce_AdminActivity
+ * @package    MageOS_AdminActivityLog
  * @copyright  Copyright (C) 2018 Kiwi Commerce Ltd (https://kiwicommerce.co.uk/)
  * @license    https://kiwicommerce.co.uk/magento2-extension-license/
  */
-namespace KiwiCommerce\AdminActivity\Model\Activity;
+
+namespace MageOS\AdminActivityLog\Model\Activity;
+
+use Magento\Framework\App\Config\Storage\WriterInterface;
+use Magento\Framework\App\Config\ValueFactory;
+use Magento\Framework\App\RequestInterface;
+use Magento\Framework\DataObject;
+use MageOS\AdminActivityLog\Api\Activity\ModelInterface;
 
 /**
  * Class ThemeConfig
- * @package KiwiCommerce\AdminActivity\Model\Activity
+ * @package MageOS\AdminActivityLog\Model\Activity
  */
-class ThemeConfig implements \KiwiCommerce\AdminActivity\Api\Activity\ModelInterface
+class ThemeConfig implements ModelInterface
 {
     /**
-     * @var \Magento\Framework\DataObject
+     * @var DataObject
      */
     public $dataObject;
 
     /**
-     * @var \Magento\Framework\App\Config\ValueFactory
+     * @var ValueFactory
      */
     public $valueFactory;
 
     /**
-     * @var \Magento\Framework\App\Config\Storage\WriterInterface
+     * @var WriterInterface
      */
     public $configWriter;
 
     /**
      * Request
-     * @var \Magento\Framework\App\RequestInterface
+     * @var RequestInterface
      */
     public $request;
 
     /**
      * ThemeConfig constructor.
-     * @param \Magento\Framework\DataObject $dataObject
-     * @param \Magento\Framework\App\Config\ValueFactory $valueFactory
-     * @param \Magento\Framework\App\RequestInterface $request
-     * @param \Magento\Framework\App\Config\Storage\WriterInterface $configWriter
+     * @param DataObject $dataObject
+     * @param ValueFactory $valueFactory
+     * @param RequestInterface $request
+     * @param WriterInterface $configWriter
      */
     public function __construct(
-        \Magento\Framework\DataObject $dataObject,
-        \Magento\Framework\App\Config\ValueFactory $valueFactory,
-        \Magento\Framework\App\RequestInterface $request,
-        \Magento\Framework\App\Config\Storage\WriterInterface $configWriter
+        DataObject $dataObject,
+        ValueFactory $valueFactory,
+        RequestInterface $request,
+        WriterInterface $configWriter
     ) {
         $this->dataObject = $dataObject;
         $this->valueFactory = $valueFactory;
@@ -86,7 +93,7 @@ class ThemeConfig implements \KiwiCommerce\AdminActivity\Api\Activity\ModelInter
     {
         $path = $this->getPath($model);
         $systemData = $this->valueFactory->create()->getCollection()
-                            ->addFieldToFilter('path', ['like'=> $path.'/%']);
+            ->addFieldToFilter('path', ['like' => $path . '/%']);
 
         $data = [];
         foreach ($systemData->getData() as $config) {
@@ -103,7 +110,7 @@ class ThemeConfig implements \KiwiCommerce\AdminActivity\Api\Activity\ModelInter
      */
     public function getEditData($model, $fieldArray)
     {
-        $path = 'stores/scope_id/'.$model->getScopeId();
+        $path = 'stores/scope_id/' . $model->getScopeId();
         $oldData = $this->getOldData($model);
         $newData = $this->request->getPostValue();
         $result = $this->collectAdditionalData($oldData, $newData, $fieldArray);
@@ -150,10 +157,10 @@ class ThemeConfig implements \KiwiCommerce\AdminActivity\Api\Activity\ModelInter
             $oldValue = !empty($oldData[$key]) ? $oldData[$key] : '';
 
             if ($newValue != $oldValue) {
-                $key = 'design/'.preg_replace('/_/', '/', $key, 1);
+                $key = 'design/' . preg_replace('/_/', '/', $key, 1);
                 $logData[$key] = [
                     'old_value' => $oldValue,
-                    'new_value'=> $newValue
+                    'new_value' => $newValue
                 ];
             }
         }

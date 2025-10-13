@@ -7,27 +7,33 @@
  * Please contact us https://kiwicommerce.co.uk/contacts.
  *
  * @category   KiwiCommerce
- * @package    KiwiCommerce_AdminActivity
+ * @package    MageOS_AdminActivityLog
  * @copyright  Copyright (C) 2018 Kiwi Commerce Ltd (https://kiwicommerce.co.uk/)
  * @license    https://kiwicommerce.co.uk/magento2-extension-license/
  */
-namespace KiwiCommerce\AdminActivity\Model\Config;
+
+namespace MageOS\AdminActivityLog\Model\Config;
+
+use DOMDocument;
+use DOMNode;
+use DOMXPath;
+use Magento\Framework\Config\ConverterInterface;
 
 /**
  * Class Converter
- * @package KiwiCommerce\AdminActivity\Model\Config
+ * @package MageOS\AdminActivityLog\Model\Config
  */
-class Converter implements \Magento\Framework\Config\ConverterInterface
+class Converter implements ConverterInterface
 {
     /**
      * Convert actions in array from Xpath object
-     * @param \DOMDocument $source
+     * @param DOMDocument $source
      * @return array
      */
     public function convert($source)
     {
         $result = ['config' => []];
-        $xpath = new \DOMXPath($source);
+        $xpath = new DOMXPath($source);
         $result['config']['actions'] = $this->_getActions($xpath);
 
         $modules = $xpath->query('/config/modules/module');
@@ -41,7 +47,7 @@ class Converter implements \Magento\Framework\Config\ConverterInterface
 
     /**
      * Retrieves actions array from Xpath object
-     * @param \DOMXPath $xpath
+     * @param DOMXPath $xpath
      * @return array
      */
     public function _getActions($xpath)
@@ -49,7 +55,7 @@ class Converter implements \Magento\Framework\Config\ConverterInterface
         $result = [];
         $actions = $xpath->query('/config/actions/action');
 
-        /** @var \DOMNode $action */
+        /** @var DOMNode $action */
         foreach ($actions as $action) {
             $actionId = $action->attributes->getNamedItem('id')->nodeValue;
             foreach ($action->childNodes as $label) {
@@ -123,7 +129,9 @@ class Converter implements \Magento\Framework\Config\ConverterInterface
                 ];
                 $postDispatch = $event->attributes->getNamedItem('post_dispatch');
                 if ($postDispatch !== null) {
-                    $result[$event->attributes->getNamedItem('controller_action')->nodeValue]['post_dispatch'] = $postDispatch->nodeValue;
+                    $result[$event->attributes->getNamedItem(
+                        'controller_action'
+                    )->nodeValue]['post_dispatch'] = $postDispatch->nodeValue;
                 }
             }
         }

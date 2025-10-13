@@ -7,55 +7,64 @@
  * Please contact us https://kiwicommerce.co.uk/contacts.
  *
  * @category   KiwiCommerce
- * @package    KiwiCommerce_AdminActivity
+ * @package    MageOS_AdminActivityLog
  * @copyright  Copyright (C) 2018 Kiwi Commerce Ltd (https://kiwicommerce.co.uk/)
  * @license    https://kiwicommerce.co.uk/magento2-extension-license/
  */
-namespace KiwiCommerce\AdminActivity\Model\Handler;
+
+namespace MageOS\AdminActivityLog\Model\Handler;
+
+use Magento\Backend\Model\Session;
+use Magento\Catalog\Api\ProductRepositoryInterface;
+use Magento\Framework\App\RequestInterface;
+use Magento\Framework\App\ResponseInterface;
+use MageOS\AdminActivityLog\Model\Activity;
+use MageOS\AdminActivityLog\Model\ActivityLog;
+use MageOS\AdminActivityLog\Model\ActivityLogDetail;
 
 /**
  * Class PostDispatch
- * @package KiwiCommerce\AdminActivity\Model\Handler
+ * @package MageOS\AdminActivityLog\Model\Handler
  */
 class PostDispatch
 {
     /**
      * Request
      *
-     * @var \Magento\Framework\App\RequestInterface
+     * @var RequestInterface
      */
     public $request;
 
     /**
      * Response
      *
-     * @var \Magento\Framework\App\ResponseInterface
+     * @var ResponseInterface
      */
     public $response;
 
     /**
-     * @var \Magento\Catalog\Api\ProductRepositoryInterface
+     * @var ProductRepositoryInterface
      */
     public $productRepository;
 
     /**
-     * @var \Magento\Backend\Model\Session
+     * @var Session
      */
     public $session;
 
     /**
      * PostDispatch constructor.
      *
-     * @param \Magento\Framework\App\RequestInterface $request
-     * @param \Magento\Framework\App\ResponseInterface $response
-     * @param \Magento\Catalog\Api\ProductRepositoryInterface $productRepository
-     * @param \Magento\Backend\Model\Session $session
+     * @param RequestInterface $request
+     * @param ResponseInterface $response
+     * @param ProductRepositoryInterface $productRepository
+     * @param Session $session
      */
     public function __construct(
-        \Magento\Framework\App\RequestInterface $request,
-        \Magento\Framework\App\ResponseInterface $response,
-        \Magento\Catalog\Api\ProductRepositoryInterface $productRepository,
-        \Magento\Backend\Model\Session $session
+        RequestInterface $request,
+        ResponseInterface $response,
+        ProductRepositoryInterface $productRepository,
+        Session $session
     ) {
         $this->request = $request;
         $this->response = $response;
@@ -71,7 +80,7 @@ class PostDispatch
     {
         $logData = [];
         $status = $this->request->getParam('status', '');
-        if($status != '') {
+        if ($status != '') {
             $logData['status'] = [
                 'old_value' => $model->getStatus(),
                 'new_value' => $status
@@ -79,7 +88,7 @@ class PostDispatch
         }
 
         $attributes = $this->request->getParam('attributes', []);
-        if(!empty($attributes)) {
+        if (!empty($attributes)) {
             foreach ($attributes as $attribute => $value) {
                 $logData[$attribute] = [
                     'old_value' => $model->getData($attribute),
@@ -89,7 +98,7 @@ class PostDispatch
         }
 
         $inventories = $this->request->getParam('inventory', []);
-        if(!empty($inventories)) {
+        if (!empty($inventories)) {
             foreach ($inventories as $field => $value) {
                 $logData[$field] = [
                     'old_value' => $model->getData($field),
@@ -128,12 +137,11 @@ class PostDispatch
         $activity->setIsRevertable(1);
 
         $selected = $this->request->getParam('selected');
-        if(empty($selected)) {
+        if (empty($selected)) {
             $selected = $this->session->getProductIds();
         }
-        if(!empty($selected)) {
+        if (!empty($selected)) {
             foreach ($selected as $id) {
-
                 $model = $this->productRepository->getById($id);
 
                 $log = clone $activity;
@@ -144,9 +152,9 @@ class PostDispatch
                 $logDetail = $processor->_initActivityDetail($model);
 
                 $processor->activityLogs[] = [
-                    \KiwiCommerce\AdminActivity\Model\Activity::class => $log,
-                    \KiwiCommerce\AdminActivity\Model\ActivityLog::class => $logData,
-                    \KiwiCommerce\AdminActivity\Model\ActivityLogDetail::class => $logDetail
+                    Activity::class => $log,
+                    ActivityLog::class => $logData,
+                    ActivityLogDetail::class => $logDetail
                 ];
             }
         }

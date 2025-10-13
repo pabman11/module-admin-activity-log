@@ -21,7 +21,7 @@
           `cd path_to_the_magento_root_directory`<br />
       - Upload contents of the Admin Activity Log installation package to your Magento root directory
       - Then run the following command<br />
-          `php bin/magento module:enable KiwiCommerce_AdminActivity`<br />
+          `php bin/magento module:enable MageOS_AdminActivityLog`<br />
    
 - After installing the extension, run the following command
 ```

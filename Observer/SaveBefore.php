@@ -7,19 +7,23 @@
  * Please contact us https://kiwicommerce.co.uk/contacts.
  *
  * @category   KiwiCommerce
- * @package    KiwiCommerce_AdminActivity
+ * @package    MageOS_AdminActivityLog
  * @copyright  Copyright (C) 2018 Kiwi Commerce Ltd (https://kiwicommerce.co.uk/)
  * @license    https://kiwicommerce.co.uk/magento2-extension-license/
  */
-namespace KiwiCommerce\AdminActivity\Observer;
 
+namespace MageOS\AdminActivityLog\Observer;
+
+use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
-use \KiwiCommerce\AdminActivity\Helper\Data as Helper;
-use KiwiCommerce\AdminActivity\Api\ActivityRepositoryInterface;
+use MageOS\AdminActivityLog\Api\ActivityRepositoryInterface;
+use MageOS\AdminActivityLog\Helper\Benchmark;
+use MageOS\AdminActivityLog\Helper\Data as Helper;
+use MageOS\AdminActivityLog\Model\Processor;
 
 /**
  * Class SaveBefore
- * @package KiwiCommerce\AdminActivity\Observer
+ * @package MageOS\AdminActivityLog\Observer
  */
 class SaveBefore implements ObserverInterface
 {
@@ -29,7 +33,7 @@ class SaveBefore implements ObserverInterface
     public $helper;
 
     /**
-     * @var \KiwiCommerce\AdminActivity\Model\Processor
+     * @var Processor
      */
     public $processor;
 
@@ -39,22 +43,22 @@ class SaveBefore implements ObserverInterface
     public $activityRepository;
 
     /**
-     * @var \KiwiCommerce\AdminActivity\Helper\Benchmark
+     * @var Benchmark
      */
     public $benchmark;
 
     /**
      * SaveBefore constructor.
      * @param Helper $helper
-     * @param \KiwiCommerce\AdminActivity\Model\Processor $processor
+     * @param Processor $processor
      * @param ActivityRepositoryInterface $activityRepository
-     * @param \KiwiCommerce\AdminActivity\Helper\Benchmark $banchmark
+     * @param Benchmark $banchmark
      */
     public function __construct(
         Helper $helper,
-        \KiwiCommerce\AdminActivity\Model\Processor $processor,
+        Processor $processor,
         ActivityRepositoryInterface $activityRepository,
-        \KiwiCommerce\AdminActivity\Helper\Benchmark $benchmark
+        Benchmark $benchmark
     ) {
         $this->helper = $helper;
         $this->processor = $processor;
@@ -64,10 +68,10 @@ class SaveBefore implements ObserverInterface
 
     /**
      * Save before
-     * @param \Magento\Framework\Event\Observer $observer
-     * @return \Magento\Framework\Event\Observer
+     * @param Observer $observer
+     * @return Observer
      */
-    public function execute(\Magento\Framework\Event\Observer $observer)
+    public function execute(Observer $observer)
     {
         $this->benchmark->start(__METHOD__);
 

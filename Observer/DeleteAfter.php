@@ -7,52 +7,55 @@
  * Please contact us https://kiwicommerce.co.uk/contacts.
  *
  * @category   KiwiCommerce
- * @package    KiwiCommerce_AdminActivity
+ * @package    MageOS_AdminActivityLog
  * @copyright  Copyright (C) 2018 Kiwi Commerce Ltd (https://kiwicommerce.co.uk/)
  * @license    https://kiwicommerce.co.uk/magento2-extension-license/
  */
-namespace KiwiCommerce\AdminActivity\Observer;
 
+namespace MageOS\AdminActivityLog\Observer;
+
+use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
-use \KiwiCommerce\AdminActivity\Helper\Data as Helper;
-use \KiwiCommerce\AdminActivity\Api\ActivityRepositoryInterface;
+use MageOS\AdminActivityLog\Helper\Benchmark;
+use MageOS\AdminActivityLog\Helper\Data as Helper;
+use MageOS\AdminActivityLog\Model\Processor;
 
 /**
  * Class DeleteAfter
- * @package KiwiCommerce\AdminActivity\Observer
+ * @package MageOS\AdminActivityLog\Observer
  */
 class DeleteAfter implements ObserverInterface
 {
     /**
      * @var string
      */
-    const SYSTEM_CONFIG = 'adminhtml_system_config_save';
+    public const SYSTEM_CONFIG = 'adminhtml_system_config_save';
 
     /**
-     * @var \KiwiCommerce\AdminActivity\Model\Processor
+     * @var Processor
      */
     private $processor;
 
     /**
-     * @var \KiwiCommerce\AdminActivity\Helper\Data
+     * @var Helper
      */
     public $helper;
 
     /**
-     * @var \KiwiCommerce\AdminActivity\Helper\Benchmark
+     * @var Benchmark
      */
     public $benchmark;
 
     /**
      * DeleteAfter constructor.
-     * @param \KiwiCommerce\AdminActivity\Model\Processor $processor
+     * @param Processor $processor
      * @param Helper $helper
-     * @param \KiwiCommerce\AdminActivity\Helper\Benchmark $benchmark
+     * @param Benchmark $benchmark
      */
     public function __construct(
-        \KiwiCommerce\AdminActivity\Model\Processor $processor,
-        \KiwiCommerce\AdminActivity\Helper\Data $helper,
-        \KiwiCommerce\AdminActivity\Helper\Benchmark $benchmark
+        Processor $processor,
+        Helper $helper,
+        Benchmark $benchmark
     ) {
         $this->processor = $processor;
         $this->helper = $helper;
@@ -61,10 +64,10 @@ class DeleteAfter implements ObserverInterface
 
     /**
      * Delete after
-     * @param \Magento\Framework\Event\Observer $observer
-     * @return \Magento\Framework\Event\Observer
+     * @param Observer $observer
+     * @return Observer
      */
-    public function execute(\Magento\Framework\Event\Observer $observer)
+    public function execute(Observer $observer)
     {
         $this->benchmark->start(__METHOD__);
         if (!$this->helper->isEnable()) {
@@ -72,7 +75,7 @@ class DeleteAfter implements ObserverInterface
         }
 
         $object = $observer->getEvent()->getObject();
-        if ($this->processor->validate($object) && ($this->processor->initAction==self::SYSTEM_CONFIG)) {
+        if ($this->processor->validate($object) && ($this->processor->initAction == self::SYSTEM_CONFIG)) {
             $this->processor->modelEditAfter($object);
         }
         $this->processor->modelDeleteAfter($object);

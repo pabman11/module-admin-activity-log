@@ -7,15 +7,19 @@
  * Please contact us https://kiwicommerce.co.uk/contacts.
  *
  * @category   KiwiCommerce
- * @package    KiwiCommerce_AdminActivity
+ * @package    MageOS_AdminActivityLog
  * @copyright  Copyright (C) 2018 Kiwi Commerce Ltd (https://kiwicommerce.co.uk/)
  * @license    https://kiwicommerce.co.uk/magento2-extension-license/
  */
-namespace KiwiCommerce\AdminActivity\Model;
+
+namespace MageOS\AdminActivityLog\Model;
+
+use Magento\Framework\Phrase;
+use MageOS\AdminActivityLog\Model\Config\Data;
 
 /**
  * Class Config
- * @package KiwiCommerce\AdminActivity\Model
+ * @package MageOS\AdminActivityLog\Model
  */
 class Config
 {
@@ -36,7 +40,7 @@ class Config
      * @param Config\Data $dataStorage
      */
     public function __construct(
-        \KiwiCommerce\AdminActivity\Model\Config\Data $dataStorage
+        Data $dataStorage
     ) {
         $this->_xmlConfig = $dataStorage->get('config');
     }
@@ -64,7 +68,7 @@ class Config
     {
         $actions = [];
         foreach ($this->_xmlConfig as $module => $config) {
-            if(isset($config['actions'])) {
+            if (isset($config['actions'])) {
                 $actions = array_merge($actions, array_keys($config['actions']));
             }
         }
@@ -74,7 +78,7 @@ class Config
     /**
      * Get logging action translated label
      * @param string $action
-     * @return \Magento\Framework\Phrase|string
+     * @return Phrase|string
      */
     public function getActionLabel($action)
     {

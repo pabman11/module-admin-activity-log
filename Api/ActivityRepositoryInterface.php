@@ -7,15 +7,16 @@
  * Please contact us https://kiwicommerce.co.uk/contacts.
  *
  * @category   KiwiCommerce
- * @package    KiwiCommerce_AdminActivity
+ * @package    MageOS_AdminActivityLog
  * @copyright  Copyright (C) 2018 Kiwi Commerce Ltd (https://kiwicommerce.co.uk/)
  * @license    https://kiwicommerce.co.uk/magento2-extension-license/
  */
-namespace KiwiCommerce\AdminActivity\Api;
+
+namespace MageOS\AdminActivityLog\Api;
 
 /**
  * Interface ActivityRepositoryInterface
- * @package KiwiCommerce\AdminActivity\Api
+ * @package MageOS\AdminActivityLog\Api
  */
 interface ActivityRepositoryInterface
 {
@@ -51,7 +52,7 @@ interface ActivityRepositoryInterface
      * @return mixed
      */
     public function getActivityDetail($activityId);
-    
+
     /**
      * Get all admin activity log by activity id
      * @param $activityId

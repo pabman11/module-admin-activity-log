@@ -7,17 +7,27 @@
  * Please contact us https://kiwicommerce.co.uk/contacts.
  *
  * @category   KiwiCommerce
- * @package    KiwiCommerce_AdminActivity
+ * @package    MageOS_AdminActivityLog
  * @copyright  Copyright (C) 2018 Kiwi Commerce Ltd (https://kiwicommerce.co.uk/)
  * @license    https://kiwicommerce.co.uk/magento2-extension-license/
  */
-namespace KiwiCommerce\AdminActivity\Test\Unit\Block\Adminhtml;
+
+namespace MageOS\AdminActivityLog\Test\Unit\Block\Adminhtml;
+
+use Magento\Backend\Block\Template\Context;
+use Magento\Framework\App\RequestInterface;
+use Magento\Framework\TestFramework\Unit\Helper\ObjectManager;
+use MageOS\AdminActivityLog\Api\ActivityRepositoryInterface;
+use MageOS\AdminActivityLog\Block\Adminhtml\ActivityLogListing;
+use MageOS\AdminActivityLog\Helper\Browser;
+use MageOS\AdminActivityLog\Model\Activity;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class ActivityLogListingTest
- * @package KiwiCommerce\AdminActivity\Test\Unit\Block\Adminhtml
+ * @package MageOS\AdminActivityLog\Test\Unit\Block\Adminhtml
  */
-class ActivityLogListingTest extends \PHPUnit\Framework\TestCase
+class ActivityLogListingTest extends TestCase
 {
     public $activityRepositoryMock;
 
@@ -47,33 +57,33 @@ class ActivityLogListingTest extends \PHPUnit\Framework\TestCase
      */
     public function setUp()
     {
-        $objectManager = new \Magento\Framework\TestFramework\Unit\Helper\ObjectManager($this);
+        $objectManager = new ObjectManager($this);
 
         $this->activityRepositoryMock = $this->getMockForAbstractClass(
-            \KiwiCommerce\AdminActivity\Api\ActivityRepositoryInterface::class,
+            ActivityRepositoryInterface::class,
             [],
             '',
             false
         );
 
-        $this->browserMock = $this->createMock(\KiwiCommerce\AdminActivity\Helper\Browser::class);
+        $this->browserMock = $this->createMock(Browser::class);
 
         $this->request = $this->getMockForAbstractClass(
-            \Magento\Framework\App\RequestInterface::class,
+            RequestInterface::class,
             [],
             '',
             false
         );
 
         $this->contextMock = $objectManager->getObject(
-            \Magento\Backend\Block\Template\Context::class,
+            Context::class,
             [
                 'request' => $this->request
             ]
         );
 
         $this->activityModel = $this
-            ->getMockBuilder(\KiwiCommerce\AdminActivity\Model\Activity::class)
+            ->getMockBuilder(Activity::class)
             ->setMethods(
                 [
                     'getUserAgent',
@@ -88,7 +98,7 @@ class ActivityLogListingTest extends \PHPUnit\Framework\TestCase
             ->getMock();
 
         $this->activityLogListing = $objectManager->getObject(
-            \KiwiCommerce\AdminActivity\Block\Adminhtml\ActivityLogListing::class,
+            ActivityLogListing::class,
             [
                 'activityRepository' => $this->activityRepositoryMock,
                 'browser' => $this->browserMock,

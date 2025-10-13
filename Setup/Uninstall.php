@@ -7,21 +7,22 @@
  * Please contact us https://kiwicommerce.co.uk/contacts.
  *
  * @category   KiwiCommerce
- * @package    KiwiCommerce_AdminActivity
+ * @package    MageOS_AdminActivityLog
  * @copyright  Copyright (C) 2018 Kiwi Commerce Ltd (https://kiwicommerce.co.uk/)
  * @license    https://kiwicommerce.co.uk/magento2-extension-license/
  */
-namespace KiwiCommerce\AdminActivity\Setup;
 
-use Magento\Framework\Setup\UninstallInterface;
-use Magento\Framework\Setup\SchemaSetupInterface;
-use Magento\Framework\Setup\ModuleContextInterface;
+namespace MageOS\AdminActivityLog\Setup;
+
 use Magento\Framework\App\Config\Storage\Writer;
-use KiwiCommerce\AdminActivity\Helper\Data as ActivityHelper;
+use Magento\Framework\Setup\ModuleContextInterface;
+use Magento\Framework\Setup\SchemaSetupInterface;
+use Magento\Framework\Setup\UninstallInterface;
+use MageOS\AdminActivityLog\Helper\Data as ActivityHelper;
 
 /**
  * Class Uninstall
- * @package KiwiCommerce\AdminActivity\Setup
+ * @package MageOS\AdminActivityLog\Setup
  */
 class Uninstall implements UninstallInterface
 {

@@ -7,28 +7,36 @@
  * Please contact us https://kiwicommerce.co.uk/contacts.
  *
  * @category   KiwiCommerce
- * @package    KiwiCommerce_AdminActivity
+ * @package    MageOS_AdminActivityLog
  * @copyright  Copyright (C) 2018 Kiwi Commerce Ltd (https://kiwicommerce.co.uk/)
  * @license    https://kiwicommerce.co.uk/magento2-extension-license/
  */
-namespace KiwiCommerce\AdminActivity\Test\Unit\Helper;
+
+namespace MageOS\AdminActivityLog\Test\Unit\Helper;
+
+use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\App\Config\Value\Interceptor;
+use Magento\Framework\App\Helper\Context;
+use MageOS\AdminActivityLog\Helper\Data;
+use MageOS\AdminActivityLog\Model\Config;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class DataTest
- * @package KiwiCommerce\AdminActivity\Test\Unit\Helper
+ * @package MageOS\AdminActivityLog\Test\Unit\Helper
  */
-class DataTest extends \PHPUnit\Framework\TestCase
+class DataTest extends TestCase
 {
     /**
      * @requires PHP 7.0
      */
     public function setUp()
     {
-        $this->context = $this->getMockBuilder(\Magento\Framework\App\Helper\Context::class)
+        $this->context = $this->getMockBuilder(Context::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->scopeConfig = $this->getMockBuilder(\Magento\Framework\App\Config\ScopeConfigInterface::class)
+        $this->scopeConfig = $this->getMockBuilder(ScopeConfigInterface::class)
             ->getMockForAbstractClass();
 
         $this->scopeConfig->expects($this->any())
@@ -39,11 +47,11 @@ class DataTest extends \PHPUnit\Framework\TestCase
             ->method('getScopeConfig')
             ->willReturn($this->scopeConfig);
 
-        $this->config = $this->getMockBuilder(\KiwiCommerce\AdminActivity\Model\Config::class)
+        $this->config = $this->getMockBuilder(Config::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->helper = new \KiwiCommerce\AdminActivity\Helper\Data(
+        $this->helper = new Data(
             $this->context,
             $this->config
         );
@@ -70,10 +78,14 @@ class DataTest extends \PHPUnit\Framework\TestCase
      */
     public function testIsWildCardModel()
     {
-        $notwildcardmethod = \KiwiCommerce\AdminActivity\Helper\Data::isWildCardModel(\Magento\Framework\App\Helper\Context::class);
+        $notwildcardmethod = Data::isWildCardModel(
+            Context::class
+        );
         $this->assertSame(false, $notwildcardmethod);
 
-        $notwildcardmethod = \KiwiCommerce\AdminActivity\Helper\Data::isWildCardModel(\Magento\Framework\App\Config\Value\Interceptor::class);
+        $notwildcardmethod = Data::isWildCardModel(
+            Interceptor::class
+        );
         $this->assertSame(true, $notwildcardmethod);
     }
 }

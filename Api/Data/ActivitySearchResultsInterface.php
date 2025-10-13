@@ -7,30 +7,34 @@
  * Please contact us https://kiwicommerce.co.uk/contacts.
  *
  * @category   KiwiCommerce
- * @package    KiwiCommerce_AdminActivity
+ * @package    MageOS_AdminActivityLog
  * @copyright  Copyright (C) 2018 Kiwi Commerce Ltd (https://kiwicommerce.co.uk/)
  * @license    https://kiwicommerce.co.uk/magento2-extension-license/
  */
-namespace KiwiCommerce\AdminActivity\Api\Data;
+
+namespace MageOS\AdminActivityLog\Api\Data;
+
+use Magento\Framework\Api\SearchResultsInterface;
+use MageOS\AdminActivityLog\Model\Activity;
 
 /**
  * Interface LogSearchResultsInterface
  * @package KiwiCommerce\EnhancedSMTP\Api\Data
  */
-interface ActivitySearchResultsInterface extends \Magento\Framework\Api\SearchResultsInterface
+interface ActivitySearchResultsInterface extends SearchResultsInterface
 {
     /**
      * Get admin activity list.
+     * @return Activity[]
      * @api
-     * @return \KiwiCommerce\AdminActivity\Model\Activity[]
      */
     public function getItems();
 
     /**
      * Set admin activity list.
-     * @api
-     * @param \KiwiCommerce\AdminActivity\Model\Activity[] $items
+     * @param Activity[] $items
      * @return $this
+     * @api
      */
     public function setItems(array $items);
 }

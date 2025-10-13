@@ -7,27 +7,32 @@
  * Please contact us https://kiwicommerce.co.uk/contacts.
  *
  * @category   KiwiCommerce
- * @package    KiwiCommerce_AdminActivity
+ * @package    MageOS_AdminActivityLog
  * @copyright  Copyright (C) 2018 Kiwi Commerce Ltd (https://kiwicommerce.co.uk/)
  * @license    https://kiwicommerce.co.uk/magento2-extension-license/
  */
-namespace KiwiCommerce\AdminActivity\Model;
+
+namespace MageOS\AdminActivityLog\Model;
+
+use Magento\User\Model\User;
+use MageOS\AdminActivityLog\Api\LoginRepositoryInterface;
+use MageOS\AdminActivityLog\Model\ResourceModel\Login\CollectionFactory;
 
 /**
  * Class LoginRepository
- * @package KiwiCommerce\AdminActivity\Model
+ * @package MageOS\AdminActivityLog\Model
  */
-class LoginRepository implements \KiwiCommerce\AdminActivity\Api\LoginRepositoryInterface
+class LoginRepository implements LoginRepositoryInterface
 {
     /**
-     * @var boolean
+     * @var bool
      */
-    const LOGIN_SUCCESS = 1;
+    public const LOGIN_SUCCESS = 1;
 
     /**
-     * @var boolean
+     * @var bool
      */
-    const LOGIN_FAILED = 0;
+    public const LOGIN_FAILED = 0;
 
     /**
      * @var LoginFactory
@@ -56,9 +61,9 @@ class LoginRepository implements \KiwiCommerce\AdminActivity\Api\LoginRepository
      * @param Processor $processor
      */
     public function __construct(
-        \KiwiCommerce\AdminActivity\Model\LoginFactory $loginFactory,
-        \KiwiCommerce\AdminActivity\Model\ResourceModel\Login\CollectionFactory $collectionFactory,
-        \KiwiCommerce\AdminActivity\Model\Processor $processor
+        LoginFactory $loginFactory,
+        CollectionFactory $collectionFactory,
+        Processor $processor
     ) {
         $this->loginFactory = $loginFactory;
         $this->collectionFactory = $collectionFactory;
@@ -94,7 +99,7 @@ class LoginRepository implements \KiwiCommerce\AdminActivity\Api\LoginRepository
         $login = $this->loginFactory->create();
 
         $user = $this->getUser();
-        if($user != null && $user instanceof \Magento\User\Model\User) {
+        if ($user != null && $user instanceof User) {
             $login->setUsername($user->getUsername());
             $login->setName(ucwords($user->getName()));
         }
@@ -111,7 +116,7 @@ class LoginRepository implements \KiwiCommerce\AdminActivity\Api\LoginRepository
      * @param $status
      * @param $type
      * @param string $remark
-     * @return boolean
+     * @return bool
      */
     public function addLog($status, $type, $remark = '')
     {

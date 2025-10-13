@@ -7,17 +7,20 @@
  * Please contact us https://kiwicommerce.co.uk/contacts.
  *
  * @category   KiwiCommerce
- * @package    KiwiCommerce_AdminActivity
+ * @package    MageOS_AdminActivityLog
  * @copyright  Copyright (C) 2018 Kiwi Commerce Ltd (https://kiwicommerce.co.uk/)
  * @license    https://kiwicommerce.co.uk/magento2-extension-license/
  */
-namespace KiwiCommerce\AdminActivity\Plugin;
 
-use \KiwiCommerce\AdminActivity\Helper\Data as Helper;
+namespace MageOS\AdminActivityLog\Plugin;
+
+use MageOS\AdminActivityLog\Api\LoginRepositoryInterface;
+use MageOS\AdminActivityLog\Helper\Benchmark;
+use MageOS\AdminActivityLog\Helper\Data as Helper;
 
 /**
  * Class Auth
- * @package KiwiCommerce\AdminActivity\Plugin
+ * @package MageOS\AdminActivityLog\Plugin
  */
 class Auth
 {
@@ -27,25 +30,25 @@ class Auth
     public $helper;
 
     /**
-     * @var \KiwiCommerce\AdminActivity\Api\LoginRepositoryInterface
+     * @var LoginRepositoryInterface
      */
     public $loginRepository;
 
     /**
-     * @var \KiwiCommerce\AdminActivity\Helper\Benchmark
+     * @var Benchmark
      */
     public $benchmark;
 
     /**
      * Auth constructor.
      * @param Helper $helper
-     * @param \KiwiCommerce\AdminActivity\Api\LoginRepositoryInterface $loginRepository
-     * @param \KiwiCommerce\AdminActivity\Helper\Benchmark $benchmark
+     * @param LoginRepositoryInterface $loginRepository
+     * @param Benchmark $benchmark
      */
     public function __construct(
         Helper $helper,
-        \KiwiCommerce\AdminActivity\Api\LoginRepositoryInterface $loginRepository,
-        \KiwiCommerce\AdminActivity\Helper\Benchmark $benchmark
+        LoginRepositoryInterface $loginRepository,
+        Benchmark $benchmark
     ) {
         $this->helper = $helper;
         $this->loginRepository = $loginRepository;

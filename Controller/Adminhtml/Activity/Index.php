@@ -7,26 +7,28 @@
  * Please contact us https://kiwicommerce.co.uk/contacts.
  *
  * @category   KiwiCommerce
- * @package    KiwiCommerce_AdminActivity
+ * @package    MageOS_AdminActivityLog
  * @copyright  Copyright (C) 2018 Kiwi Commerce Ltd (https://kiwicommerce.co.uk/)
  * @license    https://kiwicommerce.co.uk/magento2-extension-license/
  */
-namespace KiwiCommerce\AdminActivity\Controller\Adminhtml\Activity;
 
-use Magento\Backend\App\Action\Context;
-use Magento\Framework\View\Result\PageFactory;
+namespace MageOS\AdminActivityLog\Controller\Adminhtml\Activity;
+
 use Magento\Backend\App\Action;
+use Magento\Backend\App\Action\Context;
+use Magento\Backend\Model\View\Result\Page;
+use Magento\Framework\View\Result\PageFactory;
 
 /**
  * Class Index
- * @package KiwiCommerce\AdminActivity\Controller\Adminhtml\Activity
+ * @package MageOS\AdminActivityLog\Controller\Adminhtml\Activity
  */
 class Index extends Action
 {
     /**
      * @var string
      */
-    const ADMIN_RESOURCE = 'KiwiCommerce_AdminActivity::activity';
+    public const ADMIN_RESOURCE = 'MageOS_AdminActivityLog::activity';
 
     /**
      * @var PageFactory
@@ -48,13 +50,13 @@ class Index extends Action
 
     /**
      * Index action
-     * @return \Magento\Backend\Model\View\Result\Page
+     * @return Page
      */
     public function execute()
     {
-        /** @var \Magento\Backend\Model\View\Result\Page $resultPage */
+        /** @var Page $resultPage */
         $resultPage = $this->resultPageFactory->create();
-        $resultPage->setActiveMenu('KiwiCommerce_AdminActivity::activity');
+        $resultPage->setActiveMenu('MageOS_AdminActivityLog::activity');
         $resultPage->addBreadcrumb(__('KiwiCommerce'), __('Admin Activity'));
         $resultPage->getConfig()->getTitle()->prepend(__('Admin Activity'));
 

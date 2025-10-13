@@ -7,43 +7,50 @@
  * Please contact us https://kiwicommerce.co.uk/contacts.
  *
  * @category   KiwiCommerce
- * @package    KiwiCommerce_AdminActivity
+ * @package    MageOS_AdminActivityLog
  * @copyright  Copyright (C) 2018 Kiwi Commerce Ltd (https://kiwicommerce.co.uk/)
  * @license    https://kiwicommerce.co.uk/magento2-extension-license/
  */
-namespace KiwiCommerce\AdminActivity\Model\Activity;
+
+namespace MageOS\AdminActivityLog\Model\Activity;
+
+use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\App\Config\Storage\WriterInterface;
+use Magento\Framework\App\Config\ValueFactory;
+use Magento\Framework\DataObject;
+use MageOS\AdminActivityLog\Api\Activity\ModelInterface;
 
 /**
  * Class SystemConfig
- * @package KiwiCommerce\AdminActivity\Model\Activity
+ * @package MageOS\AdminActivityLog\Model\Activity
  */
-class SystemConfig implements \KiwiCommerce\AdminActivity\Api\Activity\ModelInterface
+class SystemConfig implements ModelInterface
 {
     /**
-     * @var \Magento\Framework\DataObject
+     * @var DataObject
      */
     public $dataObject;
 
     /**
-     * @var \Magento\Framework\App\Config\ValueFactory
+     * @var ValueFactory
      */
     public $valueFactory;
 
     /**
-     * @var \Magento\Framework\App\Config\Storage\WriterInterface
+     * @var WriterInterface
      */
     public $configWriter;
 
     /**
      * SystemConfig constructor.
-     * @param \Magento\Framework\DataObject $dataObject
-     * @param \Magento\Framework\App\Config\ValueFactory $valueFactory
-     * @param \Magento\Framework\App\Config\Storage\WriterInterface $configWriter
+     * @param DataObject $dataObject
+     * @param ValueFactory $valueFactory
+     * @param WriterInterface $configWriter
      */
     public function __construct(
-        \Magento\Framework\DataObject $dataObject,
-        \Magento\Framework\App\Config\ValueFactory $valueFactory,
-        \Magento\Framework\App\Config\Storage\WriterInterface $configWriter
+        DataObject $dataObject,
+        ValueFactory $valueFactory,
+        WriterInterface $configWriter
     ) {
         $this->dataObject = $dataObject;
         $this->valueFactory = $valueFactory;
@@ -77,7 +84,8 @@ class SystemConfig implements \KiwiCommerce\AdminActivity\Api\Activity\ModelInte
     public function getOldData($model)
     {
         $path = $this->getPath($model);
-        $systemData = $this->valueFactory->create()->getCollection()->addFieldToFilter('path', ['like'=> $path.'/%']);
+        $systemData = $this->valueFactory->create()->getCollection()->addFieldToFilter('path', ['like' => $path . '/%']
+        );
         $data = [];
         foreach ($systemData->getData() as $config) {
             $splittedPath = explode('/', $config['path']);
@@ -116,7 +124,9 @@ class SystemConfig implements \KiwiCommerce\AdminActivity\Api\Activity\ModelInte
                             continue;
                         }
                         $fieldPath = implode('/', [
-                            $path, $group, $field
+                            $path,
+                            $group,
+                            $field
                         ]);
 
                         $logData[$fieldPath] = [
@@ -144,7 +154,7 @@ class SystemConfig implements \KiwiCommerce\AdminActivity\Api\Activity\ModelInte
                 $this->configWriter->save(
                     $log->getFieldName(),
                     $log->getOldValue(),
-                    \Magento\Framework\App\Config\ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
+                    ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
                     $scopeId
                 );
             }

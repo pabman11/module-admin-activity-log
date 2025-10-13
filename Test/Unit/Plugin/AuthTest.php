@@ -7,17 +7,27 @@
  * Please contact us https://kiwicommerce.co.uk/contacts.
  *
  * @category   KiwiCommerce
- * @package    KiwiCommerce_AdminActivity
+ * @package    MageOS_AdminActivityLog
  * @copyright  Copyright (C) 2018 Kiwi Commerce Ltd (https://kiwicommerce.co.uk/)
  * @license    https://kiwicommerce.co.uk/magento2-extension-license/
  */
-namespace KiwiCommerce\AdminActivity\Test\Unit\Plugin;
+
+namespace MageOS\AdminActivityLog\Test\Unit\Plugin;
+
+use Magento\Backend\Model\Auth\StorageInterface;
+use Magento\Framework\TestFramework\Unit\Helper\ObjectManager;
+use Magento\User\Model\User;
+use MageOS\AdminActivityLog\Api\LoginRepositoryInterface;
+use MageOS\AdminActivityLog\Helper\Data;
+use MageOS\AdminActivityLog\Plugin\Auth;
+use PHPUnit\Framework\TestCase;
+use stdClass;
 
 /**
  * Class AuthTest
- * @package KiwiCommerce\AdminActivity\Test\Unit\Plugin
+ * @package MageOS\AdminActivityLog\Test\Unit\Plugin
  */
-class AuthTest extends \PHPUnit\Framework\TestCase
+class AuthTest extends TestCase
 {
     public $authMock;
 
@@ -39,7 +49,7 @@ class AuthTest extends \PHPUnit\Framework\TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->authStorageMock = $this->getMockBuilder(\Magento\Backend\Model\Auth\StorageInterface::class)
+        $this->authStorageMock = $this->getMockBuilder(StorageInterface::class)
             ->setMethods([
                 'getUser',
                 'processLogin',
@@ -51,25 +61,27 @@ class AuthTest extends \PHPUnit\Framework\TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->helperMock = $this->getMockBuilder(\KiwiCommerce\AdminActivity\Helper\Data::class)
+        $this->helperMock = $this->getMockBuilder(Data::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->loginRepositoryMock = $this->getMockBuilder(\KiwiCommerce\AdminActivity\Api\LoginRepositoryInterface
-        ::class)
-            ->setMethods(['setUser','addLog','getListBeforeDate'])
+        $this->loginRepositoryMock = $this->getMockBuilder(
+            LoginRepositoryInterface
+            ::class
+        )
+            ->setMethods(['setUser', 'addLog', 'getListBeforeDate'])
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->user = $this->getMockBuilder(\Magento\User\Model\User::class)
+        $this->user = $this->getMockBuilder(User::class)
             ->setMethods(['addLogoutLog'])
             ->disableOriginalConstructor()
             ->getMock();
 
-        $objectManager = new \Magento\Framework\TestFramework\Unit\Helper\ObjectManager($this);
+        $objectManager = new ObjectManager($this);
 
         $this->authTest = $objectManager->getObject(
-            \KiwiCommerce\AdminActivity\Plugin\Auth::class,
+            Auth::class,
             [
                 'helper' => $this->helperMock,
                 'loginRepository' => $this->loginRepositoryMock
@@ -109,7 +121,7 @@ class AuthTest extends \PHPUnit\Framework\TestCase
             ->method('addLogoutLog')
             ->willReturn('LogoutLog');
 
-        $callbackMock = $this->getMockBuilder(\stdClass::class)
+        $callbackMock = $this->getMockBuilder(stdClass::class)
             ->setMethods(['__invoke'])
             ->getMock();
 
@@ -128,7 +140,7 @@ class AuthTest extends \PHPUnit\Framework\TestCase
             ->method('isLoginEnable')
             ->willReturn(false);
 
-        $callbackMock = $this->getMockBuilder(\stdClass::class)
+        $callbackMock = $this->getMockBuilder(stdClass::class)
             ->setMethods(['__invoke'])
             ->getMock();
 

@@ -7,51 +7,53 @@
  * Please contact us https://kiwicommerce.co.uk/contacts.
  *
  * @category   KiwiCommerce
- * @package    KiwiCommerce_AdminActivity
+ * @package    MageOS_AdminActivityLog
  * @copyright  Copyright (C) 2018 Kiwi Commerce Ltd (https://kiwicommerce.co.uk/)
  * @license    https://kiwicommerce.co.uk/magento2-extension-license/
  */
-namespace KiwiCommerce\AdminActivity\Model\Activity;
 
-use \Magento\Framework\Model\AbstractModel;
+namespace MageOS\AdminActivityLog\Model\Activity;
+
+use Magento\Framework\Model\AbstractModel;
+use MageOS\AdminActivityLog\Model\ActivityFactory;
 
 /**
  * Class Status
- * @package KiwiCommerce\AdminActivity\Model\Activity
+ * @package MageOS\AdminActivityLog\Model\Activity
  */
 class Status extends AbstractModel
 {
     /**
      * @var Int
      */
-    const ACTIVITY_NONE = 0;
+    public const ACTIVITY_NONE = 0;
 
     /**
      * @var Int
      */
-    const ACTIVITY_REVERTABLE = 1;
+    public const ACTIVITY_REVERTABLE = 1;
 
     /**
      * @var Int
      */
-    const ACTIVITY_REVERT_SUCCESS = 2;
+    public const ACTIVITY_REVERT_SUCCESS = 2;
 
     /**
      * @var Int
      */
-    const ACTIVITY_FAIL = 3;
+    public const ACTIVITY_FAIL = 3;
 
     /**
-     * @var \KiwiCommerce\AdminActivity\Model\ActivityFactory
+     * @var ActivityFactory
      */
     public $activityFactory;
 
     /**
      * Status constructor.
-     * @param \KiwiCommerce\AdminActivity\Model\ActivityFactory $activityFactory
+     * @param ActivityFactory $activityFactory
      */
     public function __construct(
-        \KiwiCommerce\AdminActivity\Model\ActivityFactory $activityFactory
+        ActivityFactory $activityFactory
     ) {
         $this->activityFactory = $activityFactory;
     }

@@ -7,17 +7,25 @@
  * Please contact us https://kiwicommerce.co.uk/contacts.
  *
  * @category   KiwiCommerce
- * @package    KiwiCommerce_AdminActivity
+ * @package    MageOS_AdminActivityLog
  * @copyright  Copyright (C) 2018 Kiwi Commerce Ltd (https://kiwicommerce.co.uk/)
  * @license    https://kiwicommerce.co.uk/magento2-extension-license/
  */
-namespace KiwiCommerce\AdminActivity\Test\Unit\Helper;
+
+namespace MageOS\AdminActivityLog\Test\Unit\Helper;
+
+use Magento\Catalog\Model\Product;
+use Magento\Framework\App\Helper\Context;
+use MageOS\AdminActivityLog\Helper\TrackField;
+use MageOS\AdminActivityLog\Model\Activity\SystemConfig;
+use MageOS\AdminActivityLog\Model\Activity\ThemeConfig;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class TrackFieldTest
- * @package KiwiCommerce\AdminActivity\Test\Unit\Helper
+ * @package MageOS\AdminActivityLog\Test\Unit\Helper
  */
-class TrackFieldTest extends \PHPUnit\Framework\TestCase
+class TrackFieldTest extends TestCase
 {
     public $helper;
 
@@ -34,25 +42,25 @@ class TrackFieldTest extends \PHPUnit\Framework\TestCase
      */
     public function setUp()
     {
-        $context = $this->getMockBuilder(\Magento\Framework\App\Helper\Context::class)
+        $context = $this->getMockBuilder(Context::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $systemConfig = $this->getMockBuilder(\KiwiCommerce\AdminActivity\Model\Activity\SystemConfig::class)
+        $systemConfig = $this->getMockBuilder(SystemConfig::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $themeConfig = $this->getMockBuilder(\KiwiCommerce\AdminActivity\Model\Activity\ThemeConfig::class)
+        $themeConfig = $this->getMockBuilder(ThemeConfig::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->helper = new \KiwiCommerce\AdminActivity\Helper\TrackField(
+        $this->helper = new TrackField(
             $context,
             $systemConfig,
             $themeConfig
         );
 
-        $this->product = $this->getMockBuilder(\Magento\Catalog\Model\Product::class)
+        $this->product = $this->getMockBuilder(Product::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -74,7 +82,7 @@ class TrackFieldTest extends \PHPUnit\Framework\TestCase
     public function collectFieldDataMethods()
     {
         return [
-            'Category'  => ['getCategoryFieldData'],
+            'Category' => ['getCategoryFieldData'],
             'Product' => ['getProductFieldData'],
             'Customer Group' => ['getCustomerGroupFieldData'],
             'Customer' => ['getCustomerFieldData'],

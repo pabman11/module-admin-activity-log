@@ -7,17 +7,18 @@
  * Please contact us https://kiwicommerce.co.uk/contacts.
  *
  * @category   KiwiCommerce
- * @package    KiwiCommerce_AdminActivity
+ * @package    MageOS_AdminActivityLog
  * @copyright  Copyright (C) 2018 Kiwi Commerce Ltd (https://kiwicommerce.co.uk/)
  * @license    https://kiwicommerce.co.uk/magento2-extension-license/
  */
-namespace KiwiCommerce\AdminActivity\Model\ResourceModel\Login;
 
-use \Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection;
+namespace MageOS\AdminActivityLog\Model\ResourceModel\Login;
+
+use Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection;
 
 /**
  * Class Collection
- * @package KiwiCommerce\AdminActivity\Model\ResourceModel\Login
+ * @package MageOS\AdminActivityLog\Model\ResourceModel\Login
  */
 class Collection extends AbstractCollection
 {
@@ -28,8 +29,8 @@ class Collection extends AbstractCollection
     public function _construct()
     {
         $this->_init(
-            'KiwiCommerce\AdminActivity\Model\Login',
-            'KiwiCommerce\AdminActivity\Model\ResourceModel\Login'
+            'MageOS\AdminActivityLog\Model\Login',
+            'MageOS\AdminActivityLog\Model\ResourceModel\Login'
         );
     }
 }

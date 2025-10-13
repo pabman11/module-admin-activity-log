@@ -7,33 +7,37 @@
  * Please contact us https://kiwicommerce.co.uk/contacts.
  *
  * @category   KiwiCommerce
- * @package    KiwiCommerce_AdminActivity
+ * @package    MageOS_AdminActivityLog
  * @copyright  Copyright (C) 2018 Kiwi Commerce Ltd (https://kiwicommerce.co.uk/)
  * @license    https://kiwicommerce.co.uk/magento2-extension-license/
  */
-namespace KiwiCommerce\AdminActivity\Observer;
 
+namespace MageOS\AdminActivityLog\Observer;
+
+use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
-use \KiwiCommerce\AdminActivity\Helper\Data as Helper;
+use MageOS\AdminActivityLog\Helper\Benchmark;
+use MageOS\AdminActivityLog\Helper\Data as Helper;
+use MageOS\AdminActivityLog\Model\Processor;
 
 /**
  * Class SaveAfter
- * @package KiwiCommerce\AdminActivity\Observer
+ * @package MageOS\AdminActivityLog\Observer
  */
 class SaveAfter implements ObserverInterface
 {
     /**
      * @var string
      */
-    const ACTION_MASSCANCEL = 'massCancel';
+    public const ACTION_MASSCANCEL = 'massCancel';
 
     /**
      * @var string
      */
-    const SYSTEM_CONFIG = 'adminhtml_system_config_save';
+    public const SYSTEM_CONFIG = 'adminhtml_system_config_save';
 
     /**
-     * @var \KiwiCommerce\AdminActivity\Model\Processor
+     * @var Processor
      */
     private $processor;
 
@@ -43,20 +47,20 @@ class SaveAfter implements ObserverInterface
     public $helper;
 
     /**
-     * @var \KiwiCommerce\AdminActivity\Helper\Benchmark
+     * @var Benchmark
      */
     public $benchmark;
 
     /**
      * SaveAfter constructor.
-     * @param \KiwiCommerce\AdminActivity\Model\Processor $processor
+     * @param Processor $processor
      * @param Helper $helper
-     * @param \KiwiCommerce\AdminActivity\Helper\Benchmark $benchmark
+     * @param Benchmark $benchmark
      */
     public function __construct(
-        \KiwiCommerce\AdminActivity\Model\Processor $processor,
+        Processor $processor,
         Helper $helper,
-        \KiwiCommerce\AdminActivity\Helper\Benchmark $benchmark
+        Benchmark $benchmark
     ) {
         $this->processor = $processor;
         $this->helper = $helper;
@@ -65,10 +69,10 @@ class SaveAfter implements ObserverInterface
 
     /**
      * Save after
-     * @param \Magento\Framework\Event\Observer $observer
-     * @return \Magento\Framework\Event\Observer|boolean
+     * @param Observer $observer
+     * @return Observer|bool
      */
-    public function execute(\Magento\Framework\Event\Observer $observer)
+    public function execute(Observer $observer)
     {
         $this->benchmark->start(__METHOD__);
 
@@ -77,13 +81,13 @@ class SaveAfter implements ObserverInterface
         }
         $object = $observer->getEvent()->getObject();
         if ($object->getCheckIfIsNew()) {
-            if ($this->processor->initAction==self::SYSTEM_CONFIG) {
+            if ($this->processor->initAction == self::SYSTEM_CONFIG) {
                 $this->processor->modelEditAfter($object);
             }
             $this->processor->modelAddAfter($object);
         } else {
             if ($this->processor->validate($object)) {
-                if ($this->processor->eventConfig['action']==self::ACTION_MASSCANCEL) {
+                if ($this->processor->eventConfig['action'] == self::ACTION_MASSCANCEL) {
                     $this->processor->modelDeleteAfter($object);
                 }
                 $this->processor->modelEditAfter($object);

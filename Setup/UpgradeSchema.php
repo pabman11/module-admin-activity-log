@@ -7,19 +7,21 @@
  * Please contact us https://kiwicommerce.co.uk/contacts.
  *
  * @category   KiwiCommerce
- * @package    KiwiCommerce_AdminActivity
+ * @package    MageOS_AdminActivityLog
  * @copyright  Copyright (C) 2018 Kiwi Commerce Ltd (https://kiwicommerce.co.uk/)
  * @license    https://kiwicommerce.co.uk/magento2-extension-license/
  */
-namespace KiwiCommerce\AdminActivity\Setup;
 
-use Magento\Framework\Setup\UpgradeSchemaInterface;
+namespace MageOS\AdminActivityLog\Setup;
+
+use Magento\Framework\DB\Ddl\Table;
 use Magento\Framework\Setup\ModuleContextInterface;
 use Magento\Framework\Setup\SchemaSetupInterface;
+use Magento\Framework\Setup\UpgradeSchemaInterface;
 
 /**
  * Class UpgradeSchema
- * @package KiwiCommerce\AdminActivity\Setup
+ * @package MageOS\AdminActivityLog\Setup
  */
 class UpgradeSchema implements UpgradeSchemaInterface
 {
@@ -40,7 +42,7 @@ class UpgradeSchema implements UpgradeSchemaInterface
             if ($setup->getConnection()->isTableExists($tableName) == true) {
                 $columns = [
                     'forwarded_ip' => [
-                        'type' => \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
+                        'type' => Table::TYPE_TEXT,
                         'length' => 32,
                         'nullable' => true,
                         'comment' => __('Real ip address if visitor used proxy'),
@@ -62,7 +64,7 @@ class UpgradeSchema implements UpgradeSchemaInterface
             if ($setup->getConnection()->isTableExists($tableName) == true) {
                 $columns = [
                     'scope' => [
-                        'type' => \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
+                        'type' => Table::TYPE_TEXT,
                         'length' => 15,
                         'nullable' => true,
                         'comment' => __('Scope of activity'),
@@ -78,7 +80,6 @@ class UpgradeSchema implements UpgradeSchemaInterface
         }
 
         if (version_compare($context->getVersion(), '0.1.3') < 0) {
-
             /**
              * Create table 'kiwicommerce_login_activity'
              */
@@ -86,63 +87,63 @@ class UpgradeSchema implements UpgradeSchemaInterface
                 $setup->getTable('kiwicommerce_login_activity')
             )->addColumn(
                 'entity_id',
-                \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
+                Table::TYPE_INTEGER,
                 10,
                 ['identity' => true, 'unsigned' => true, 'nullable' => false, 'primary' => true],
                 'Primary key for the table'
             )->addColumn(
                 'username',
-                \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
+                Table::TYPE_TEXT,
                 40,
                 ['nullable' => false, 'default' => ''],
                 'Admin username'
             )->addColumn(
                 'name',
-                \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
+                Table::TYPE_TEXT,
                 64,
                 ['nullable' => false, 'default' => ''],
                 'Full name of admin'
             )->addColumn(
                 'remote_ip',
-                \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
+                Table::TYPE_TEXT,
                 32,
                 ['nullable' => false, 'default' => ''],
                 'IP address of logged in admin user'
             )->addColumn(
                 'forwarded_ip',
-                \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
+                Table::TYPE_TEXT,
                 32,
                 ['nullable' => false, 'default' => ''],
                 'Real ip address if visitor used proxy'
             )->addColumn(
                 'user_agent',
-                \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
+                Table::TYPE_TEXT,
                 '',
                 ['nullable' => false, 'default' => ''],
                 'Store browser’s user agent'
             )->addColumn(
                 'location',
-                \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
+                Table::TYPE_TEXT,
                 255,
                 ['nullable' => false, 'default' => ''],
                 'Location of visitor'
             )->addColumn(
                 'type',
-                \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
+                Table::TYPE_TEXT,
                 8,
                 ['nullable' => false, 'default' => ''],
                 'Is it Login/Logout?'
             )->addColumn(
                 'status',
-                \Magento\Framework\DB\Ddl\Table::TYPE_BOOLEAN,
+                Table::TYPE_BOOLEAN,
                 '',
                 ['nullable' => true],
                 '0 = Faild, 1= Success'
             )->addColumn(
                 'created_at',
-                \Magento\Framework\DB\Ddl\Table::TYPE_TIMESTAMP,
+                Table::TYPE_TIMESTAMP,
                 null,
-                ['nullable' => false, 'default' => \Magento\Framework\DB\Ddl\Table::TIMESTAMP_INIT],
+                ['nullable' => false, 'default' => Table::TIMESTAMP_INIT],
                 'The date when the activity was created'
             )->setComment(
                 'Log all login/logout activity of admin user'
@@ -157,7 +158,7 @@ class UpgradeSchema implements UpgradeSchemaInterface
             //TODO: Check if the table already exists
             if ($connection->isTableExists($tableName) == true) {
                 $connection->addColumn($tableName, 'remarks', [
-                    'type' => \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
+                    'type' => Table::TYPE_TEXT,
                     'length' => '',
                     'nullable' => false,
                     'default' => '',
@@ -175,8 +176,8 @@ class UpgradeSchema implements UpgradeSchemaInterface
             //TODO: Check if the table already exists
             if ($setup->getConnection()->isTableExists($tableName) == true) {
                 $definition = [
-                        'type' => \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
-                        'length' => 255
+                    'type' => Table::TYPE_TEXT,
+                    'length' => 255
                 ];
 
                 $setup->getConnection()->addColumn($tableName, 'field_name', $definition);
@@ -190,7 +191,7 @@ class UpgradeSchema implements UpgradeSchemaInterface
             //TODO: Check if the table already exists
             if ($connection->isTableExists($tableName) == true) {
                 $connection->addColumn($tableName, 'fullaction', [
-                    'type' => \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
+                    'type' => Table::TYPE_TEXT,
                     'length' => 200,
                     'nullable' => false,
                     'default' => '',

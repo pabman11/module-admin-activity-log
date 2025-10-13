@@ -7,24 +7,31 @@
  * Please contact us https://kiwicommerce.co.uk/contacts.
  *
  * @category   KiwiCommerce
- * @package    KiwiCommerce_AdminActivity
+ * @package    MageOS_AdminActivityLog
  * @copyright  Copyright (C) 2018 Kiwi Commerce Ltd (https://kiwicommerce.co.uk/)
  * @license    https://kiwicommerce.co.uk/magento2-extension-license/
  */
-namespace KiwiCommerce\AdminActivity\Ui\Component\Listing\Column;
 
+namespace MageOS\AdminActivityLog\Ui\Component\Listing\Column;
+
+use Magento\Backend\Model\UrlInterface;
+use Magento\Framework\Escaper;
+use Magento\Framework\Filter\FilterManager;
+use Magento\Framework\View\Element\Context;
+use Magento\Framework\View\Element\UiComponent\ContextInterface;
+use Magento\Framework\View\Element\UiComponentFactory;
 use Magento\Ui\Component\Listing\Columns\Column;
 
 /**
  * Class ItemColumn
- * @package KiwiCommerce\AdminActivity\Ui\Component\Listing\Column
+ * @package MageOS\AdminActivityLog\Ui\Component\Listing\Column
  */
 class ItemColumn extends Column
 {
     /**
      * @var int
      */
-    const URL_COUNT = 7;
+    public const URL_COUNT = 7;
 
     /**
      * @var array
@@ -40,35 +47,35 @@ class ItemColumn extends Column
 
     /**
      * Escaper
-     * @var \Magento\Framework\Escaper
+     * @var Escaper
      */
     public $escaper;
 
     /**
-     * @var \Magento\Backend\Model\UrlInterface
+     * @var UrlInterface
      */
     public $backendUrl;
 
     /**
      * Filter manager
-     * @var \Magento\Framework\Filter\FilterManager
+     * @var FilterManager
      */
     public $filterManager;
 
     /**
      * ItemColumn constructor.
-     * @param \Magento\Framework\View\Element\UiComponent\ContextInterface $context
-     * @param \Magento\Framework\View\Element\Context $contexts
-     * @param \Magento\Framework\View\Element\UiComponentFactory $uiComponentFactory
-     * @param \Magento\Backend\Model\UrlInterface $backendUrl
+     * @param ContextInterface $context
+     * @param Context $contexts
+     * @param UiComponentFactory $uiComponentFactory
+     * @param UrlInterface $backendUrl
      * @param array $components
      * @param array $data
      */
     public function __construct(
-        \Magento\Framework\View\Element\UiComponent\ContextInterface $context,
-        \Magento\Framework\View\Element\Context $contexts,
-        \Magento\Framework\View\Element\UiComponentFactory $uiComponentFactory,
-        \Magento\Backend\Model\UrlInterface $backendUrl,
+        ContextInterface $context,
+        Context $contexts,
+        UiComponentFactory $uiComponentFactory,
+        UrlInterface $backendUrl,
         array $components,
         array $data
     ) {
@@ -98,7 +105,8 @@ class ItemColumn extends Column
         $length = 30;
         $itemName = $this->filterManager->truncate(
             $this->getLabel(),
-            ['length' => $length, 'etc' => '...', 'remainder' => '', 'breakWords' => false]);
+            ['length' => $length, 'etc' => '...', 'remainder' => '', 'breakWords' => false]
+        );
         return '<a ' . $this->getLinkAttributes() . ' >' . $this->escapeHtml($itemName) . '</a></li>';
     }
 
@@ -125,10 +133,10 @@ class ItemColumn extends Column
 
     /**
      * Serialize attributes
-     * @param   array $attributes
-     * @param   string $valueSeparator
-     * @param   string $fieldSeparator
-     * @param   string $quote
+     * @param array $attributes
+     * @param string $valueSeparator
+     * @param string $fieldSeparator
+     * @param string $quote
      * @return  string
      */
     public function serialize($attributes = [], $valueSeparator = '=', $fieldSeparator = ' ', $quote = '"')
@@ -147,7 +155,7 @@ class ItemColumn extends Column
      */
     public function prepareUrl($url)
     {
-        if (current(explode('/', $url))=='theme' && count(explode('/', $url))==self::URL_COUNT) {
+        if (current(explode('/', $url)) == 'theme' && count(explode('/', $url)) == self::URL_COUNT) {
             list($module, $controller, $action, $scope, $store, $field, $id) = explode('/', $url);
             $editUrl = $this->backendUrl->getUrl(
                 implode('/', [$module, $controller, $action, $scope, $store]),

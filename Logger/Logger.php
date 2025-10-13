@@ -7,15 +7,16 @@
  * Please contact us https://kiwicommerce.co.uk/contacts.
  *
  * @category   KiwiCommerce
- * @package    KiwiCommerce_AdminActivity
+ * @package    MageOS_AdminActivityLog
  * @copyright  Copyright (C) 2018 Kiwi Commerce Ltd (https://kiwicommerce.co.uk/)
  * @license    https://kiwicommerce.co.uk/magento2-extension-license/
  */
-namespace KiwiCommerce\AdminActivity\Logger;
+
+namespace MageOS\AdminActivityLog\Logger;
 
 /**
  * Class Logger
- * @package KiwiCommerce\AdminActivity\Logger
+ * @package MageOS\AdminActivityLog\Logger
  */
 class Logger extends \Monolog\Logger
 {

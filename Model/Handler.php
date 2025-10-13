@@ -7,19 +7,21 @@
  * Please contact us https://kiwicommerce.co.uk/contacts.
  *
  * @category   KiwiCommerce
- * @package    KiwiCommerce_AdminActivity
+ * @package    MageOS_AdminActivityLog
  * @copyright  Copyright (C) 2018 Kiwi Commerce Ltd (https://kiwicommerce.co.uk/)
  * @license    https://kiwicommerce.co.uk/magento2-extension-license/
  */
-namespace KiwiCommerce\AdminActivity\Model;
 
-use \KiwiCommerce\AdminActivity\Helper\TrackField as Helper;
-use \Magento\Framework\App\Request\Http;
-use \Magento\Framework\UrlInterface;
+namespace MageOS\AdminActivityLog\Model;
+
+use Magento\Framework\App\Request\Http;
+use Magento\Framework\HTTP\Header;
+use Magento\Framework\UrlInterface;
+use MageOS\AdminActivityLog\Helper\TrackField as Helper;
 
 /**
  * Class Handler
- * @package KiwiCommerce\AdminActivity\Model
+ * @package MageOS\AdminActivityLog\Model
  */
 class Handler
 {
@@ -29,12 +31,12 @@ class Handler
     public $helper;
 
     /**
-     * @var \Magento\Framework\HTTP\Header
+     * @var Header
      */
     public $header;
 
     /**
-     * @var \Magento\Framework\App\Request\Http
+     * @var Http
      */
     public $request;
 
@@ -51,17 +53,17 @@ class Handler
     /**
      * Handler constructor.
      * @param Helper $helper
-     * @param \Magento\Framework\HTTP\Header $header
+     * @param Header $header
      * @param Http $request
      * @param UrlInterface $urlInterface
      * @param ActivityLogFactory $activityLogFactory
      */
     public function __construct(
         Helper $helper,
-        \Magento\Framework\HTTP\Header $header,
+        Header $header,
         Http $request,
         UrlInterface $urlInterface,
-        \KiwiCommerce\AdminActivity\Model\ActivityLogFactory $activityLogFactory
+        ActivityLogFactory $activityLogFactory
     ) {
         $this->helper = $helper;
         $this->header = $header;

@@ -7,23 +7,26 @@
  * Please contact us https://kiwicommerce.co.uk/contacts.
  *
  * @category   KiwiCommerce
- * @package    KiwiCommerce_AdminActivity
+ * @package    MageOS_AdminActivityLog
  * @copyright  Copyright (C) 2018 Kiwi Commerce Ltd (https://kiwicommerce.co.uk/)
  * @license    https://kiwicommerce.co.uk/magento2-extension-license/
  */
-namespace KiwiCommerce\AdminActivity\Ui\Component\Listing\Column;
+
+namespace MageOS\AdminActivityLog\Ui\Component\Listing\Column;
+
+use Magento\Store\Ui\Component\Listing\Column\Store;
 
 /**
  * Class StoreColumn
- * @package KiwiCommerce\AdminActivity\Ui\Component\Listing\Column
+ * @package MageOS\AdminActivityLog\Ui\Component\Listing\Column
  */
-class StoreColumn extends \Magento\Store\Ui\Component\Listing\Column\Store
+class StoreColumn extends Store
 {
     /**
      * Field name for store
      * @var string
      */
-    const KEY_FIELD = 'store_id';
+    public const KEY_FIELD = 'store_id';
 
     /**
      * Prepare Item
@@ -33,8 +36,8 @@ class StoreColumn extends \Magento\Store\Ui\Component\Listing\Column\Store
     public function prepareItem(array $item)
     {
         //TODO: To set and display default value
-        $this->storeKey = !empty($this->storeKey)?$this->storeKey:self::KEY_FIELD;
-        if ($item[$this->storeKey]==0) {
+        $this->storeKey = !empty($this->storeKey) ? $this->storeKey : self::KEY_FIELD;
+        if ($item[$this->storeKey] == 0) {
             $origStores['0'] = 0;
         }
 

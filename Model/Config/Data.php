@@ -7,15 +7,16 @@
  * Please contact us https://kiwicommerce.co.uk/contacts.
  *
  * @category   KiwiCommerce
- * @package    KiwiCommerce_AdminActivity
+ * @package    MageOS_AdminActivityLog
  * @copyright  Copyright (C) 2018 Kiwi Commerce Ltd (https://kiwicommerce.co.uk/)
  * @license    https://kiwicommerce.co.uk/magento2-extension-license/
  */
-namespace KiwiCommerce\AdminActivity\Model\Config;
+
+namespace MageOS\AdminActivityLog\Model\Config;
 
 /**
  * Class Data
- * @package KiwiCommerce\AdminActivity\Model\Config
+ * @package MageOS\AdminActivityLog\Model\Config
  */
 class Data extends \Magento\Framework\Config\Data
 {

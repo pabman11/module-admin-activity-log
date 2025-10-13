@@ -7,29 +7,35 @@
  * Please contact us https://kiwicommerce.co.uk/contacts.
  *
  * @category   KiwiCommerce
- * @package    KiwiCommerce_AdminActivity
+ * @package    MageOS_AdminActivityLog
  * @copyright  Copyright (C) 2018 Kiwi Commerce Ltd (https://kiwicommerce.co.uk/)
  * @license    https://kiwicommerce.co.uk/magento2-extension-license/
  */
-namespace KiwiCommerce\AdminActivity\Model;
 
-use KiwiCommerce\AdminActivity\Model\Activity\SystemConfig;
+namespace MageOS\AdminActivityLog\Model;
+
+use Magento\Framework\ObjectManagerInterface;
+use MageOS\AdminActivityLog\Api\ActivityRepositoryInterface;
+use MageOS\AdminActivityLog\Helper\Data;
+use MageOS\AdminActivityLog\Model\Activity\SystemConfig;
+use MageOS\AdminActivityLog\Model\Activity\ThemeConfig;
+use MageOS\AdminActivityLog\Model\ResourceModel\ActivityLog\CollectionFactory;
 
 /**
  * Class ActivityRepository
- * @package KiwiCommerce\AdminActivity\Model
+ * @package MageOS\AdminActivityLog\Model
  */
-class ActivityRepository implements \KiwiCommerce\AdminActivity\Api\ActivityRepositoryInterface
+class ActivityRepository implements ActivityRepositoryInterface
 {
     /**
      * @var string
      */
-    const THEME_MODULE = 'Themes';
+    public const THEME_MODULE = 'Themes';
 
     /**
      * @var string
      */
-    const QTY_FIELD = 'qty';
+    public const QTY_FIELD = 'qty';
 
     /**
      * @var ActivityFactory
@@ -68,7 +74,7 @@ class ActivityRepository implements \KiwiCommerce\AdminActivity\Api\ActivityRepo
 
     /**
      * Object Manager instance
-     * @var \Magento\Framework\ObjectManagerInterface
+     * @var ObjectManagerInterface
      */
     public $objectManager;
 
@@ -81,17 +87,17 @@ class ActivityRepository implements \KiwiCommerce\AdminActivity\Api\ActivityRepo
      * @param ResourceModel\ActivityLog\CollectionFactory $LogCollectionFactory
      * @param SystemConfig $systemConfig
      * @param Activity\ThemeConfig $themeConfig
-     * @param \Magento\Framework\ObjectManagerInterface $objectManager
+     * @param ObjectManagerInterface $objectManager
      */
     public function __construct(
-        \KiwiCommerce\AdminActivity\Model\ActivityFactory $activityFactory,
-        \KiwiCommerce\AdminActivity\Model\ResourceModel\Activity\CollectionFactory $collectionFactory,
-        \KiwiCommerce\AdminActivity\Model\ActivityLogDetailFactory $activityLogDetailFactory,
-        \KiwiCommerce\AdminActivity\Model\ActivityLogFactory $activityLogFactory,
-        \KiwiCommerce\AdminActivity\Model\ResourceModel\ActivityLog\CollectionFactory $LogCollectionFactory,
-        \KiwiCommerce\AdminActivity\Model\Activity\SystemConfig $systemConfig,
-        \KiwiCommerce\AdminActivity\Model\Activity\ThemeConfig $themeConfig,
-        \Magento\Framework\ObjectManagerInterface $objectManager
+        ActivityFactory $activityFactory,
+        \MageOS\AdminActivityLog\Model\ResourceModel\Activity\CollectionFactory $collectionFactory,
+        ActivityLogDetailFactory $activityLogDetailFactory,
+        ActivityLogFactory $activityLogFactory,
+        CollectionFactory $LogCollectionFactory,
+        SystemConfig $systemConfig,
+        ThemeConfig $themeConfig,
+        ObjectManagerInterface $objectManager
     ) {
         $this->activityFactory = $activityFactory;
         $this->collectionFactory = $collectionFactory;
@@ -156,11 +162,11 @@ class ActivityRepository implements \KiwiCommerce\AdminActivity\Api\ActivityRepo
      */
     public function getActivityDetail($activityId)
     {
-        $data  = $this->activityLogDetailFactory->create()
+        $data = $this->activityLogDetailFactory->create()
             ->load($activityId, 'activity_id');
         return $data;
     }
-    
+
     /**
      * Get all admin activity log by activity id
      * @param $activityId
@@ -202,8 +208,8 @@ class ActivityRepository implements \KiwiCommerce\AdminActivity\Api\ActivityRepo
         $logData = $this->getActivityLog($activity->getId());
         $detailModel = $this->getActivityDetail($activity->getId());
 
-        if (\KiwiCommerce\AdminActivity\Helper\Data::isWildCardModel($detailModel->getModelClass())) {
-            if ($activity->getModule()==self::THEME_MODULE) {
+        if (Data::isWildCardModel($detailModel->getModelClass())) {
+            if ($activity->getModule() == self::THEME_MODULE) {
                 return $this->themeConfig->revertData($logData, $activity->getStoreId(), $activity->getScope());
             }
             return $this->systemConfig->revertData($logData, $activity->getStoreId());
@@ -219,10 +225,10 @@ class ActivityRepository implements \KiwiCommerce\AdminActivity\Api\ActivityRepo
                 if ($this->isFieldProtected($log->getFieldName())) {
                     continue;
                 }
-                if ($log->getFieldName()==self::QTY_FIELD) {
-                    $model-> setStockData(['qty' => $log->getOldValue()]);
+                if ($log->getFieldName() == self::QTY_FIELD) {
+                    $model->setStockData(['qty' => $log->getOldValue()]);
                 }
-                $method = 'set'.$this->getMethodName($log->getFieldName());
+                $method = 'set' . $this->getMethodName($log->getFieldName());
                 $model->{$method}($log->getOldValue());
             }
 
@@ -240,7 +246,7 @@ class ActivityRepository implements \KiwiCommerce\AdminActivity\Api\ActivityRepo
      */
     public function getOldData($model)
     {
-        if (\KiwiCommerce\AdminActivity\Helper\Data::isWildCardModel($model)) {
+        if (Data::isWildCardModel($model)) {
             return $this->systemConfig->getOldData($model);
         }
         $data = $this->objectManager->get(get_class($model))->load($model->getId());

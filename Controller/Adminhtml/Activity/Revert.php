@@ -7,41 +7,45 @@
  * Please contact us https://kiwicommerce.co.uk/contacts.
  *
  * @category   KiwiCommerce
- * @package    KiwiCommerce_AdminActivity
+ * @package    MageOS_AdminActivityLog
  * @copyright  Copyright (C) 2018 Kiwi Commerce Ltd (https://kiwicommerce.co.uk/)
  * @license    https://kiwicommerce.co.uk/magento2-extension-license/
  */
-namespace KiwiCommerce\AdminActivity\Controller\Adminhtml\Activity;
 
-use Magento\Backend\App\Action\Context;
+namespace MageOS\AdminActivityLog\Controller\Adminhtml\Activity;
+
 use Magento\Backend\App\Action;
+use Magento\Backend\App\Action\Context;
+use Magento\Backend\Model\View\Result\Page;
+use Magento\Framework\Controller\Result\JsonFactory;
+use MageOS\AdminActivityLog\Model\Processor;
 
 /**
  * Class Revert
- * @package KiwiCommerce\AdminActivity\Controller\Adminhtml\Activity
+ * @package MageOS\AdminActivityLog\Controller\Adminhtml\Activity
  */
 class Revert extends Action
 {
     /**
-     * @var \Magento\Framework\Controller\Result\JsonFactory
+     * @var JsonFactory
      */
     public $resultJsonFactory;
 
     /**
-     * @var \KiwiCommerce\AdminActivity\Model\Processor
+     * @var Processor
      */
     public $processor;
 
     /**
      * Revert constructor.
      * @param Context $context
-     * @param \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory
-     * @param \KiwiCommerce\AdminActivity\Model\Processor $processor
+     * @param JsonFactory $resultJsonFactory
+     * @param Processor $processor
      */
     public function __construct(
         Context $context,
-        \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory,
-        \KiwiCommerce\AdminActivity\Model\Processor $processor
+        JsonFactory $resultJsonFactory,
+        Processor $processor
     ) {
         parent::__construct($context);
         $this->resultJsonFactory = $resultJsonFactory;
@@ -50,7 +54,7 @@ class Revert extends Action
 
     /**
      * Revert action
-     * @return \Magento\Backend\Model\View\Result\Page
+     * @return Page
      */
     public function execute()
     {

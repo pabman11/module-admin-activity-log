@@ -7,17 +7,20 @@
  * Please contact us https://kiwicommerce.co.uk/contacts.
  *
  * @category   KiwiCommerce
- * @package    KiwiCommerce_AdminActivity
+ * @package    MageOS_AdminActivityLog
  * @copyright  Copyright (C) 2018 Kiwi Commerce Ltd (https://kiwicommerce.co.uk/)
  * @license    https://kiwicommerce.co.uk/magento2-extension-license/
  */
-namespace KiwiCommerce\AdminActivity\Block\Adminhtml;
+
+namespace MageOS\AdminActivityLog\Block\Adminhtml;
+
+use Magento\Backend\Block\Template;
 
 /**
  * Class Selector
- * @package KiwiCommerce\AdminActivity\Block\Adminhtml
+ * @package MageOS\AdminActivityLog\Block\Adminhtml
  */
-class Selector extends \Magento\Backend\Block\Template
+class Selector extends Template
 {
     /**
      * Revert Activity Log action URL

@@ -7,45 +7,50 @@
  * Please contact us https://kiwicommerce.co.uk/contacts.
  *
  * @category   KiwiCommerce
- * @package    KiwiCommerce_AdminActivity
+ * @package    MageOS_AdminActivityLog
  * @copyright  Copyright (C) 2018 Kiwi Commerce Ltd (https://kiwicommerce.co.uk/)
  * @license    https://kiwicommerce.co.uk/magento2-extension-license/
  */
-namespace KiwiCommerce\AdminActivity\Observer;
 
+namespace MageOS\AdminActivityLog\Observer;
+
+use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
+use MageOS\AdminActivityLog\Helper\Benchmark;
+use MageOS\AdminActivityLog\Helper\Data;
+use MageOS\AdminActivityLog\Model\Processor;
 
 /**
  * Class LoadAfter
- * @package KiwiCommerce\AdminActivity\Observer
+ * @package MageOS\AdminActivityLog\Observer
  */
 class LoadAfter implements ObserverInterface
 {
     /**
-     * @var \KiwiCommerce\AdminActivity\Model\Processor
+     * @var Processor
      */
     private $processor;
 
     /**
-     * @var \KiwiCommerce\AdminActivity\Helper\Data
+     * @var Data
      */
     public $helper;
 
     /**
-     * @var \KiwiCommerce\AdminActivity\Helper\Benchmark
+     * @var Benchmark
      */
     public $benchmark;
 
     /**
      * LoadAfter constructor.
-     * @param \KiwiCommerce\AdminActivity\Model\Processor $processor
-     * @param \KiwiCommerce\AdminActivity\Helper\Data $helper
-     * @param \KiwiCommerce\AdminActivity\Helper\Benchmark $benchmark
+     * @param Processor $processor
+     * @param Data $helper
+     * @param Benchmark $benchmark
      */
     public function __construct(
-        \KiwiCommerce\AdminActivity\Model\Processor $processor,
-        \KiwiCommerce\AdminActivity\Helper\Data $helper,
-        \KiwiCommerce\AdminActivity\Helper\Benchmark $benchmark
+        Processor $processor,
+        Data $helper,
+        Benchmark $benchmark
     ) {
         $this->processor = $processor;
         $this->helper = $helper;
@@ -54,10 +59,10 @@ class LoadAfter implements ObserverInterface
 
     /**
      * Delete after
-     * @param \Magento\Framework\Event\Observer $observer
-     * @return \Magento\Framework\Event\Observer
+     * @param Observer $observer
+     * @return Observer
      */
-    public function execute(\Magento\Framework\Event\Observer $observer)
+    public function execute(Observer $observer)
     {
         $this->benchmark->start(__METHOD__);
         if (!$this->helper->isEnable()) {

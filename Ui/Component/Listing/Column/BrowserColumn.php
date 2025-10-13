@@ -7,37 +7,41 @@
  * Please contact us https://kiwicommerce.co.uk/contacts.
  *
  * @category   KiwiCommerce
- * @package    KiwiCommerce_AdminActivity
+ * @package    MageOS_AdminActivityLog
  * @copyright  Copyright (C) 2018 Kiwi Commerce Ltd (https://kiwicommerce.co.uk/)
  * @license    https://kiwicommerce.co.uk/magento2-extension-license/
  */
-namespace KiwiCommerce\AdminActivity\Ui\Component\Listing\Column;
 
+namespace MageOS\AdminActivityLog\Ui\Component\Listing\Column;
+
+use Magento\Framework\View\Element\UiComponent\ContextInterface;
+use Magento\Framework\View\Element\UiComponentFactory;
 use Magento\Ui\Component\Listing\Columns\Column;
+use MageOS\AdminActivityLog\Helper\Browser;
 
 /**
  * Class BrowserColumn
- * @package KiwiCommerce\AdminActivity\Ui\Component\Listing\Column
+ * @package MageOS\AdminActivityLog\Ui\Component\Listing\Column
  */
 class BrowserColumn extends Column
 {
     /**
-     * @var \KiwiCommerce\AdminActivity\Helper\Browser
+     * @var Browser
      */
     public $browser;
 
     /**
      * BrowserColumn constructor.
-     * @param \Magento\Framework\View\Element\UiComponent\ContextInterface $context
-     * @param \Magento\Framework\View\Element\UiComponentFactory $uiComponentFactory
-     * @param \KiwiCommerce\AdminActivity\Helper\Browser $browser
+     * @param ContextInterface $context
+     * @param UiComponentFactory $uiComponentFactory
+     * @param Browser $browser
      * @param array $components
      * @param array $data
      */
     public function __construct(
-        \Magento\Framework\View\Element\UiComponent\ContextInterface $context,
-        \Magento\Framework\View\Element\UiComponentFactory $uiComponentFactory,
-        \KiwiCommerce\AdminActivity\Helper\Browser $browser,
+        ContextInterface $context,
+        UiComponentFactory $uiComponentFactory,
+        Browser $browser,
         array $components,
         array $data
     ) {
@@ -54,7 +58,7 @@ class BrowserColumn extends Column
     {
         $this->browser->reset();
         $this->browser->setUserAgent($item['user_agent']);
-        return $this->browser->getBrowser().' '.$this->browser->getVersion();
+        return $this->browser->getBrowser() . ' ' . $this->browser->getVersion();
     }
 
     /**

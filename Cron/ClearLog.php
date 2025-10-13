@@ -7,19 +7,23 @@
  * Please contact us https://kiwicommerce.co.uk/contacts.
  *
  * @category   KiwiCommerce
- * @package    KiwiCommerce_AdminActivity
+ * @package    MageOS_AdminActivityLog
  * @copyright  Copyright (C) 2018 Kiwi Commerce Ltd (https://kiwicommerce.co.uk/)
  * @license    https://kiwicommerce.co.uk/magento2-extension-license/
  */
-namespace KiwiCommerce\AdminActivity\Cron;
 
+namespace MageOS\AdminActivityLog\Cron;
+
+use Exception;
+use Magento\Framework\Stdlib\DateTime\DateTime;
+use MageOS\AdminActivityLog\Api\ActivityRepositoryInterface;
+use MageOS\AdminActivityLog\Api\LoginRepositoryInterface;
+use MageOS\AdminActivityLog\Helper\Data as Helper;
 use Psr\Log\LoggerInterface;
-use KiwiCommerce\AdminActivity\Helper\Data as Helper;
-use KiwiCommerce\AdminActivity\Api\ActivityRepositoryInterface;
 
 /**
  * Class ClearLog
- * @package KiwiCommerce\AdminActivity\Cron
+ * @package MageOS\AdminActivityLog\Cron
  */
 class ClearLog
 {
@@ -27,7 +31,7 @@ class ClearLog
      * Default date format
      * @var string
      */
-    const DATE_FORMAT = 'Y-m-d H:i:s';
+    public const DATE_FORMAT = 'Y-m-d H:i:s';
 
     /**
      * @var LoggerInterface
@@ -35,12 +39,12 @@ class ClearLog
     public $logger;
 
     /**
-     * @var \Magento\Framework\Stdlib\DateTime\DateTime
+     * @var DateTime
      */
     public $dateTime;
 
     /**
-     * @var \KiwiCommerce\AdminActivity\Helper\Data
+     * @var Helper
      */
     public $helper;
 
@@ -50,24 +54,24 @@ class ClearLog
     public $activityRepository;
 
     /**
-     * @var \KiwiCommerce\AdminActivity\Api\LoginRepositoryInterface
+     * @var LoginRepositoryInterface
      */
     public $loginRepository;
 
     /**
      * ClearLog constructor.
      * @param LoggerInterface $logger
-     * @param \Magento\Framework\Stdlib\DateTime\DateTime $dateTime
+     * @param DateTime $dateTime
      * @param Helper $helper
      * @param ActivityRepositoryInterface $activityRepository
-     * @param \KiwiCommerce\AdminActivity\Api\LoginRepositoryInterface $loginRepository
+     * @param LoginRepositoryInterface $loginRepository
      */
     public function __construct(
         LoggerInterface $logger,
-        \Magento\Framework\Stdlib\DateTime\DateTime $dateTime,
+        DateTime $dateTime,
         Helper $helper,
         ActivityRepositoryInterface $activityRepository,
-        \KiwiCommerce\AdminActivity\Api\LoginRepositoryInterface $loginRepository
+        LoginRepositoryInterface $loginRepository
     ) {
         $this->logger = $logger;
         $this->dateTime = $dateTime;
@@ -121,7 +125,7 @@ class ClearLog
                     }
                 }
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->logger->debug($e->getMessage());
         }
         return null;

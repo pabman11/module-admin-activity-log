@@ -7,30 +7,41 @@
  * Please contact us https://kiwicommerce.co.uk/contacts.
  *
  * @category   KiwiCommerce
- * @package    KiwiCommerce_AdminActivity
+ * @package    MageOS_AdminActivityLog
  * @copyright  Copyright (C) 2018 Kiwi Commerce Ltd (https://kiwicommerce.co.uk/)
  * @license    https://kiwicommerce.co.uk/magento2-extension-license/
  */
-namespace KiwiCommerce\AdminActivity\Model;
 
-use KiwiCommerce\AdminActivity\Api\ActivityRepositoryInterface;
-use \KiwiCommerce\AdminActivity\Helper\Data as Helper;
+namespace MageOS\AdminActivityLog\Model;
+
+use Exception;
+use Magento\Backend\Model\Auth\Session;
+use Magento\Framework\App\Request\Http;
+use Magento\Framework\App\RequestInterface;
+use Magento\Framework\HTTP\PhpEnvironment\RemoteAddress;
+use Magento\Framework\Message\ManagerInterface;
+use Magento\Framework\Stdlib\DateTime\DateTime;
+use Magento\Store\Model\StoreManagerInterface;
+use MageOS\AdminActivityLog\Api\ActivityRepositoryInterface;
+use MageOS\AdminActivityLog\Helper\Data as Helper;
+use MageOS\AdminActivityLog\Model\Activity\Status;
+use MageOS\AdminActivityLog\Model\Handler\PostDispatch;
 
 /**
  * Class Processor
- * @package KiwiCommerce\AdminActivity\Model
+ * @package MageOS\AdminActivityLog\Model
  */
 class Processor
 {
     /**
      * @var string
      */
-    const PRIMARY_FIELD = 'id';
+    public const PRIMARY_FIELD = 'id';
 
     /**
      * @var array
      */
-    const SKIP_MODULE_ACTIONS = [
+    public const SKIP_MODULE_ACTIONS = [
         'mui_index_render',
         'adminactivity_activity_index',
         'adminactivity_activity_log',
@@ -40,24 +51,24 @@ class Processor
     /**
      * @var string
      */
-    const SKIP_MODULE = [
+    public const SKIP_MODULE = [
         'mui'
     ];
 
     /**
      * @var string
      */
-    const SALES_ORDER = 'sales_order';
+    public const SALES_ORDER = 'sales_order';
 
     /**
      * @var string
      */
-    const SAVE_ACTION = 'save';
+    public const SAVE_ACTION = 'save';
 
     /**
      * @var string
      */
-    const EDIT_ACTION = 'edit';
+    public const EDIT_ACTION = 'edit';
 
     /**
      * @var Config
@@ -95,7 +106,7 @@ class Processor
     public $activityLogs = [];
 
     /**
-     * @var \Magento\Backend\Model\Auth\Session
+     * @var Session
      */
     public $authSession;
 
@@ -105,7 +116,7 @@ class Processor
     public $handler;
 
     /**
-     * @var \Magento\Framework\HTTP\PhpEnvironment\RemoteAddress
+     * @var RemoteAddress
      */
     public $remoteAddress;
 
@@ -120,12 +131,12 @@ class Processor
     public $activityDetailFactory;
 
     /**
-     * @var \Magento\Store\Model\StoreManagerInterface
+     * @var StoreManagerInterface
      */
     public $storeManager;
 
     /**
-     * @var \Magento\Framework\Stdlib\DateTime\DateTime
+     * @var DateTime
      */
     public $dateTime;
 
@@ -140,20 +151,20 @@ class Processor
     public $helper;
 
     /**
-     * @var \Magento\Framework\Message\ManagerInterface
+     * @var ManagerInterface
      */
     public $messageManager;
 
     /**
      * Request
      *
-     * @var \Magento\Framework\App\RequestInterface
+     * @var RequestInterface
      */
     public $request;
 
     /**
      * Http request
-     * @var \Magento\Framework\App\Request\Http
+     * @var Http
      */
     public $httpRequest;
     /**
@@ -180,36 +191,36 @@ class Processor
     /**
      * Processor constructor.
      * @param Config $config
-     * @param \Magento\Backend\Model\Auth\Session $authSession
+     * @param Session $authSession
      * @param Handler $handler
-     * @param \Magento\Framework\HTTP\PhpEnvironment\RemoteAddress $remoteAddress
+     * @param RemoteAddress $remoteAddress
      * @param ActivityFactory $activityFactory
      * @param ActivityLogDetailFactory $activityDetailFactory
-     * @param \Magento\Store\Model\StoreManagerInterface $storeManager
-     * @param \Magento\Framework\Stdlib\DateTime\DateTime $dateTime
+     * @param StoreManagerInterface $storeManager
+     * @param DateTime $dateTime
      * @param ActivityRepositoryInterface $activityRepository
      * @param Helper $helper
-     * @param \Magento\Framework\Message\ManagerInterface $messageManager
-     * @param \Magento\Framework\App\RequestInterface $request
+     * @param ManagerInterface $messageManager
+     * @param RequestInterface $request
      * @param Activity\Status $status
      * @param Handler\PostDispatch $postDispatch
      */
     public function __construct(
-        \KiwiCommerce\AdminActivity\Model\Config $config,
-        \Magento\Backend\Model\Auth\Session $authSession,
-        \KiwiCommerce\AdminActivity\Model\Handler $handler,
-        \Magento\Framework\HTTP\PhpEnvironment\RemoteAddress $remoteAddress,
-        \KiwiCommerce\AdminActivity\Model\ActivityFactory $activityFactory,
-        \KiwiCommerce\AdminActivity\Model\ActivityLogDetailFactory $activityDetailFactory,
-        \Magento\Store\Model\StoreManagerInterface $storeManager,
-        \Magento\Framework\Stdlib\DateTime\DateTime $dateTime,
+        Config $config,
+        Session $authSession,
+        Handler $handler,
+        RemoteAddress $remoteAddress,
+        ActivityFactory $activityFactory,
+        ActivityLogDetailFactory $activityDetailFactory,
+        StoreManagerInterface $storeManager,
+        DateTime $dateTime,
         ActivityRepositoryInterface $activityRepository,
         Helper $helper,
-        \Magento\Framework\Message\ManagerInterface $messageManager,
-        \Magento\Framework\App\RequestInterface $request,
-        \Magento\Framework\App\Request\Http $httpRequest,
-        \KiwiCommerce\AdminActivity\Model\Activity\Status $status,
-        \KiwiCommerce\AdminActivity\Model\Handler\PostDispatch $postDispatch
+        ManagerInterface $messageManager,
+        RequestInterface $request,
+        Http $httpRequest,
+        Status $status,
+        PostDispatch $postDispatch
     ) {
         $this->config = $config;
         $this->authSession = $authSession;
@@ -256,7 +267,7 @@ class Processor
      */
     public function validate($model)
     {
-        if (\KiwiCommerce\AdminActivity\Helper\Data::isWildCardModel($model)) {
+        if (Helper::isWildCardModel($model)) {
             if (!empty($this->activityLogs)) {
                 return false;
             }
@@ -293,7 +304,7 @@ class Processor
     public function getEditUrl($model)
     {
         $id = $model->getId();
-        if ($this->eventConfig['module']==self::SALES_ORDER && (!empty($model->getOrderId())
+        if ($this->eventConfig['module'] == self::SALES_ORDER && (!empty($model->getOrderId())
                 || !empty($model->getParentId()))) {
             $id = ($model->getOrderId()) ? $model->getOrderId() : $model->getParentId();
         }
@@ -383,9 +394,9 @@ class Processor
     {
         $logDetail = $this->_initActivityDetail($model);
         $this->activityLogs[] = [
-            \KiwiCommerce\AdminActivity\Model\Activity::class => $activity,
-            \KiwiCommerce\AdminActivity\Model\ActivityLog::class => $logData,
-            \KiwiCommerce\AdminActivity\Model\ActivityLogDetail::class => $logDetail
+            Activity::class => $activity,
+            ActivityLog::class => $logData,
+            ActivityLogDetail::class => $logDetail
         ];
     }
 
@@ -398,12 +409,12 @@ class Processor
         try {
             if (!empty($this->activityLogs)) {
                 foreach ($this->activityLogs as $model) {
-                    $activity = $model[\KiwiCommerce\AdminActivity\Model\Activity::class];
+                    $activity = $model[Activity::class];
                     $activity->save();
                     $activityId = $activity->getId();
 
-                    if (isset($model[\KiwiCommerce\AdminActivity\Model\ActivityLog::class])) {
-                        $logData = $model[\KiwiCommerce\AdminActivity\Model\ActivityLog::class];
+                    if (isset($model[ActivityLog::class])) {
+                        $logData = $model[ActivityLog::class];
                         if ($logData) {
                             foreach ($logData as $log) {
                                 $log->setActivityId($activityId);
@@ -412,15 +423,15 @@ class Processor
                         }
                     }
 
-                    if (isset($model[\KiwiCommerce\AdminActivity\Model\ActivityLogDetail::class])) {
-                        $detail = $model[\KiwiCommerce\AdminActivity\Model\ActivityLogDetail::class];
+                    if (isset($model[ActivityLogDetail::class])) {
+                        $detail = $model[ActivityLogDetail::class];
                         $detail->setActivityId($activityId);
                         $detail->save();
                     }
                 }
                 $this->activityLogs = [];
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return false;
         }
         return true;
@@ -466,8 +477,12 @@ class Processor
         $activity = $this->_initLog();
 
         $activity->setStoreId($this->getStoreId($model));
-        $activity->setItemName($model->getData($this->config
-            ->getActivityModuleItemField($this->eventConfig['module'])));
+        $activity->setItemName(
+            $model->getData(
+                $this->config
+                    ->getActivityModuleItemField($this->eventConfig['module'])
+            )
+        );
         $activity->setItemUrl($this->getEditUrl($model));
 
         return $activity;
@@ -567,7 +582,7 @@ class Processor
                     $this->messageManager->addSuccessMessage(__('Activity data has been reverted successfully'));
                 }
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $result['message'] = $e->getMessage();
             $this->status->markFail($activityId);
         }
@@ -625,7 +640,6 @@ class Processor
 
         if ($this->helper->isPageVisitEnable()
             && $this->isValidAction($module, $this->lastAction)) {
-
             $activity = $this->_initLog();
 
             $activity->setActionType('view');

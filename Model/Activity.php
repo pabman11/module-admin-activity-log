@@ -7,13 +7,14 @@
  * Please contact us https://kiwicommerce.co.uk/contacts.
  *
  * @category   KiwiCommerce
- * @package    KiwiCommerce_AdminActivity
+ * @package    MageOS_AdminActivityLog
  * @copyright  Copyright (C) 2018 Kiwi Commerce Ltd (https://kiwicommerce.co.uk/)
  * @license    https://kiwicommerce.co.uk/magento2-extension-license/
  */
-namespace KiwiCommerce\AdminActivity\Model;
 
-use \Magento\Framework\Model\AbstractModel;
+namespace MageOS\AdminActivityLog\Model;
+
+use Magento\Framework\Model\AbstractModel;
 
 /**
  * Class Activity
@@ -24,7 +25,7 @@ class Activity extends AbstractModel
     /**
      * @var string
      */
-    const ACTIVITY_ID = 'entity_id'; // We define the id field name
+    public const ACTIVITY_ID = 'entity_id'; // We define the id field name
 
     /**
      * Initialize resource model
@@ -32,6 +33,6 @@ class Activity extends AbstractModel
      */
     public function _construct()
     {
-        $this->_init('KiwiCommerce\AdminActivity\Model\ResourceModel\Activity');
+        $this->_init('MageOS\AdminActivityLog\Model\ResourceModel\Activity');
     }
 }

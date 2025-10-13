@@ -7,18 +7,23 @@
  * Please contact us https://kiwicommerce.co.uk/contacts.
  *
  * @category   KiwiCommerce
- * @package    KiwiCommerce_AdminActivity
+ * @package    MageOS_AdminActivityLog
  * @copyright  Copyright (C) 2018 Kiwi Commerce Ltd (https://kiwicommerce.co.uk/)
  * @license    https://kiwicommerce.co.uk/magento2-extension-license/
  */
-namespace KiwiCommerce\AdminActivity\Observer;
 
+namespace MageOS\AdminActivityLog\Observer;
+
+use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
-use \KiwiCommerce\AdminActivity\Helper\Data as Helper;
+use Magento\User\Model\User;
+use MageOS\AdminActivityLog\Api\LoginRepositoryInterface;
+use MageOS\AdminActivityLog\Helper\Benchmark;
+use MageOS\AdminActivityLog\Helper\Data as Helper;
 
 /**
  * Class LoginFailed
- * @package KiwiCommerce\AdminActivity\Observer
+ * @package MageOS\AdminActivityLog\Observer
  */
 class LoginFailed implements ObserverInterface
 {
@@ -28,32 +33,32 @@ class LoginFailed implements ObserverInterface
     public $helper;
 
     /**
-     * @var \Magento\User\Model\User
+     * @var User
      */
     public $user;
 
     /**
-     * @var \KiwiCommerce\AdminActivity\Api\LoginRepositoryInterface
+     * @var LoginRepositoryInterface
      */
     public $loginRepository;
 
     /**
-     * @var \KiwiCommerce\AdminActivity\Helper\Benchmark
+     * @var Benchmark
      */
     public $benchmark;
 
     /**
      * LoginFailed constructor.
      * @param Helper $helper
-     * @param \Magento\User\Model\User $user
-     * @param \KiwiCommerce\AdminActivity\Api\LoginRepositoryInterface $loginRepository
-     * @param \KiwiCommerce\AdminActivity\Helper\Benchmark $benchmark
+     * @param User $user
+     * @param LoginRepositoryInterface $loginRepository
+     * @param Benchmark $benchmark
      */
     public function __construct(
         Helper $helper,
-        \Magento\User\Model\User $user,
-        \KiwiCommerce\AdminActivity\Api\LoginRepositoryInterface $loginRepository,
-        \KiwiCommerce\AdminActivity\Helper\Benchmark $benchmark
+        User $user,
+        LoginRepositoryInterface $loginRepository,
+        Benchmark $benchmark
     ) {
         $this->helper = $helper;
         $this->user = $user;
@@ -63,10 +68,10 @@ class LoginFailed implements ObserverInterface
 
     /**
      * Login failed
-     * @param \Magento\Framework\Event\Observer $observer
+     * @param Observer $observer
      * @return void
      */
-    public function execute(\Magento\Framework\Event\Observer $observer)
+    public function execute(Observer $observer)
     {
         $this->benchmark->start(__METHOD__);
         if (!$this->helper->isLoginEnable()) {

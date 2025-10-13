@@ -7,17 +7,24 @@
  * Please contact us https://kiwicommerce.co.uk/contacts.
  *
  * @category   KiwiCommerce
- * @package    KiwiCommerce_AdminActivity
+ * @package    MageOS_AdminActivityLog
  * @copyright  Copyright (C) 2018 Kiwi Commerce Ltd (https://kiwicommerce.co.uk/)
  * @license    https://kiwicommerce.co.uk/magento2-extension-license/
  */
-namespace KiwiCommerce\AdminActivity\Test\Unit\Plugin\User;
+
+namespace MageOS\AdminActivityLog\Test\Unit\Plugin\User;
+
+use Magento\Framework\TestFramework\Unit\Helper\ObjectManager;
+use Magento\User\Model\User;
+use MageOS\AdminActivityLog\Plugin\User\Delete;
+use PHPUnit\Framework\TestCase;
+use stdClass;
 
 /**
  * Class DeleteTest
- * @package KiwiCommerce\AdminActivity\Test\Unit\Plugin
+ * @package MageOS\AdminActivityLog\Test\Unit\Plugin
  */
-class DeleteTest extends \PHPUnit\Framework\TestCase
+class DeleteTest extends TestCase
 {
     public $delete;
 
@@ -35,15 +42,15 @@ class DeleteTest extends \PHPUnit\Framework\TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->userMock = $this->getMockBuilder(\Magento\User\Model\User::class)
+        $this->userMock = $this->getMockBuilder(User::class)
             ->setMethods(['load', 'getId', 'afterDelete'])
             ->disableOriginalConstructor()
             ->getMock();
 
-        $objectManager = new \Magento\Framework\TestFramework\Unit\Helper\ObjectManager($this);
+        $objectManager = new ObjectManager($this);
 
         $this->delete = $objectManager->getObject(
-            \KiwiCommerce\AdminActivity\Plugin\User\Delete::class,
+            Delete::class,
             []
         );
     }
@@ -53,7 +60,6 @@ class DeleteTest extends \PHPUnit\Framework\TestCase
      */
     public function testaroundDelete()
     {
-
         $this->userMock
             ->expects($this->once())
             ->method('getId')
@@ -67,7 +73,7 @@ class DeleteTest extends \PHPUnit\Framework\TestCase
             ->method('afterDelete')
             ->willReturnSelf();
 
-        $callbackMock = $this->getMockBuilder(\stdClass::class)
+        $callbackMock = $this->getMockBuilder(stdClass::class)
             ->setMethods(['__invoke'])
             ->getMock();
 

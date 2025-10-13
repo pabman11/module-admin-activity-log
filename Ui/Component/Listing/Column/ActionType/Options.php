@@ -7,28 +7,32 @@
  * Please contact us https://kiwicommerce.co.uk/contacts.
  *
  * @category   KiwiCommerce
- * @package    KiwiCommerce_AdminActivity
+ * @package    MageOS_AdminActivityLog
  * @copyright  Copyright (C) 2018 Kiwi Commerce Ltd (https://kiwicommerce.co.uk/)
  * @license    https://kiwicommerce.co.uk/magento2-extension-license/
  */
-namespace KiwiCommerce\AdminActivity\Ui\Component\Listing\Column\ActionType;
+
+namespace MageOS\AdminActivityLog\Ui\Component\Listing\Column\ActionType;
+
+use Magento\Framework\Option\ArrayInterface;
+use MageOS\AdminActivityLog\Helper\Data;
 
 /**
  * Class Options
- * @package KiwiCommerce\AdminActivity\Ui\Component\Listing\Column\ActionType
+ * @package MageOS\AdminActivityLog\Ui\Component\Listing\Column\ActionType
  */
-class Options implements \Magento\Framework\Option\ArrayInterface
+class Options implements ArrayInterface
 {
     /**
-     * @var \KiwiCommerce\AdminActivity\Helper\Data
+     * @var Data
      */
     public $helper;
 
     /**
      * Options constructor.
-     * @param \KiwiCommerce\AdminActivity\Helper\Data $helper
+     * @param Data $helper
      */
-    public function __construct(\KiwiCommerce\AdminActivity\Helper\Data $helper)
+    public function __construct(Data $helper)
     {
         $this->helper = $helper;
     }
@@ -42,7 +46,7 @@ class Options implements \Magento\Framework\Option\ArrayInterface
         $data = [];
         $lableList = $this->helper->getAllActions();
         foreach ($lableList as $key => $value) {
-            $data[] = ['value'=> $key,'label'=> __($value)];
+            $data[] = ['value' => $key, 'label' => __($value)];
         }
         return $data;
     }

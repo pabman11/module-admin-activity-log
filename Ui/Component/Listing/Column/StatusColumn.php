@@ -7,17 +7,18 @@
  * Please contact us https://kiwicommerce.co.uk/contacts.
  *
  * @category   KiwiCommerce
- * @package    KiwiCommerce_AdminActivity
+ * @package    MageOS_AdminActivityLog
  * @copyright  Copyright (C) 2018 Kiwi Commerce Ltd (https://kiwicommerce.co.uk/)
  * @license    https://kiwicommerce.co.uk/magento2-extension-license/
  */
-namespace KiwiCommerce\AdminActivity\Ui\Component\Listing\Column;
+
+namespace MageOS\AdminActivityLog\Ui\Component\Listing\Column;
 
 use Magento\Ui\Component\Listing\Columns\Column;
 
 /**
  * Class StatusColumn
- * @package KiwiCommerce\AdminActivity\Ui\Component\Listing\Column
+ * @package MageOS\AdminActivityLog\Ui\Component\Listing\Column
  */
 class StatusColumn extends Column
 {
@@ -36,7 +37,7 @@ class StatusColumn extends Column
                 } else {
                     $remark = $item['remarks'];
                     $item[$this->getData('name')] =
-                        '<span class="grid-severity-critical" title="'.$remark.'"><span>Faild</span></span>';
+                        '<span class="grid-severity-critical" title="' . $remark . '"><span>Faild</span></span>';
                 }
             }
         }

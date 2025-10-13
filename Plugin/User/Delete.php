@@ -7,39 +7,44 @@
  * Please contact us https://kiwicommerce.co.uk/contacts.
  *
  * @category   KiwiCommerce
- * @package    KiwiCommerce_AdminActivity
+ * @package    MageOS_AdminActivityLog
  * @copyright  Copyright (C) 2018 Kiwi Commerce Ltd (https://kiwicommerce.co.uk/)
  * @license    https://kiwicommerce.co.uk/magento2-extension-license/
  */
-namespace KiwiCommerce\AdminActivity\Plugin\User;
+
+namespace MageOS\AdminActivityLog\Plugin\User;
+
+use Magento\User\Model\ResourceModel\User;
+use MageOS\AdminActivityLog\Helper\Benchmark;
 
 /**
  * Class Delete
- * @package KiwiCommerce\AdminActivity\Plugin\User
+ * @package MageOS\AdminActivityLog\Plugin\User
  */
 class Delete
 {
     /**
-     * @var \KiwiCommerce\AdminActivity\Helper\Benchmark
+     * @var Benchmark
      */
     public $benchmark;
 
     /**
      * Delete constructor.
-     * @param \KiwiCommerce\AdminActivity\Helper\Benchmark $benchmark
+     * @param Benchmark $benchmark
      */
     public function __construct(
-        \KiwiCommerce\AdminActivity\Helper\Benchmark $benchmark
+        Benchmark $benchmark
     ) {
         $this->benchmark = $benchmark;
     }
+
     /**
-     * @param \Magento\User\Model\ResourceModel\User $user
+     * @param User $user
      * @param callable $proceed
      * @param $object
      * @return mixed
      */
-    public function aroundDelete(\Magento\User\Model\ResourceModel\User $user, callable $proceed, $object)
+    public function aroundDelete(User $user, callable $proceed, $object)
     {
         $this->benchmark->start(__METHOD__);
         $object->load($object->getId());

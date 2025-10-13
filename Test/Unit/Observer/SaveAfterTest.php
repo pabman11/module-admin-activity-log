@@ -7,13 +7,24 @@
  * Please contact us https://kiwicommerce.co.uk/contacts.
  *
  * @category   KiwiCommerce
- * @package    KiwiCommerce_AdminActivity
+ * @package    MageOS_AdminActivityLog
  * @copyright  Copyright (C) 2018 Kiwi Commerce Ltd (https://kiwicommerce.co.uk/)
  * @license    https://kiwicommerce.co.uk/magento2-extension-license/
  */
-namespace KiwiCommerce\AdminActivity\Test\Unit\Observer;
 
-class SaveAfterTest extends \PHPUnit\Framework\TestCase
+namespace MageOS\AdminActivityLog\Test\Unit\Observer;
+
+use Magento\Framework\DataObject;
+use Magento\Framework\Event;
+use Magento\Framework\Event\Observer;
+use Magento\Framework\TestFramework\Unit\Helper\ObjectManager;
+use MageOS\AdminActivityLog\Helper\Data;
+use MageOS\AdminActivityLog\Model\Config;
+use MageOS\AdminActivityLog\Model\Processor;
+use MageOS\AdminActivityLog\Observer\SaveAfter;
+use PHPUnit\Framework\TestCase;
+
+class SaveAfterTest extends TestCase
 {
     public $saveAfter;
 
@@ -36,40 +47,40 @@ class SaveAfterTest extends \PHPUnit\Framework\TestCase
      */
     public function setUp()
     {
-        $this->processorMock = $this->getMockBuilder(\KiwiCommerce\AdminActivity\Model\Processor::class)
+        $this->processorMock = $this->getMockBuilder(Processor::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->helperMock = $this->getMockBuilder(\KiwiCommerce\AdminActivity\Helper\Data::class)
+        $this->helperMock = $this->getMockBuilder(Data::class)
             ->disableOriginalConstructor()
             ->getMock();
 
         $this->observerMock = $this
-            ->getMockBuilder(\Magento\Framework\Event\Observer::class)
+            ->getMockBuilder(Observer::class)
             ->disableOriginalConstructor()
             ->getMock();
 
         $this->eventMock = $this
-            ->getMockBuilder(\Magento\Framework\Event::class)
+            ->getMockBuilder(Event::class)
             ->setMethods(['getObject'])
             ->disableOriginalConstructor()
             ->getMock();
 
         $this->objectMock = $this
-            ->getMockBuilder(\Magento\Framework\DataObject::class)
+            ->getMockBuilder(DataObject::class)
             ->setMethods(['getCheckIfIsNew'])
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->configMock = $this->getMockBuilder(\KiwiCommerce\AdminActivity\Model\Config::class)
-            ->setMethods(['getEventByAction','getTrackFieldModel','getEventModel','getActivityModuleConstant'])
+        $this->configMock = $this->getMockBuilder(Config::class)
+            ->setMethods(['getEventByAction', 'getTrackFieldModel', 'getEventModel', 'getActivityModuleConstant'])
             ->disableOriginalConstructor()
             ->getMock();
 
-        $objectManager = new \Magento\Framework\TestFramework\Unit\Helper\ObjectManager($this);
+        $objectManager = new ObjectManager($this);
 
         $this->saveAfter = $objectManager->getObject(
-            \KiwiCommerce\AdminActivity\Observer\SaveAfter::class,
+            SaveAfter::class,
             [
                 'processor' => $this->processorMock,
                 'helper' => $this->helperMock,

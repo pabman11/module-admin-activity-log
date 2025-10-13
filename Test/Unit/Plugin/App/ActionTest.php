@@ -7,17 +7,25 @@
  * Please contact us https://kiwicommerce.co.uk/contacts.
  *
  * @category   KiwiCommerce
- * @package    KiwiCommerce_AdminActivity
+ * @package    MageOS_AdminActivityLog
  * @copyright  Copyright (C) 2018 Kiwi Commerce Ltd (https://kiwicommerce.co.uk/)
  * @license    https://kiwicommerce.co.uk/magento2-extension-license/
  */
-namespace KiwiCommerce\AdminActivity\Test\Unit\Plugin\App;
+
+namespace MageOS\AdminActivityLog\Test\Unit\Plugin\App;
+
+use Magento\Framework\App\Request\Http;
+use Magento\Framework\Interception\InterceptorInterface;
+use Magento\Framework\TestFramework\Unit\Helper\ObjectManager;
+use MageOS\AdminActivityLog\Model\Processor;
+use MageOS\AdminActivityLog\Plugin\App\Action;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class ActionTest
- * @package KiwiCommerce\AdminActivity\Test\Unit\Plugin\App
+ * @package MageOS\AdminActivityLog\Test\Unit\Plugin\App
  */
-class ActionTest extends \PHPUnit\Framework\TestCase
+class ActionTest extends TestCase
 {
 
     public $processorMock;
@@ -31,26 +39,28 @@ class ActionTest extends \PHPUnit\Framework\TestCase
      */
     public function setUp()
     {
-        $this->processorMock = $this->getMockBuilder(\KiwiCommerce\AdminActivity\Model\Processor::class)
+        $this->processorMock = $this->getMockBuilder(Processor::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->controllerMock = $this->getMockBuilder(\Magento\Framework\Interception\InterceptorInterface::class)
-            ->setMethods(['getRequest','___callParent'])
+        $this->controllerMock = $this->getMockBuilder(InterceptorInterface::class)
+            ->setMethods(['getRequest', '___callParent'])
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->requestMock = $this->getMockBuilder(\Magento\Framework\App\Request\Http::class)
+        $this->requestMock = $this->getMockBuilder(Http::class)
             ->disableOriginalConstructor()
             ->setMethods([
-                'getActionName','getFullActionName','getModuleName'
+                'getActionName',
+                'getFullActionName',
+                'getModuleName'
             ])
             ->getMock();
 
-        $objectManager = new \Magento\Framework\TestFramework\Unit\Helper\ObjectManager($this);
+        $objectManager = new ObjectManager($this);
 
         $this->actionTest = $objectManager->getObject(
-            \KiwiCommerce\AdminActivity\Plugin\App\Action::class,
+            Action::class,
             [
                 'processor' => $this->processorMock
             ]

@@ -7,41 +7,46 @@
  * Please contact us https://kiwicommerce.co.uk/contacts.
  *
  * @category   KiwiCommerce
- * @package    KiwiCommerce_AdminActivity
+ * @package    MageOS_AdminActivityLog
  * @copyright  Copyright (C) 2018 Kiwi Commerce Ltd (https://kiwicommerce.co.uk/)
  * @license    https://kiwicommerce.co.uk/magento2-extension-license/
  */
-namespace KiwiCommerce\AdminActivity\Controller\Adminhtml\Activity;
 
-use Magento\Backend\App\Action\Context;
+namespace MageOS\AdminActivityLog\Controller\Adminhtml\Activity;
+
 use Magento\Backend\App\Action;
+use Magento\Backend\App\Action\Context;
+use Magento\Framework\Controller\Result\Raw;
+use Magento\Framework\Controller\Result\RawFactory;
+use Magento\Framework\View\LayoutFactory;
+use MageOS\AdminActivityLog\Block\Adminhtml\ActivityLogListing;
 
 /**
  * Class Log
- * @package KiwiCommerce\AdminActivity\Controller\Adminhtml\Activity
+ * @package MageOS\AdminActivityLog\Controller\Adminhtml\Activity
  */
 class Log extends Action
 {
     /**
-     * @var \Magento\Framework\Controller\Result\RawFactory
+     * @var RawFactory
      */
     public $resultRawFactory;
 
     /**
-     * @var \Magento\Framework\View\LayoutFactory
+     * @var LayoutFactory
      */
     public $layoutFactory;
 
     /**
      * Log constructor.
      * @param Context $context
-     * @param \Magento\Framework\Controller\Result\RawFactory $resultRawFactory
-     * @param \Magento\Framework\View\LayoutFactory $layoutFactory
+     * @param RawFactory $resultRawFactory
+     * @param LayoutFactory $layoutFactory
      */
     public function __construct(
         Context $context,
-        \Magento\Framework\Controller\Result\RawFactory $resultRawFactory,
-        \Magento\Framework\View\LayoutFactory $layoutFactory
+        RawFactory $resultRawFactory,
+        LayoutFactory $layoutFactory
     ) {
         $this->resultRawFactory = $resultRawFactory;
         $this->layoutFactory = $layoutFactory;
@@ -57,10 +62,10 @@ class Log extends Action
     {
         $content = $this->layoutFactory->create()
             ->createBlock(
-                \KiwiCommerce\AdminActivity\Block\Adminhtml\ActivityLogListing::class
+                ActivityLogListing::class
             );
 
-        /** @var \Magento\Framework\Controller\Result\Raw $resultRaw */
+        /** @var Raw $resultRaw */
         $resultRaw = $this->resultRawFactory->create();
         return $resultRaw->setContents($content->toHtml());
     }

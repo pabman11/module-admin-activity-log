@@ -7,36 +7,41 @@
  * Please contact us https://kiwicommerce.co.uk/contacts.
  *
  * @category   KiwiCommerce
- * @package    KiwiCommerce_AdminActivity
+ * @package    MageOS_AdminActivityLog
  * @copyright  Copyright (C) 2018 Kiwi Commerce Ltd (https://kiwicommerce.co.uk/)
  * @license    https://kiwicommerce.co.uk/magento2-extension-license/
  */
-namespace KiwiCommerce\AdminActivity\Plugin\App;
+
+namespace MageOS\AdminActivityLog\Plugin\App;
+
+use Magento\Framework\Interception\InterceptorInterface;
+use MageOS\AdminActivityLog\Helper\Benchmark;
+use MageOS\AdminActivityLog\Model\Processor;
 
 /**
  * Class Action
- * @package KiwiCommerce\AdminActivity\Plugin\App
+ * @package MageOS\AdminActivityLog\Plugin\App
  */
 class Action
 {
     /**
-     * @var \KiwiCommerce\AdminActivity\Model\Processor
+     * @var Processor
      */
     public $processor;
 
     /**
-     * @var \KiwiCommerce\AdminActivity\Helper\Benchmark
+     * @var Benchmark
      */
     public $benchmark;
 
     /**
      * Action constructor.
-     * @param \KiwiCommerce\AdminActivity\Model\Processor $processor
-     * @param \KiwiCommerce\AdminActivity\Helper\Benchmark $benchmark
+     * @param Processor $processor
+     * @param Benchmark $benchmark
      */
     public function __construct(
-        \KiwiCommerce\AdminActivity\Model\Processor $processor,
-        \KiwiCommerce\AdminActivity\Helper\Benchmark $benchmark
+        Processor $processor,
+        Benchmark $benchmark
     ) {
         $this->processor = $processor;
         $this->benchmark = $benchmark;
@@ -44,10 +49,10 @@ class Action
 
     /**
      * Get before dispatch data
-     * @param \Magento\Framework\Interception\InterceptorInterface $controller
+     * @param InterceptorInterface $controller
      * @return void
      */
-    public function beforeDispatch(\Magento\Framework\Interception\InterceptorInterface $controller)
+    public function beforeDispatch(InterceptorInterface $controller)
     {
         $this->benchmark->start(__METHOD__);
         $actionName = $controller->getRequest()->getActionName();
