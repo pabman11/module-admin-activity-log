@@ -55,21 +55,6 @@
         </arguments>
     </virtualType>
 
-    <!-- AdminActivity Logger and Handler -->
-    <type name="MageOS\AdminActivityLog\Logger\Handler">
-        <arguments>
-            <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
-        </arguments>
-    </type>
-    <type name="MageOS\AdminActivityLog\Logger\Logger">
-        <arguments>
-            <argument name="name" xsi:type="string">adminactivityLogHandler</argument>
-            <argument name="handlers"  xsi:type="array">
-                <item name="system" xsi:type="object">MageOS\AdminActivityLog\Logger\Handler</item>
-            </argument>
-        </arguments>
-    </type>
-
     <type name="MageOS\AdminActivityLog\Model\Config\Data">
         <arguments>
             <argument name="reader" xsi:type="object">AAConfigReader</argument>
