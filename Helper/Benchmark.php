@@ -17,7 +17,7 @@ namespace MageOS\AdminActivityLog\Helper;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\Profiler;
-use MageOS\AdminActivityLog\Logger\Logger;
+use Psr\Log\LoggerInterface;
 
 /**
  * Class Benchmark
@@ -25,14 +25,13 @@ use MageOS\AdminActivityLog\Logger\Logger;
  */
 class Benchmark extends AbstractHelper
 {
-
     /**
      * Get Benchmark is enable or not
      */
-    public const BENCHMARK_ENABLE = 1;
+    public const BENCHMARK_ENABLE = 0;
 
     /**
-     * @var Logger
+     * @var LoggerInterface
      */
     public $logger;
 
@@ -49,11 +48,11 @@ class Benchmark extends AbstractHelper
     /**
      * Benchmark constructor.
      * @param Context $context
-     * @param Logger $logger
+     * @param LoggerInterface $logger
      */
     public function __construct(
         Context $context,
-        Logger $logger
+        LoggerInterface $logger
     ) {
         $this->logger = $logger;
         parent::__construct($context);
