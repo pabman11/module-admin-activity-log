@@ -15,9 +15,8 @@
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
     <menu>
-        <add id="MageOS_AdminActivityLog::activity_head" title="Admin Activity by KiwiCommerce" module="MageOS_AdminActivityLog" sortOrder="100" parent="Magento_Backend::system" resource="MageOS_AdminActivityLog::activity_head" />
-        <add id="MageOS_AdminActivityLog::activity" title="Admin Activity" module="MageOS_AdminActivityLog" sortOrder="10" parent="MageOS_AdminActivityLog::activity_head" action="adminactivity/activity" resource="MageOS_AdminActivityLog::activity" />
-        <add id="MageOS_AdminActivityLog::login_activity" title="Login Activity" module="MageOS_AdminActivityLog" sortOrder="20" parent="MageOS_AdminActivityLog::activity_head" action="adminactivity/login" resource="MageOS_AdminActivityLog::login_activity" />
-        <add id="MageOS_AdminActivityLog::configuration" title="Configuration" module="MageOS_AdminActivityLog" sortOrder="40" parent="MageOS_AdminActivityLog::activity_head" action="adminhtml/system_config/edit/section/admin_activity" resource="MageOS_AdminActivityLog::configuration"/>
+        <add id="MageOS_AdminActivityLog::activity_head" title="Admin Activity" module="MageOS_AdminActivityLog" sortOrder="100" parent="Magento_Backend::system" resource="MageOS_AdminActivityLog::activity_head" />
+        <add id="MageOS_AdminActivityLog::activity" title="Admin Activity Logs" module="MageOS_AdminActivityLog" sortOrder="10" parent="MageOS_AdminActivityLog::activity_head" action="adminactivity/activity" resource="MageOS_AdminActivityLog::activity" />
+        <add id="MageOS_AdminActivityLog::login_activity" title="Admin Login Logs" module="MageOS_AdminActivityLog" sortOrder="20" parent="MageOS_AdminActivityLog::activity_head" action="adminactivity/login" resource="MageOS_AdminActivityLog::login_activity" />
     </menu>
 </config>

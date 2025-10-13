@@ -29,92 +29,92 @@ class Data extends AbstractHelper
     /**
      * @var string
      */
-    public const ACTIVITY_ENABLE = 'admin_activity/general/enable';
+    public const ACTIVITY_ENABLE = 'admin/admin_activity/general/enable';
 
     /**
      * @var string
      */
-    public const LOGIN_ACTIVITY_ENABLE = 'admin_activity/general/login_activity';
+    public const LOGIN_ACTIVITY_ENABLE = 'admin/admin_activity/general/login_activity';
 
     /**
      * @var string
      */
-    public const PAGE_VISIT_ENABLE = 'admin_activity/general/page_visit';
+    public const PAGE_VISIT_ENABLE = 'admin/admin_activity/general/page_visit';
 
     /**
      * @var string
      */
-    public const CLEAR_LOG_DAYS = 'admin_activity/general/clearlog';
+    public const CLEAR_LOG_DAYS = 'admin/admin_activity/general/clearlog';
 
     /**
      * @var string
      */
-    public const MODULE_ORDER = 'admin_activity/module/order';
+    public const MODULE_ORDER = 'admin/admin_activity/module/order';
 
     /**
      * @var string
      */
-    public const MODULE_PRODUCT = 'admin_activity/module/product';
+    public const MODULE_PRODUCT = 'admin/admin_activity/module/product';
 
     /**
      * @var string
      */
-    public const MODULE_CATEGORY = 'admin_activity/module/category';
+    public const MODULE_CATEGORY = 'admin/admin_activity/module/category';
 
     /**
      * @var string
      */
-    public const MODULE_CUSTOMER = 'admin_activity/module/customer';
+    public const MODULE_CUSTOMER = 'admin/admin_activity/module/customer';
 
     /**
      * @var string
      */
-    public const MODULE_PROMOTION = 'admin_activity/module/promotion';
+    public const MODULE_PROMOTION = 'admin/admin_activity/module/promotion';
 
     /**
      * @var string
      */
-    public const MODULE_EMAIL = 'admin_activity/module/email';
+    public const MODULE_EMAIL = 'admin/admin_activity/module/email';
 
     /**
      * @var string
      */
-    public const MODULE_PAGE = 'admin_activity/module/page';
+    public const MODULE_PAGE = 'admin/admin_activity/module/page';
 
     /**
      * @var string
      */
-    public const MODULE_BLOCK = 'admin_activity/module/block';
+    public const MODULE_BLOCK = 'admin/admin_activity/module/block';
 
     /**
      * @var string
      */
-    public const MODULE_WIDGET = 'admin_activity/module/widget';
+    public const MODULE_WIDGET = 'admin/admin_activity/module/widget';
 
     /**
      * @var string
      */
-    public const MODULE_THEME = 'admin_activity/module/theme';
+    public const MODULE_THEME = 'admin/admin_activity/module/theme';
 
     /**
      * @var string
      */
-    public const MODULE_SYSTEM_CONFIG = 'admin_activity/module/system_config';
+    public const MODULE_SYSTEM_CONFIG = 'admin/admin_activity/module/system_config';
 
     /**
      * @var string
      */
-    public const MODULE_ATTRIBUTE = 'admin_activity/module/attibute';
+    public const MODULE_ATTRIBUTE = 'admin/admin_activity/module/attibute';
 
     /**
      * @var string
      */
-    public const MODULE_ADMIN_USER = 'admin_activity/module/admin_user';
+    public const MODULE_ADMIN_USER = 'admin/admin_activity/module/admin_user';
 
     /**
      * @var string
      */
-    public const MODULE_SEO = 'admin_activity/module/seo';
+    public const MODULE_SEO = 'admin/admin_activity/module/seo';
 
     /**
      * @var Config

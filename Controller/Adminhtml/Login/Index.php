@@ -57,7 +57,6 @@ class Index extends Action
         /** @var Page $resultPage */
         $resultPage = $this->resultPageFactory->create();
         $resultPage->setActiveMenu('MageOS_AdminActivityLog::login_activity');
-        $resultPage->addBreadcrumb(__('KiwiCommerce'), __('Login Activity'));
         $resultPage->getConfig()->getTitle()->prepend(__('Login Activity'));
 
         return $resultPage;
