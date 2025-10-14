@@ -26,16 +26,6 @@ use MageOS\AdminActivityLog\Helper\Browser;
 class ActivityLogListing extends Template
 {
     /**
-     * @var ActivityRepositoryInterface
-     */
-    private $activityRepository;
-
-    /**
-     * @var Browser
-     */
-    private $browser;
-
-    /**
      * Path to template file in theme.
      * @var string
      */
@@ -49,11 +39,9 @@ class ActivityLogListing extends Template
      */
     public function __construct(
         Context $context,
-        ActivityRepositoryInterface $activityRepository,
-        Browser $browser
+        protected readonly ActivityRepositoryInterface $activityRepository,
+        protected readonly Browser $browser
     ) {
-        $this->activityRepository = $activityRepository;
-        $this->browser = $browser;
         parent::__construct($context);
     }
 

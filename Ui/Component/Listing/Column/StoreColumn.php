@@ -22,10 +22,6 @@ use Magento\Store\Ui\Component\Listing\Column\Store;
  */
 class StoreColumn extends Store
 {
-    /**
-     * Field name for store
-     * @var string
-     */
     public const KEY_FIELD = 'store_id';
 
     /**
@@ -33,15 +29,13 @@ class StoreColumn extends Store
      * @param array $item
      * @return string
      */
-    public function prepareItem(array $item)
+    public function prepareItem(array $item): string
     {
-        //TODO: To set and display default value
         $this->storeKey = !empty($this->storeKey) ? $this->storeKey : self::KEY_FIELD;
         if ($item[$this->storeKey] == 0) {
             $origStores['0'] = 0;
         }
 
-        $content = '';
         if (!empty($item[$this->storeKey])) {
             $origStores = $item[$this->storeKey];
         }
@@ -58,6 +52,7 @@ class StoreColumn extends Store
 
         $data = $this->systemStore->getStoresStructure(false, $origStores);
 
+        $content = '';
         foreach ($data as $website) {
             $content .= $website['label'] . "<br/>";
             foreach ($website['children'] as $group) {

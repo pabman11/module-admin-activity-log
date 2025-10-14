@@ -22,10 +22,7 @@ use Magento\Framework\Model\AbstractModel;
  */
 class ActivityLogDetail extends AbstractModel
 {
-    /**
-     * @var string
-     */
-    public const ACTIVITYLOGDETAIL_ID = 'entity_id'; // We define the id fieldname
+    public const ACTIVITYLOGDETAIL_ID = 'entity_id';
 
     /**
      * Initialize resource model

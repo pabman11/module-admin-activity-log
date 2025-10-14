@@ -22,39 +22,18 @@ use MageOS\AdminActivityLog\Model\ActivityFactory;
  */
 class Status
 {
-    /**
-     * @var Int
-     */
     public const ACTIVITY_NONE = 0;
-
-    /**
-     * @var Int
-     */
     public const ACTIVITY_REVERTABLE = 1;
-
-    /**
-     * @var Int
-     */
     public const ACTIVITY_REVERT_SUCCESS = 2;
-
-    /**
-     * @var Int
-     */
     public const ACTIVITY_FAIL = 3;
-
-    /**
-     * @var ActivityFactory
-     */
-    private $activityFactory;
 
     /**
      * Status constructor.
      * @param ActivityFactory $activityFactory
      */
     public function __construct(
-        ActivityFactory $activityFactory
+        protected readonly ActivityFactory $activityFactory
     ) {
-        $this->activityFactory = $activityFactory;
     }
 
     /**
@@ -62,7 +41,7 @@ class Status
      * @param $activityId
      * @return void
      */
-    public function markSuccess($activityId)
+    public function markSuccess($activityId): void
     {
         $activityModel = $this->activityFactory->create()->load($activityId);
         $activityModel->setIsRevertable(self::ACTIVITY_REVERT_SUCCESS);
@@ -74,7 +53,7 @@ class Status
      * @param $activityId
      * @return void
      */
-    public function markFail($activityId)
+    public function markFail($activityId): void
     {
         $activityModel = $this->activityFactory->create()->load($activityId);
         $activityModel->setIsRevertable(self::ACTIVITY_FAIL);

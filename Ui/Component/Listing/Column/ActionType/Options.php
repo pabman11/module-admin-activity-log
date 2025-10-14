@@ -24,28 +24,23 @@ use MageOS\AdminActivityLog\Helper\Data;
 class Options implements ArrayInterface
 {
     /**
-     * @var Data
-     */
-    private $helper;
-
-    /**
      * Options constructor.
      * @param Data $helper
      */
-    public function __construct(Data $helper)
-    {
-        $this->helper = $helper;
+    public function __construct(
+        protected readonly Data $helper
+    ) {
     }
 
     /**
      * List all option to get in filter
      * @return array
      */
-    public function toOptionArray()
+    public function toOptionArray(): array
     {
         $data = [];
-        $lableList = $this->helper->getAllActions();
-        foreach ($lableList as $key => $value) {
+        $labelList = $this->helper->getAllActions();
+        foreach ($labelList as $key => $value) {
             $data[] = ['value' => $key, 'label' => __($value)];
         }
         return $data;

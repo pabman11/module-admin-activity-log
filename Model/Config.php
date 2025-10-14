@@ -49,7 +49,7 @@ class Config
      * Get all action labels translated and sorted ASC
      * @return array
      */
-    public function getActions()
+    public function getActions(): array
     {
         if (!$this->labels && isset($this->xmlConfig['actions'])) {
             foreach ($this->xmlConfig['actions'] as $id => $label) {
@@ -64,7 +64,7 @@ class Config
      * List of all full actions
      * @return array
      */
-    public function getControllerActions()
+    public function getControllerActions(): array
     {
         $actions = [];
         foreach ($this->xmlConfig as $module => $config) {
@@ -80,7 +80,7 @@ class Config
      * @param string $action
      * @return Phrase|string
      */
-    public function getActionLabel($action)
+    public function getActionLabel(string $action)
     {
         if (isset($this->xmlConfig['actions'])
             && array_key_exists(
@@ -96,10 +96,10 @@ class Config
 
     /**
      * Get event by action
-     * @param $action
-     * @return bool
+     * @param string $action
+     * @return mixed
      */
-    public function getEventByAction($action)
+    public function getEventByAction(string $action)
     {
         foreach ($this->xmlConfig as $module => $config) {
             if (isset($config['actions']) && array_key_exists($action, $config['actions'])) {
@@ -112,10 +112,10 @@ class Config
 
     /**
      * Return Model class name
-     * @param $module
-     * @return string
+     * @param string $module
+     * @return mixed
      */
-    public function getEventModel($module)
+    public function getEventModel(string $module)
     {
         if (!array_key_exists($module, $this->xmlConfig)) {
             return false;
@@ -125,10 +125,10 @@ class Config
 
     /**
      * Return model label name
-     * @param $module
-     * @return bool
+     * @param string $module
+     * @return mixed
      */
-    public function getActivityModuleName($module)
+    public function getActivityModuleName(string $module)
     {
         if (!array_key_exists($module, $this->xmlConfig)) {
             return false;
@@ -139,10 +139,10 @@ class Config
 
     /**
      * Return model class name
-     * @param $module
-     * @return string
+     * @param string $module
+     * @return mixed
      */
-    public function getTrackFieldModel($module)
+    public function getTrackFieldModel(string $module)
     {
         if (!array_key_exists($module, $this->xmlConfig)) {
             return false;
@@ -153,10 +153,10 @@ class Config
 
     /**
      * Return module constant
-     * @param $module
-     * @return bool
+     * @param string $module
+     * @return mixed
      */
-    public function getActivityModuleConstant($module)
+    public function getActivityModuleConstant(string $module)
     {
         if (!array_key_exists($module, $this->xmlConfig)) {
             return false;
@@ -166,10 +166,10 @@ class Config
 
     /**
      * Return module edit url
-     * @param $module
-     * @return bool
+     * @param string $module
+     * @return mixed
      */
-    public function getActivityModuleEditUrl($module)
+    public function getActivityModuleEditUrl(string $module)
     {
         if (!array_key_exists($module, $this->xmlConfig)) {
             return false;
@@ -179,10 +179,10 @@ class Config
 
     /**
      * Return module item name
-     * @param $module
-     * @return bool
+     * @param string $module
+     * @return mixed
      */
-    public function getActivityModuleItemField($module)
+    public function getActivityModuleItemField(string $module)
     {
         if (!array_key_exists($module, $this->xmlConfig)) {
             return false;

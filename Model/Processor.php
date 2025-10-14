@@ -33,154 +33,48 @@ use MageOS\AdminActivityLog\Model\Handler\PostDispatch;
  */
 class Processor
 {
-    /**
-     * @var string
-     */
     public const PRIMARY_FIELD = 'id';
-
-    /**
-     * @var array
-     */
     public const SKIP_MODULE_ACTIONS = [
         'mui_index_render',
         'adminactivity_activity_index',
         'adminactivity_activity_log',
         'adminactivity_activity_revert'
     ];
-
-    /**
-     * @var string
-     */
     public const SKIP_MODULE = [
         'mui'
     ];
-
-    /**
-     * @var string
-     */
     public const SALES_ORDER = 'sales_order';
-
-    /**
-     * @var string
-     */
     public const SAVE_ACTION = 'save';
-
-    /**
-     * @var string
-     */
     public const EDIT_ACTION = 'edit';
-
-    /**
-     * @var Config
-     */
-    private $config;
-
-    /**
-     * current event config
-     * @var array
-     */
-    private $eventConfig;
 
     /**
      * Last action name
      * @var string
      */
-    private $actionName = '';
+    protected $actionName = '';
 
     /**
      * Last full action name
      * @var string
      */
-    private $lastAction = '';
+    protected $lastAction = '';
 
     /**
      * Initialization full action name
      * @var string
      */
-    private $initAction = '';
+    protected $initAction = '';
 
     /**
      * Temporary storage for model changes before saving to table.
      * @var array
      */
-    private $activityLogs = [];
-
-    /**
-     * @var Session
-     */
-    private $authSession;
-
-    /**
-     * @var Handler
-     */
-    private $handler;
-
-    /**
-     * @var RemoteAddress
-     */
-    private $remoteAddress;
-
-    /**
-     * @var ActivityFactory
-     */
-    private $activityFactory;
-
-    /**
-     * @var ActivityLogDetailFactory
-     */
-    private $activityDetailFactory;
-
-    /**
-     * @var StoreManagerInterface
-     */
-    private $storeManager;
-
-    /**
-     * @var DateTime
-     */
-    private $dateTime;
-
-    /**
-     * @var ActivityRepositoryInterface
-     */
-    private $activityRepository;
-
-    /**
-     * @var Helper
-     */
-    private $helper;
-
-    /**
-     * @var ManagerInterface
-     */
-    private $messageManager;
-
-    /**
-     * Request
-     *
-     * @var RequestInterface
-     */
-    private $request;
-
-    /**
-     * Http request
-     * @var Http
-     */
-    private $httpRequest;
-    /**
-     * @var Activity\Status
-     */
-    private $status;
-
-    /**
-     * @var Handler\PostDispatch
-     */
-    private $postDispatch;
+    protected $activityLogs = [];
 
     /**
      * @var array
      */
-    private $urlParams = [
+    protected $urlParams = [
         '{{module}}',
         '{{controller}}',
         '{{action}}',
@@ -207,37 +101,22 @@ class Processor
      * @param PostDispatch $postDispatch
      */
     public function __construct(
-        Config $config,
-        Session $authSession,
-        Handler $handler,
-        RemoteAddress $remoteAddress,
-        ActivityFactory $activityFactory,
-        ActivityLogDetailFactory $activityDetailFactory,
-        StoreManagerInterface $storeManager,
-        DateTime $dateTime,
-        ActivityRepositoryInterface $activityRepository,
-        Helper $helper,
-        ManagerInterface $messageManager,
-        RequestInterface $request,
-        Http $httpRequest,
-        Status $status,
-        PostDispatch $postDispatch
+        protected readonly Config $config,
+        protected readonly Session $authSession,
+        protected readonly Handler $handler,
+        protected readonly RemoteAddress $remoteAddress,
+        protected readonly ActivityFactory $activityFactory,
+        protected readonly ActivityLogDetailFactory $activityDetailFactory,
+        protected readonly StoreManagerInterface $storeManager,
+        protected readonly DateTime $dateTime,
+        protected readonly ActivityRepositoryInterface $activityRepository,
+        protected readonly Helper $helper,
+        protected readonly ManagerInterface $messageManager,
+        protected readonly RequestInterface $request,
+        protected readonly Http $httpRequest,
+        protected readonly Status $status,
+        protected readonly PostDispatch $postDispatch
     ) {
-        $this->config = $config;
-        $this->authSession = $authSession;
-        $this->handler = $handler;
-        $this->remoteAddress = $remoteAddress;
-        $this->activityFactory = $activityFactory;
-        $this->activityDetailFactory = $activityDetailFactory;
-        $this->storeManager = $storeManager;
-        $this->dateTime = $dateTime;
-        $this->activityRepository = $activityRepository;
-        $this->helper = $helper;
-        $this->messageManager = $messageManager;
-        $this->request = $request;
-        $this->httpRequest = $httpRequest;
-        $this->status = $status;
-        $this->postDispatch = $postDispatch;
     }
 
     /**
@@ -666,5 +545,30 @@ class Processor
         }
 
         return $this->eventConfig;
+    }
+
+    public function getConfig(): Config
+    {
+        return $this->config;
+    }
+
+    public function getHandler(): Handler
+    {
+        return $this->handler;
+    }
+
+    public function addActivityLog(array $activityLog): void
+    {
+        $this->activityLogs[] = $activityLog;
+    }
+
+    public function getRequest(): RequestInterface
+    {
+        return $this->request;
+    }
+
+    public function getRemoteAddress(): RemoteAddress
+    {
+        return $this->remoteAddress;
     }
 }

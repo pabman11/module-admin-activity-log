@@ -20,5 +20,4 @@ namespace MageOS\AdminActivityLog\Api\Data;
  */
 interface ActivityInterface
 {
-
 }

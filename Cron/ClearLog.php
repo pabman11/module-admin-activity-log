@@ -31,32 +31,7 @@ class ClearLog
      * Default date format
      * @var string
      */
-    public const DATE_FORMAT = 'Y-m-d H:i:s';
-
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
-
-    /**
-     * @var DateTime
-     */
-    private $dateTime;
-
-    /**
-     * @var Helper
-     */
-    private $helper;
-
-    /**
-     * @var ActivityRepositoryInterface
-     */
-    private $activityRepository;
-
-    /**
-     * @var LoginRepositoryInterface
-     */
-    private $loginRepository;
+    protected const DATE_FORMAT = 'Y-m-d H:i:s';
 
     /**
      * ClearLog constructor.
@@ -67,17 +42,12 @@ class ClearLog
      * @param LoginRepositoryInterface $loginRepository
      */
     public function __construct(
-        LoggerInterface $logger,
-        DateTime $dateTime,
-        Helper $helper,
-        ActivityRepositoryInterface $activityRepository,
-        LoginRepositoryInterface $loginRepository
+        protected readonly LoggerInterface $logger,
+        protected readonly DateTime $dateTime,
+        protected readonly Helper $helper,
+        protected readonly ActivityRepositoryInterface $activityRepository,
+        protected readonly LoginRepositoryInterface $loginRepository
     ) {
-        $this->logger = $logger;
-        $this->dateTime = $dateTime;
-        $this->helper = $helper;
-        $this->activityRepository = $activityRepository;
-        $this->loginRepository = $loginRepository;
     }
 
     /**
@@ -97,37 +67,43 @@ class ClearLog
 
     /**
      * Delete record which date is less than the current date
-     * @return $this|null
+     * @return void
      */
-    public function execute()
+    public function execute(): void
     {
         try {
             if (!$this->helper->isEnable()) {
-                return $this;
+                return;
             }
 
             if ($date = $this->__getDate()) {
                 $activities = $this->activityRepository->getListBeforeDate($date);
-                if (!empty($activities)) {
-                    foreach ($activities as $activity) {
-                        // Remove activity detail
-                        $activity->delete();
-                    }
-                }
+                $this->deleteActivities($activities);
 
                 // Remove login activity detail
                 if ($this->helper->isLoginEnable()) {
                     $activities = $this->loginRepository->getListBeforeDate($date);
-                    if (!empty($activities)) {
-                        foreach ($activities as $activity) {
-                            $activity->delete();
-                        }
-                    }
+                    $this->deleteActivities($activities);
                 }
             }
         } catch (Exception $e) {
             $this->logger->debug($e->getMessage());
         }
-        return null;
+    }
+
+    /**
+     * Remove activity detail
+     * @param Iterable $activities
+     * @return void
+     */
+    protected function deleteActivities($activities): void
+    {
+        if (empty($activities)) {
+            return;
+        }
+
+        foreach ($activities as $activity) {
+            $activity->delete();
+        }
     }
 }

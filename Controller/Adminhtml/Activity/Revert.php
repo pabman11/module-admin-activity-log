@@ -16,7 +16,7 @@ namespace MageOS\AdminActivityLog\Controller\Adminhtml\Activity;
 
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
-use Magento\Backend\Model\View\Result\Page;
+use Magento\Framework\Controller\Result\Json;
 use Magento\Framework\Controller\Result\JsonFactory;
 use MageOS\AdminActivityLog\Model\Processor;
 
@@ -27,16 +27,6 @@ use MageOS\AdminActivityLog\Model\Processor;
 class Revert extends Action
 {
     /**
-     * @var JsonFactory
-     */
-    private $resultJsonFactory;
-
-    /**
-     * @var Processor
-     */
-    private $processor;
-
-    /**
      * Revert constructor.
      * @param Context $context
      * @param JsonFactory $resultJsonFactory
@@ -44,22 +34,25 @@ class Revert extends Action
      */
     public function __construct(
         Context $context,
-        JsonFactory $resultJsonFactory,
-        Processor $processor
+        protected readonly JsonFactory $resultJsonFactory,
+        protected readonly Processor $processor
     ) {
         parent::__construct($context);
-        $this->resultJsonFactory = $resultJsonFactory;
-        $this->processor = $processor;
     }
 
     /**
      * Revert action
-     * @return Page
+     * @return Json
      */
     public function execute()
     {
         $activityId = $this->getRequest()->getParam('id');
+
         $result = $this->processor->revertActivity($activityId);
-        return $this->resultJsonFactory->create()->setData($result);
+
+        $json = $this->resultJsonFactory->create();
+        $json->setData($result);
+
+        return $json;
     }
 }

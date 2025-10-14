@@ -28,26 +28,6 @@ use MageOS\AdminActivityLog\Model\Processor;
 class SaveBefore implements ObserverInterface
 {
     /**
-     * @var Helper
-     */
-    private $helper;
-
-    /**
-     * @var Processor
-     */
-    private $processor;
-
-    /**
-     * @var ActivityRepositoryInterface
-     */
-    private $activityRepository;
-
-    /**
-     * @var Benchmark
-     */
-    private $benchmark;
-
-    /**
      * SaveBefore constructor.
      * @param Helper $helper
      * @param Processor $processor
@@ -55,28 +35,24 @@ class SaveBefore implements ObserverInterface
      * @param Benchmark $benchmark
      */
     public function __construct(
-        Helper $helper,
-        Processor $processor,
-        ActivityRepositoryInterface $activityRepository,
-        Benchmark $benchmark
+        protected readonly Helper $helper,
+        protected readonly Processor $processor,
+        protected readonly ActivityRepositoryInterface $activityRepository,
+        protected readonly Benchmark $benchmark
     ) {
-        $this->helper = $helper;
-        $this->processor = $processor;
-        $this->activityRepository = $activityRepository;
-        $this->benchmark = $benchmark;
     }
 
     /**
      * Save before
      * @param Observer $observer
-     * @return Observer
+     * @return void
      */
-    public function execute(Observer $observer)
+    public function execute(Observer $observer): void
     {
         $this->benchmark->start(__METHOD__);
 
         if (!$this->helper->isEnable()) {
-            return $observer;
+            return;
         }
 
         $object = $observer->getEvent()->getObject();
@@ -87,7 +63,7 @@ class SaveBefore implements ObserverInterface
             if ($this->processor->validate($object)) {
                 $origData = $object->getOrigData();
                 if (!empty($origData)) {
-                    return $observer;
+                    return;
                 }
                 $data = $this->activityRepository->getOldData($object);
                 foreach ($data->getData() as $key => $value) {
@@ -96,6 +72,5 @@ class SaveBefore implements ObserverInterface
             }
         }
         $this->benchmark->end(__METHOD__);
-        return $observer;
     }
 }

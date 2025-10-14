@@ -27,27 +27,6 @@ use MageOS\AdminActivityLog\Api\Activity\ModelInterface;
 class ThemeConfig implements ModelInterface
 {
     /**
-     * @var DataObject
-     */
-    private $dataObject;
-
-    /**
-     * @var ValueFactory
-     */
-    private $valueFactory;
-
-    /**
-     * @var WriterInterface
-     */
-    private $configWriter;
-
-    /**
-     * Request
-     * @var RequestInterface
-     */
-    private $request;
-
-    /**
      * ThemeConfig constructor.
      * @param DataObject $dataObject
      * @param ValueFactory $valueFactory
@@ -55,29 +34,25 @@ class ThemeConfig implements ModelInterface
      * @param WriterInterface $configWriter
      */
     public function __construct(
-        DataObject $dataObject,
-        ValueFactory $valueFactory,
-        RequestInterface $request,
-        WriterInterface $configWriter
+        protected readonly DataObject $dataObject,
+        protected readonly ValueFactory $valueFactory,
+        protected readonly RequestInterface $request,
+        protected readonly WriterInterface $configWriter
     ) {
-        $this->dataObject = $dataObject;
-        $this->valueFactory = $valueFactory;
-        $this->request = $request;
-        $this->configWriter = $configWriter;
     }
 
     /**
      * Get config path of theme configuration
-     * @param $model
+     * @param DataObject $model
      * @return string
      */
-    public function getPath($model)
+    public function getPath(DataObject $model): string
     {
         if ($model->getData('path')) {
             return current(
                 explode(
                     '/',
-                    $model->getData('path')
+                    (string)$model->getData('path')
                 )
             );
         }
@@ -86,10 +61,10 @@ class ThemeConfig implements ModelInterface
 
     /**
      * Get old activity data of theme configuration
-     * @param $model
+     * @param DataObject $model
      * @return mixed
      */
-    public function getOldData($model)
+    public function getOldData(DataObject $model)
     {
         $path = $this->getPath($model);
         $systemData = $this->valueFactory->create()->getCollection()
@@ -105,11 +80,11 @@ class ThemeConfig implements ModelInterface
 
     /**
      * Get edit activity data of theme configuration
-     * @param $model
-     * @param $fieldArray
+     * @param DataObject $model
+     * @param array $fieldArray
      * @return mixed
      */
-    public function getEditData($model, $fieldArray)
+    public function getEditData(DataObject $model, $fieldArray)
     {
         $path = 'stores/scope_id/' . $model->getScopeId();
         $oldData = $this->getOldData($model);
@@ -149,7 +124,7 @@ class ThemeConfig implements ModelInterface
      * @param $fieldArray
      * @return array
      */
-    public function collectAdditionalData($oldData, $newData, $fieldArray)
+    public function collectAdditionalData($oldData, $newData, $fieldArray): array
     {
         $logData = [];
         foreach ($newData as $key => $value) {

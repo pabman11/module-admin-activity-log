@@ -26,30 +26,8 @@ use MageOS\AdminActivityLog\Model\Processor;
  */
 class SaveAfter implements ObserverInterface
 {
-    /**
-     * @var string
-     */
     public const ACTION_MASSCANCEL = 'massCancel';
-
-    /**
-     * @var string
-     */
     public const SYSTEM_CONFIG = 'adminhtml_system_config_save';
-
-    /**
-     * @var Processor
-     */
-    private $processor;
-
-    /**
-     * @var Helper
-     */
-    private $helper;
-
-    /**
-     * @var Benchmark
-     */
-    private $benchmark;
 
     /**
      * SaveAfter constructor.
@@ -58,26 +36,23 @@ class SaveAfter implements ObserverInterface
      * @param Benchmark $benchmark
      */
     public function __construct(
-        Processor $processor,
-        Helper $helper,
-        Benchmark $benchmark
+        protected readonly Processor $processor,
+        protected readonly Helper $helper,
+        protected readonly Benchmark $benchmark
     ) {
-        $this->processor = $processor;
-        $this->helper = $helper;
-        $this->benchmark = $benchmark;
     }
 
     /**
      * Save after
      * @param Observer $observer
-     * @return Observer|bool
+     * @return void
      */
-    public function execute(Observer $observer)
+    public function execute(Observer $observer): void
     {
         $this->benchmark->start(__METHOD__);
 
         if (!$this->helper->isEnable()) {
-            return $observer;
+            return;
         }
         $object = $observer->getEvent()->getObject();
         if ($object->getCheckIfIsNew()) {
@@ -92,6 +67,5 @@ class SaveAfter implements ObserverInterface
             $this->processor->modelEditAfter($object);
         }
         $this->benchmark->end(__METHOD__);
-        return true;
     }
 }

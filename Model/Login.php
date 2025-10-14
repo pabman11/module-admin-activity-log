@@ -22,10 +22,7 @@ use Magento\Framework\Model\AbstractModel;
  */
 class Login extends AbstractModel
 {
-    /**
-     * @var string
-     */
-    public const LOGIN_ACTIVITY_ID = 'entity_id'; // We define the id field name
+    public const LOGIN_ACTIVITY_ID = 'entity_id';
 
     /**
      * Initialize resource model

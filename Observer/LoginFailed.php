@@ -28,26 +28,6 @@ use MageOS\AdminActivityLog\Helper\Data as Helper;
 class LoginFailed implements ObserverInterface
 {
     /**
-     * @var Helper
-     */
-    public $helper;
-
-    /**
-     * @var User
-     */
-    public $user;
-
-    /**
-     * @var LoginRepositoryInterface
-     */
-    public $loginRepository;
-
-    /**
-     * @var Benchmark
-     */
-    public $benchmark;
-
-    /**
      * LoginFailed constructor.
      * @param Helper $helper
      * @param User $user
@@ -55,15 +35,11 @@ class LoginFailed implements ObserverInterface
      * @param Benchmark $benchmark
      */
     public function __construct(
-        Helper $helper,
-        User $user,
-        LoginRepositoryInterface $loginRepository,
-        Benchmark $benchmark
+        protected readonly Helper $helper,
+        protected readonly User $user,
+        protected readonly LoginRepositoryInterface $loginRepository,
+        protected readonly Benchmark $benchmark
     ) {
-        $this->helper = $helper;
-        $this->user = $user;
-        $this->loginRepository = $loginRepository;
-        $this->benchmark = $benchmark;
     }
 
     /**

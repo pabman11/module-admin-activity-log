@@ -15,6 +15,7 @@
 namespace MageOS\AdminActivityLog\Helper;
 
 use Magento\Framework\App\Helper\AbstractHelper;
+use Magento\Framework\App\Helper\Context;
 
 /**
  * Class Browser
@@ -171,17 +172,13 @@ class Browser extends AbstractHelper
     public const OPERATING_SYSTEM_UNKNOWN = 'unknown';
 
     /**
-     * Browser constructor.
-     * @param string $userAgent
+     * @param Context $context
      */
-    public function __construct($userAgent = "")
+    public function __construct(Context $context)
     {
+        parent::__construct($context);
+
         $this->reset();
-        if ($userAgent != "") {
-            $this->setUserAgent($userAgent);
-        } else {
-            $this->determine();
-        }
     }
 
     /**
@@ -1264,19 +1261,19 @@ class Browser extends AbstractHelper
     protected function checkBrowserNetscapeNavigator9Plus()
     {
         if (stripos($this->agent, 'Firefox') !== false && preg_match(
-            '/Navigator\/([^ ]*)/i',
-            $this->agent,
-            $matches
-        )) {
+                '/Navigator\/([^ ]*)/i',
+                $this->agent,
+                $matches
+            )) {
             $this->setVersion($matches[1]);
             $this->setBrowser(self::BROWSER_NETSCAPE_NAVIGATOR);
             return true;
         } else {
             if (stripos($this->agent, 'Firefox') === false && preg_match(
-                '/Netscape6?\/([^ ]*)/i',
-                $this->agent,
-                $matches
-            )) {
+                    '/Netscape6?\/([^ ]*)/i',
+                    $this->agent,
+                    $matches
+                )) {
                 $this->setVersion($matches[1]);
                 $this->setBrowser(self::BROWSER_NETSCAPE_NAVIGATOR);
                 return true;
@@ -1292,10 +1289,10 @@ class Browser extends AbstractHelper
     protected function checkBrowserShiretoko()
     {
         if (stripos($this->agent, 'Mozilla') !== false && preg_match(
-            '/Shiretoko\/([^ ]*)/i',
-            $this->agent,
-            $matches
-        )) {
+                '/Shiretoko\/([^ ]*)/i',
+                $this->agent,
+                $matches
+            )) {
             $this->setVersion($matches[1]);
             $this->setBrowser(self::BROWSER_SHIRETOKO);
             return true;
@@ -1391,9 +1388,9 @@ class Browser extends AbstractHelper
     protected function checkBrowserMozilla()
     {
         if (stripos($this->agent, 'mozilla') !== false && preg_match(
-            '/rv:[0-9].[0-9][a-b]?/i',
-            $this->agent
-        ) && stripos($this->agent, 'netscape') === false) {
+                '/rv:[0-9].[0-9][a-b]?/i',
+                $this->agent
+            ) && stripos($this->agent, 'netscape') === false) {
             $aversion = explode(' ', stristr($this->agent, 'rv:'));
             preg_match('/rv:[0-9].[0-9][a-b]?/i', $this->agent, $aversion);
             $this->setVersion(str_replace('rv:', '', $aversion[0]));
@@ -1401,19 +1398,19 @@ class Browser extends AbstractHelper
             return true;
         } else {
             if (stripos($this->agent, 'mozilla') !== false && preg_match(
-                '/rv:[0-9]\.[0-9]/i',
-                $this->agent
-            ) && stripos($this->agent, 'netscape') === false) {
+                    '/rv:[0-9]\.[0-9]/i',
+                    $this->agent
+                ) && stripos($this->agent, 'netscape') === false) {
                 $aversion = explode('', stristr($this->agent, 'rv:'));
                 $this->setVersion(str_replace('rv:', '', $aversion[0]));
                 $this->setBrowser(self::BROWSER_MOZILLA);
                 return true;
             } else {
                 if (stripos($this->agent, 'mozilla') !== false && preg_match(
-                    '/mozilla\/([^ ]*)/i',
-                    $this->agent,
-                    $matches
-                ) && stripos($this->agent, 'netscape') === false) {
+                        '/mozilla\/([^ ]*)/i',
+                        $this->agent,
+                        $matches
+                    ) && stripos($this->agent, 'netscape') === false) {
                     $this->setVersion($matches[1]);
                     $this->setBrowser(self::BROWSER_MOZILLA);
                     return true;
@@ -1788,9 +1785,9 @@ class Browser extends AbstractHelper
                     } elseif (stripos($this->agent, 'Silk') !== false) {
                         $this->platform = self::PLATFORM_FIRE_OS;
                     } elseif (stripos($this->agent, 'linux') !== false && stripos(
-                        $this->agent,
-                        'SMART-TV'
-                    ) !== false) {
+                            $this->agent,
+                            'SMART-TV'
+                        ) !== false) {
                         $this->platform = self::PLATFORM_LINUX . '/' . self::PLATFORM_SMART_TV;
                     } elseif (stripos($this->agent, 'linux') !== false) {
                         $this->platform = self::PLATFORM_LINUX;

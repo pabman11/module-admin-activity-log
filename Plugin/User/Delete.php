@@ -24,18 +24,12 @@ use MageOS\AdminActivityLog\Helper\Benchmark;
 class Delete
 {
     /**
-     * @var Benchmark
-     */
-    private $benchmark;
-
-    /**
      * Delete constructor.
      * @param Benchmark $benchmark
      */
     public function __construct(
-        Benchmark $benchmark
+        protected readonly Benchmark $benchmark
     ) {
-        $this->benchmark = $benchmark;
     }
 
     /**

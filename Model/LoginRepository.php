@@ -16,6 +16,7 @@ namespace MageOS\AdminActivityLog\Model;
 
 use Magento\User\Model\User;
 use MageOS\AdminActivityLog\Api\LoginRepositoryInterface;
+use MageOS\AdminActivityLog\Model\ResourceModel\Login\Collection;
 use MageOS\AdminActivityLog\Model\ResourceModel\Login\CollectionFactory;
 
 /**
@@ -24,35 +25,13 @@ use MageOS\AdminActivityLog\Model\ResourceModel\Login\CollectionFactory;
  */
 class LoginRepository implements LoginRepositoryInterface
 {
-    /**
-     * @var bool
-     */
     public const LOGIN_SUCCESS = 1;
-
-    /**
-     * @var bool
-     */
     public const LOGIN_FAILED = 0;
 
     /**
-     * @var LoginFactory
-     */
-    private $loginFactory;
-
-    /**
-     * @var Processor
-     */
-    private $processor;
-
-    /**
-     * @var object Magento\User\Model\User
+     * @var User
      */
     private $user;
-
-    /**
-     * @var ResourceModel\Activity\CollectionFactory
-     */
-    private $collectionFactory;
 
     /**
      * LoginRepository constructor.
@@ -61,18 +40,15 @@ class LoginRepository implements LoginRepositoryInterface
      * @param Processor $processor
      */
     public function __construct(
-        LoginFactory $loginFactory,
-        CollectionFactory $collectionFactory,
-        Processor $processor
+        protected readonly LoginFactory $loginFactory,
+        protected readonly CollectionFactory $collectionFactory,
+        protected readonly Processor $processor
     ) {
-        $this->loginFactory = $loginFactory;
-        $this->collectionFactory = $collectionFactory;
-        $this->processor = $processor;
     }
 
     /**
      * Get login user
-     * @return string
+     * @return User|null
      */
     public function getUser()
     {
@@ -81,10 +57,10 @@ class LoginRepository implements LoginRepositoryInterface
 
     /**
      * Set login user
-     * @param $user
+     * @param User $user
      * @return $this
      */
-    public function setUser($user)
+    public function setUser($user): LoginRepositoryInterface
     {
         $this->user = $user;
         return $this;
@@ -92,9 +68,9 @@ class LoginRepository implements LoginRepositoryInterface
 
     /**
      * Set login activity data
-     * @return mixed
+     * @return Login
      */
-    public function _initLoginActivity()
+    protected function initLoginActivity(): Login
     {
         $login = $this->loginFactory->create();
 
@@ -104,9 +80,9 @@ class LoginRepository implements LoginRepositoryInterface
             $login->setName(ucwords($user->getName()));
         }
 
-        $login->setRemoteIp($this->processor->remoteAddress->getRemoteAddress());
-        $login->setForwardedIp($this->processor->request->getServer('HTTP_X_FORWARDED_FOR'));
-        $login->setUserAgent($this->processor->handler->header->getHttpUserAgent());
+        $login->setRemoteIp($this->processor->getRemoteAddress()->getRemoteAddress());
+        $login->setForwardedIp($this->processor->getRequest()->getServer('HTTP_X_FORWARDED_FOR'));
+        $login->setUserAgent($this->processor->getHandler()->getHeader()->getHttpUserAgent());
 
         return $login;
     }
@@ -118,9 +94,9 @@ class LoginRepository implements LoginRepositoryInterface
      * @param string $remark
      * @return bool
      */
-    public function addLog($status, $type, $remark = '')
+    public function addLog($status, $type, string $remark = ''): bool
     {
-        $login = $this->_initLoginActivity();
+        $login = $this->initLoginActivity();
 
         $login->setStatus($status);
         $login->setType($type);
@@ -134,7 +110,7 @@ class LoginRepository implements LoginRepositoryInterface
      * Track login success log
      * @return void
      */
-    public function addSuccessLog()
+    public function addSuccessLog(): void
     {
         $this->addLog(self::LOGIN_SUCCESS, 'Login');
     }
@@ -142,8 +118,9 @@ class LoginRepository implements LoginRepositoryInterface
     /**
      * Track login fail log
      * @param string $remark
+     * @return void
      */
-    public function addFailedLog($remark = '')
+    public function addFailedLog(string $remark = ''): void
     {
         $this->addLog(self::LOGIN_FAILED, 'Login', $remark);
     }
@@ -152,7 +129,7 @@ class LoginRepository implements LoginRepositoryInterface
      * Track logout success log
      * @return void
      */
-    public function addLogoutLog()
+    public function addLogoutLog(): void
     {
         $this->addLog(self::LOGIN_SUCCESS, 'Logout');
     }
@@ -160,9 +137,9 @@ class LoginRepository implements LoginRepositoryInterface
     /**
      * Get all admin activity data before date
      * @param $endDate
-     * @return $this
+     * @return Collection
      */
-    public function getListBeforeDate($endDate)
+    public function getListBeforeDate($endDate): Collection
     {
         $collection = $this->collectionFactory->create()
             ->addFieldToSelect('entity_id')

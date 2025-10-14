@@ -26,11 +26,6 @@ use MageOS\AdminActivityLog\Helper\Data as Helper;
 class ActionTypeColumn extends Column
 {
     /**
-     * @var Helper
-     */
-    private $helper;
-
-    /**
      * ActionTypeColumn constructor.
      * @param ContextInterface $context
      * @param UiComponentFactory $uiComponentFactory
@@ -41,11 +36,10 @@ class ActionTypeColumn extends Column
     public function __construct(
         ContextInterface $context,
         UiComponentFactory $uiComponentFactory,
-        Helper $helper,
+        protected readonly Helper $helper,
         array $components = [],
         array $data = []
     ) {
-        $this->helper = $helper;
         parent::__construct($context, $uiComponentFactory, $components, $data);
     }
 
@@ -54,7 +48,7 @@ class ActionTypeColumn extends Column
      * @param array $dataSource
      * @return array
      */
-    public function prepareDataSource(array $dataSource)
+    public function prepareDataSource(array $dataSource): array
     {
         if (isset($dataSource['data']['items'])) {
             foreach ($dataSource['data']['items'] as & $item) {

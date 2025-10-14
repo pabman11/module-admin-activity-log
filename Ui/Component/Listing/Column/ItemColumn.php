@@ -28,15 +28,12 @@ use Magento\Ui\Component\Listing\Columns\Column;
  */
 class ItemColumn extends Column
 {
-    /**
-     * @var int
-     */
     public const URL_COUNT = 7;
 
     /**
      * @var array
      */
-    private $allowedAttributes = [
+    protected $allowedAttributes = [
         'href',
         'title',
         'id',
@@ -45,22 +42,8 @@ class ItemColumn extends Column
         'target'
     ];
 
-    /**
-     * Escaper
-     * @var Escaper
-     */
-    private $escaper;
-
-    /**
-     * @var UrlInterface
-     */
-    private $backendUrl;
-
-    /**
-     * Filter manager
-     * @var FilterManager
-     */
-    private $filterManager;
+    protected readonly Escaper $escaper;
+    protected readonly FilterManager $filterManager;
 
     /**
      * ItemColumn constructor.
@@ -75,12 +58,11 @@ class ItemColumn extends Column
         ContextInterface $context,
         Context $contexts,
         UiComponentFactory $uiComponentFactory,
-        UrlInterface $backendUrl,
+        protected readonly UrlInterface $backendUrl,
         array $components,
         array $data
     ) {
         $this->escaper = $contexts->getEscaper();
-        $this->backendUrl = $backendUrl;
         $this->filterManager = $contexts->getFilterManager();
         parent::__construct($context, $uiComponentFactory, $components, $data);
     }
@@ -91,7 +73,7 @@ class ItemColumn extends Column
      * @param array|null $allowedTags
      * @return string
      */
-    public function escapeHtml($data, $allowedTags = null)
+    public function escapeHtml($data, ?array $allowedTags = null): string
     {
         return $this->escaper->escapeHtml($data, $allowedTags);
     }
@@ -100,7 +82,7 @@ class ItemColumn extends Column
      * Render block HTML
      * @return string
      */
-    public function _toHtml()
+    public function _toHtml(): string
     {
         $length = 30;
         $itemName = $this->filterManager->truncate(
@@ -114,7 +96,7 @@ class ItemColumn extends Column
      * Prepare link attributes as serialized and formatted string
      * @return string
      */
-    public function getLinkAttributes()
+    public function getLinkAttributes(): string
     {
         $attributes = [];
         foreach ($this->allowedAttributes as $attribute) {
@@ -139,7 +121,7 @@ class ItemColumn extends Column
      * @param string $quote
      * @return  string
      */
-    public function serialize($keys = [], $valueSeparator = '=', $fieldSeparator = ' ', $quote = '"')
+    public function serialize($keys = [], $valueSeparator = '=', $fieldSeparator = ' ', $quote = '"'): string
     {
         $data = [];
         foreach ($keys as $key => $value) {
@@ -150,10 +132,10 @@ class ItemColumn extends Column
 
     /**
      * Convert action to url
-     * @param $url
+     * @param string $url
      * @return string
      */
-    public function prepareUrl($url)
+    public function prepareUrl(string $url): string
     {
         if (current(explode('/', $url)) == 'theme' && count(explode('/', $url)) == self::URL_COUNT) {
             list($module, $controller, $action, $scope, $store, $field, $id) = explode('/', $url);
@@ -175,9 +157,10 @@ class ItemColumn extends Column
 
     /**
      * Initialize parameter for link
+     * @param array $item
      * @return void
      */
-    public function __initLinkParams($item)
+    protected function initLinkParams(array $item): void
     {
         $this->setHref($this->prepareUrl($item['item_url']));
         $this->setTitle($item['item_name']);
@@ -190,12 +173,12 @@ class ItemColumn extends Column
      * @param array $dataSource
      * @return array
      */
-    public function prepareDataSource(array $dataSource)
+    public function prepareDataSource(array $dataSource): array
     {
         if (isset($dataSource['data']['items'])) {
             foreach ($dataSource['data']['items'] as & $item) {
                 if (!empty($item['item_url'])) {
-                    $this->__initLinkParams($item);
+                    $this->initLinkParams($item);
                     $item[$this->getData('name')] = $this->_toHtml();
                 }
             }

@@ -24,22 +24,19 @@ use Magento\Framework\Module\Dir\Reader;
  */
 class SchemaLocator implements SchemaLocatorInterface
 {
-    /**
-     * XML schema for config file.
-     */
     public const CONFIG_FILE_SCHEMA = 'adminactivity.xsd';
 
     /**
      * Path to corresponding XSD file with validation rules for merged config
      * @var string
      */
-    private $schema;
+    protected readonly string $schema;
 
     /**
      * Path to corresponding XSD file with validation rules for separate config files
      * @var string
      */
-    private $perFileSchema;
+    protected readonly string $perFileSchema;
 
     /**
      * SchemaLocator constructor.
@@ -56,7 +53,7 @@ class SchemaLocator implements SchemaLocatorInterface
      * Get schema
      * @return string
      */
-    public function getSchema()
+    public function getSchema(): string
     {
         return $this->schema;
     }
@@ -65,7 +62,7 @@ class SchemaLocator implements SchemaLocatorInterface
      * Get file schema
      * @return string
      */
-    public function getPerFileSchema()
+    public function getPerFileSchema(): string
     {
         return $this->perFileSchema;
     }

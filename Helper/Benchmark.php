@@ -28,22 +28,17 @@ class Benchmark extends AbstractHelper
     /**
      * Get Benchmark is enable or not
      */
-    public const BENCHMARK_ENABLE = 0;
-
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
+    protected const BENCHMARK_ENABLE = false;
 
     /**
      * @var String[] Start time of execution
      */
-    private $startTime;
+    private $startTime = [];
 
     /**
      * @var String[] End time of execution
      */
-    private $endTime;
+    private $endTime = [];
 
     /**
      * Benchmark constructor.
@@ -52,9 +47,8 @@ class Benchmark extends AbstractHelper
      */
     public function __construct(
         Context $context,
-        LoggerInterface $logger
+        protected LoggerInterface $logger
     ) {
-        $this->logger = $logger;
         parent::__construct($context);
     }
 

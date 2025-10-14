@@ -31,21 +31,15 @@ class Index extends Action
     public const ADMIN_RESOURCE = 'MageOS_AdminActivityLog::login_activity';
 
     /**
-     * @var PageFactory
-     */
-    private $resultPageFactory;
-
-    /**
      * Index constructor.
      * @param Context $context
      * @param PageFactory $resultPageFactory
      */
     public function __construct(
         Context $context,
-        PageFactory $resultPageFactory
+        protected readonly PageFactory $resultPageFactory
     ) {
         parent::__construct($context);
-        $this->resultPageFactory = $resultPageFactory;
     }
 
     /**

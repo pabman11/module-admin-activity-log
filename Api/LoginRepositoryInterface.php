@@ -14,6 +14,9 @@
 
 namespace MageOS\AdminActivityLog\Api;
 
+use Magento\User\Model\User;
+use MageOS\AdminActivityLog\Model\ResourceModel\Login\Collection;
+
 /**
  * Interface LoginRepositoryInterface
  * @package MageOS\AdminActivityLog\Api
@@ -24,21 +27,21 @@ interface LoginRepositoryInterface
      * Set login data
      * @param $status
      * @param $type
-     * @return mixed
+     * @return bool
      */
-    public function addLog($status, $type);
+    public function addLog($status, $type): bool;
 
     /**
      * Get all admin activity data before date
      * @param $endDate
-     * @return mixed
+     * @return Collection
      */
-    public function getListBeforeDate($endDate);
+    public function getListBeforeDate($endDate): Collection;
 
     /**
      * Set login user
-     * @param $user
-     * @return mixed
+     * @param User $user
+     * @return LoginRepositoryInterface
      */
-    public function setUser($user);
+    public function setUser($user): LoginRepositoryInterface;
 }

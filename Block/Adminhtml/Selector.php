@@ -26,7 +26,7 @@ class Selector extends Template
      * Revert Activity Log action URL
      * @return string
      */
-    public function getRevertUrl()
+    public function getRevertUrl(): string
     {
         return $this->getUrl('adminactivity/activity/revert');
     }

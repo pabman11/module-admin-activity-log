@@ -21,6 +21,7 @@ use Magento\Framework\App\ResponseInterface;
 use MageOS\AdminActivityLog\Model\Activity;
 use MageOS\AdminActivityLog\Model\ActivityLog;
 use MageOS\AdminActivityLog\Model\ActivityLogDetail;
+use MageOS\AdminActivityLog\Model\Processor;
 
 /**
  * Class PostDispatch
@@ -28,30 +29,6 @@ use MageOS\AdminActivityLog\Model\ActivityLogDetail;
  */
 class PostDispatch
 {
-    /**
-     * Request
-     *
-     * @var RequestInterface
-     */
-    private $request;
-
-    /**
-     * Response
-     *
-     * @var ResponseInterface
-     */
-    private $response;
-
-    /**
-     * @var ProductRepositoryInterface
-     */
-    private $productRepository;
-
-    /**
-     * @var Session
-     */
-    private $session;
-
     /**
      * PostDispatch constructor.
      *
@@ -61,22 +38,18 @@ class PostDispatch
      * @param Session $session
      */
     public function __construct(
-        RequestInterface $request,
-        ResponseInterface $response,
-        ProductRepositoryInterface $productRepository,
-        Session $session
+        protected readonly RequestInterface $request,
+        protected readonly ResponseInterface $response,
+        protected readonly ProductRepositoryInterface $productRepository,
+        protected readonly Session $session
     ) {
-        $this->request = $request;
-        $this->response = $response;
-        $this->productRepository = $productRepository;
-        $this->session = $session;
     }
 
     /**
-     * @param $model
+     * @param DataObject $model
      * @return array
      */
-    public function getProductAttributes($model)
+    public function getProductAttributes(DataObject $model): array
     {
         $logData = [];
         $status = $this->request->getParam('status', '');
@@ -128,12 +101,13 @@ class PostDispatch
 
     /**
      * Set product update activity log
-     * @param $config
-     * @param $processor
+     * @param array $config
+     * @param Processor $processor
+     * @return void
      */
-    public function productUpdate($config, $processor)
+    public function productUpdate(array $config, Processor $processor): void
     {
-        $activity = $processor->_initLog();
+        $activity = $processor->initLog();
         $activity->setIsRevertable(1);
 
         $selected = $this->request->getParam('selected');
@@ -145,17 +119,19 @@ class PostDispatch
                 $model = $this->productRepository->getById($id);
 
                 $log = clone $activity;
-                $log->setItemName($model->getData($processor->config->getActivityModuleItemField($config['module'])));
+                $log->setItemName(
+                    $model->getData($processor->getConfig()->getActivityModuleItemField($config['module']))
+                );
                 $log->setItemUrl($processor->getEditUrl($model));
 
-                $logData = $processor->handler->__initLog($this->getProductAttributes($model));
+                $logData = $processor->getHandler()->initLog($this->getProductAttributes($model));
                 $logDetail = $processor->_initActivityDetail($model);
 
-                $processor->activityLogs[] = [
+                $processor->addActivityLog([
                     Activity::class => $log,
                     ActivityLog::class => $logData,
-                    ActivityLogDetail::class => $logDetail
-                ];
+                    ActivityLogDetail::class => $logDetail,
+                ]);
             }
         }
     }

@@ -26,11 +26,6 @@ use MageOS\AdminActivityLog\Helper\Browser;
 class BrowserColumn extends Column
 {
     /**
-     * @var Browser
-     */
-    private $browser;
-
-    /**
      * BrowserColumn constructor.
      * @param ContextInterface $context
      * @param UiComponentFactory $uiComponentFactory
@@ -41,20 +36,19 @@ class BrowserColumn extends Column
     public function __construct(
         ContextInterface $context,
         UiComponentFactory $uiComponentFactory,
-        Browser $browser,
+        protected readonly Browser $browser,
         array $components,
         array $data
     ) {
         parent::__construct($context, $uiComponentFactory, $components, $data);
-        $this->browser = $browser;
     }
 
     /**
      * Get user agent data
-     * @param $item
+     * @param array $item
      * @return string
      */
-    public function getAgent($item)
+    public function getAgent(array $item): string
     {
         $this->browser->reset();
         $this->browser->setUserAgent($item['user_agent']);
@@ -66,7 +60,7 @@ class BrowserColumn extends Column
      * @param array $dataSource
      * @return array
      */
-    public function prepareDataSource(array $dataSource)
+    public function prepareDataSource(array $dataSource): array
     {
         if (isset($dataSource['data']['items'])) {
             foreach ($dataSource['data']['items'] as & $item) {

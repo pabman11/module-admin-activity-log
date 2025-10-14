@@ -25,26 +25,14 @@ use MageOS\AdminActivityLog\Model\Processor;
 class Action
 {
     /**
-     * @var Processor
-     */
-    private $processor;
-
-    /**
-     * @var Benchmark
-     */
-    private $benchmark;
-
-    /**
      * Action constructor.
      * @param Processor $processor
      * @param Benchmark $benchmark
      */
     public function __construct(
-        Processor $processor,
-        Benchmark $benchmark
+        protected readonly Processor $processor,
+        protected readonly Benchmark $benchmark
     ) {
-        $this->processor = $processor;
-        $this->benchmark = $benchmark;
     }
 
     /**
@@ -53,7 +41,7 @@ class Action
      * @param ActionInterface $controller
      * @return void
      */
-    public function beforeDispatch(ActionInterface $controller)
+    public function beforeDispatch(ActionInterface $controller): void
     {
         $this->benchmark->start(__METHOD__);
         $actionName = $controller->getRequest()->getActionName();

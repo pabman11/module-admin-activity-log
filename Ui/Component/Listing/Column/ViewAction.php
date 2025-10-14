@@ -28,16 +28,6 @@ use Magento\Ui\Component\Listing\Columns\Column;
 class ViewAction extends Column
 {
     /**
-     * @var UrlInterface
-     */
-    private $urlBuilder;
-
-    /**
-     * @var LayoutInterface
-     */
-    private $layout;
-
-    /**
      * ViewAction constructor.
      * @param ContextInterface $context
      * @param UiComponentFactory $uiComponentFactory
@@ -49,13 +39,11 @@ class ViewAction extends Column
     public function __construct(
         ContextInterface $context,
         UiComponentFactory $uiComponentFactory,
-        UrlInterface $urlBuilder,
-        LayoutInterface $layout,
+        protected readonly UrlInterface $urlBuilder,
+        protected readonly LayoutInterface $layout,
         array $components = [],
         array $data = []
     ) {
-        $this->urlBuilder = $urlBuilder;
-        $this->layout = $layout;
         parent::__construct($context, $uiComponentFactory, $components, $data);
     }
 
@@ -63,7 +51,7 @@ class ViewAction extends Column
      * Get item url
      * @return string
      */
-    public function getViewUrl()
+    public function getViewUrl(): string
     {
         return $this->urlBuilder->getUrl(
             $this->getData('config/viewUrlPath')
@@ -75,7 +63,7 @@ class ViewAction extends Column
      * @param array $dataSource
      * @return array
      */
-    public function prepareDataSource(array $dataSource)
+    public function prepareDataSource(array $dataSource): array
     {
         if (isset($dataSource['data']['items'])) {
             foreach ($dataSource['data']['items'] as & $item) {

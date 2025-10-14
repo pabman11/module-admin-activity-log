@@ -14,6 +14,8 @@
 
 namespace MageOS\AdminActivityLog\Api\Activity;
 
+use Magento\Framework\DataObject;
+
 /**
  * Interface ModelInterface
  * @package MageOS\AdminActivityLog\Api\Activity
@@ -22,16 +24,16 @@ interface ModelInterface
 {
     /**
      * Get old data
-     * @param $model
+     * @param DataObject $model
      * @return mixed
      */
-    public function getOldData($model);
+    public function getOldData(DataObject $model);
 
     /**
      * Get edit data
-     * @param $model
+     * @param DataObject $model
      * @param $fieldArray
      * @return mixed
      */
-    public function getEditData($model, $fieldArray);
+    public function getEditData(DataObject $model, $fieldArray);
 }

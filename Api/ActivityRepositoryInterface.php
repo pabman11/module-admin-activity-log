@@ -14,6 +14,12 @@
 
 namespace MageOS\AdminActivityLog\Api;
 
+use Magento\Framework\DataObject;
+use MageOS\AdminActivityLog\Model\Activity;
+use MageOS\AdminActivityLog\Model\ActivityLogDetail;
+use MageOS\AdminActivityLog\Model\ResourceModel\Activity\Collection;
+use MageOS\AdminActivityLog\Model\ResourceModel\ActivityLog\Collection as ActivityLogCollection;
+
 /**
  * Interface ActivityRepositoryInterface
  * @package MageOS\AdminActivityLog\Api
@@ -22,69 +28,69 @@ interface ActivityRepositoryInterface
 {
     /**
      * Array of protected fields
-     * @return mixed
+     * @return array
      */
-    public function protectedFields();
+    public function protectedFields(): array;
 
     /**
      * Get collection of admin activity
-     * @return mixed
+     * @return Collection
      */
     public function getList();
 
     /**
      * Get all admin activity data before date
      * @param $endDate
-     * @return mixed
+     * @return Collection
      */
     public function getListBeforeDate($endDate);
 
     /**
      * Remove activity log entry
-     * @param $activityId
-     * @return mixed
+     * @param int $activityId
+     * @return void
      */
-    public function deleteActivityById($activityId);
+    public function deleteActivityById($activityId): void;
 
     /**
      * Get all admin activity detail by activity id
-     * @param $activityId
-     * @return mixed
+     * @param int $activityId
+     * @return ActivityLogDetail
      */
-    public function getActivityDetail($activityId);
+    public function getActivityDetail($activityId): ActivityLogDetail;
 
     /**
      * Get all admin activity log by activity id
-     * @param $activityId
-     * @return mixed
+     * @param int $activityId
+     * @return ActivityLogCollection
      */
-    public function getActivityLog($activityId);
+    public function getActivityLog($activityId): ActivityLogCollection;
 
     /**
      * Revert last changes made in module
-     * @param $activity
-     * @return mixed
+     * @param Activity $activity
+     * @return bool
      */
-    public function revertActivity($activity);
+    public function revertActivity(Activity $activity): bool;
 
     /**
      * Get old data for system config module
-     * @param $model
+     * @param DataObject $model
      * @return mixed
      */
-    public function getOldData($model);
+    public function getOldData(DataObject $model);
 
     /**
      * Get admin activity by id
-     * @param $activityId
-     * @return mixed
+     * @param int $activityId
+     * @return Activity
      */
-    public function getActivityById($activityId);
+    public function getActivityById($activityId): Activity;
 
     /**
      * Check field is protected or not
-     * @param $fieldName
-     * @return mixed
+     * @param string $fieldName
+     * @return bool
      */
-    public function isFieldProtected($fieldName);
+    public function isFieldProtected(string $fieldName): bool;
 }

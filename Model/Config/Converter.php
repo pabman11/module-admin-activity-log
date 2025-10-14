@@ -30,7 +30,7 @@ class Converter implements ConverterInterface
      * @param DOMDocument $source
      * @return array
      */
-    public function convert($source)
+    public function convert(DOMDocument $source): array
     {
         $result = ['config' => []];
         $xpath = new DOMXPath($source);
@@ -50,7 +50,7 @@ class Converter implements ConverterInterface
      * @param DOMXPath $xpath
      * @return array
      */
-    public function getActions($xpath)
+    protected function getActions($xpath): array
     {
         $result = [];
         $actions = $xpath->query('/config/actions/action');
@@ -74,7 +74,7 @@ class Converter implements ConverterInterface
      * @param $moduleId
      * @return array
      */
-    public function processModule($module, $moduleId)
+    protected function processModule($module, $moduleId): array
     {
         $result = [];
         foreach ($module->childNodes as $params) {
@@ -100,7 +100,7 @@ class Converter implements ConverterInterface
      * @param $events
      * @return array
      */
-    public function processModels($events)
+    protected function processModels($events): array
     {
         $result = [];
         foreach ($events->childNodes as $event) {
@@ -118,7 +118,7 @@ class Converter implements ConverterInterface
      * @param $moduleId
      * @return array
      */
-    public function processEvents($events, $moduleId)
+    protected function processEvents($events, $moduleId): array
     {
         $result = [];
         foreach ($events->childNodes as $event) {
@@ -144,7 +144,7 @@ class Converter implements ConverterInterface
      * @param $configs
      * @return array
      */
-    public function processConfig($configs)
+    protected function processConfig($configs): array
     {
         $result = [];
         foreach ($configs->childNodes as $config) {

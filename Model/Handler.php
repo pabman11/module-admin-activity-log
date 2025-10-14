@@ -15,6 +15,7 @@
 namespace MageOS\AdminActivityLog\Model;
 
 use Magento\Framework\App\Request\Http;
+use Magento\Framework\DataObject;
 use Magento\Framework\HTTP\Header;
 use Magento\Framework\UrlInterface;
 use MageOS\AdminActivityLog\Helper\TrackField as Helper;
@@ -26,31 +27,6 @@ use MageOS\AdminActivityLog\Helper\TrackField as Helper;
 class Handler
 {
     /**
-     * @var Helper
-     */
-    private $helper;
-
-    /**
-     * @var Header
-     */
-    private $header;
-
-    /**
-     * @var Http
-     */
-    private $request;
-
-    /**
-     * @var UrlInterface
-     */
-    private $urlInterface;
-
-    /**
-     * @var ActivityLogFactory
-     */
-    private $activityLogFactory;
-
-    /**
      * Handler constructor.
      * @param Helper $helper
      * @param Header $header
@@ -59,25 +35,20 @@ class Handler
      * @param ActivityLogFactory $activityLogFactory
      */
     public function __construct(
-        Helper $helper,
-        Header $header,
-        Http $request,
-        UrlInterface $urlInterface,
-        ActivityLogFactory $activityLogFactory
+        protected readonly Helper $helper,
+        protected readonly Header $header,
+        protected readonly Http $request,
+        protected readonly UrlInterface $urlInterface,
+        protected readonly ActivityLogFactory $activityLogFactory
     ) {
-        $this->helper = $helper;
-        $this->header = $header;
-        $this->request = $request;
-        $this->urlInterface = $urlInterface;
-        $this->activityLogFactory = $activityLogFactory;
     }
 
     /**
      * Set log data
-     * @param $logs
-     * @return mixed
+     * @param array $logs
+     * @return ActivityLog[]
      */
-    public function initLog($logs)
+    public function initLog(array $logs): array
     {
         if (!empty($logs)) {
             foreach ($logs as $field => $value) {
@@ -91,11 +62,11 @@ class Handler
 
     /**
      * Get add activity log data
-     * @param $model
-     * @param $method
-     * @return mixed
+     * @param DataObject $model
+     * @param string $method
+     * @return array
      */
-    public function modelAdd($model, $method)
+    public function modelAdd(DataObject $model, string $method): array
     {
         return $this->initLog(
             $this->helper->getAddData($model, $method)
@@ -104,11 +75,11 @@ class Handler
 
     /**
      * Get edit activity log data
-     * @param $model
-     * @param $method
-     * @return mixed
+     * @param DataObject $model
+     * @param string $method
+     * @return array
      */
-    public function modelEdit($model, $method)
+    public function modelEdit(DataObject $model, string $method): array
     {
         return $this->initLog(
             $this->helper->getEditData($model, $method)
@@ -117,11 +88,11 @@ class Handler
 
     /**
      * Get delete activity log data
-     * @param $model
-     * @param $method
-     * @return mixed
+     * @param DataObject $model
+     * @param string $method
+     * @return array
      */
-    public function modelDelete($model, $method)
+    public function modelDelete(DataObject $model, string $method): array
     {
         return $this->initLog(
             $this->helper->getDeleteData($model, $method)

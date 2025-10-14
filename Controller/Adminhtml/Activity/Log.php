@@ -28,16 +28,6 @@ use MageOS\AdminActivityLog\Block\Adminhtml\ActivityLogListing;
 class Log extends Action
 {
     /**
-     * @var RawFactory
-     */
-    private $resultRawFactory;
-
-    /**
-     * @var LayoutFactory
-     */
-    private $layoutFactory;
-
-    /**
      * Log constructor.
      * @param Context $context
      * @param RawFactory $resultRawFactory
@@ -45,18 +35,15 @@ class Log extends Action
      */
     public function __construct(
         Context $context,
-        RawFactory $resultRawFactory,
-        LayoutFactory $layoutFactory
+        protected readonly RawFactory $resultRawFactory,
+        protected readonly LayoutFactory $layoutFactory
     ) {
-        $this->resultRawFactory = $resultRawFactory;
-        $this->layoutFactory = $layoutFactory;
-
         parent::__construct($context);
     }
 
     /**
      * view action
-     * @return $this
+     * @return Raw
      */
     public function execute()
     {

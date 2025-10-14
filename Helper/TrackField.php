@@ -16,6 +16,7 @@ namespace MageOS\AdminActivityLog\Helper;
 
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
+use Magento\Framework\DataObject;
 use MageOS\AdminActivityLog\Model\Activity\SystemConfig;
 use MageOS\AdminActivityLog\Model\Activity\ThemeConfig;
 
@@ -25,30 +26,9 @@ use MageOS\AdminActivityLog\Model\Activity\ThemeConfig;
  */
 class TrackField extends AbstractHelper
 {
-    /**
-     * @var string;
-     */
     public const SYSTEM_METHOD = 'getSystemConfigFieldData';
-
-    /**
-     * @var string;
-     */
     public const THEME_METHOD = 'getThemeConfigFieldData';
-
-    /**
-     * @var string;
-     */
     public const PRODUCT_METHOD = 'getProductFieldData';
-
-    /**
-     * @var SystemConfig
-     */
-    private $systemConfig;
-
-    /**
-     * @var ThemeConfig
-     */
-    private $themeConfig;
 
     /**
      * TrackField constructor.
@@ -58,19 +38,17 @@ class TrackField extends AbstractHelper
      */
     public function __construct(
         Context $context,
-        SystemConfig $systemConfig,
-        ThemeConfig $themeConfig
+        protected readonly SystemConfig $systemConfig,
+        protected readonly ThemeConfig $themeConfig
     ) {
         parent::__construct($context);
-        $this->systemConfig = $systemConfig;
-        $this->themeConfig = $themeConfig;
     }
 
     /**
      * Get product module fields
      * @return array
      */
-    public function getProductFieldData()
+    public function getProductFieldData(): array
     {
         return [
             'form_key',
@@ -99,7 +77,7 @@ class TrackField extends AbstractHelper
      * Get category module fields
      * @return array
      */
-    public function getCategoryFieldData()
+    public function getCategoryFieldData(): array
     {
         return [
             'form_key',
@@ -112,7 +90,7 @@ class TrackField extends AbstractHelper
      * Get customer module fields
      * @return array
      */
-    public function getCustomerFieldData()
+    public function getCustomerFieldData(): array
     {
         return [
             'id',
@@ -137,7 +115,7 @@ class TrackField extends AbstractHelper
      * Get customer group modules fields
      * @return array
      */
-    public function getCustomerGroupFieldData()
+    public function getCustomerGroupFieldData(): array
     {
         return [
             'customer_group_id',
@@ -149,7 +127,7 @@ class TrackField extends AbstractHelper
      * Get catalog promotion modules fields
      * @return array
      */
-    public function getCatalogPromotionFieldData()
+    public function getCatalogPromotionFieldData(): array
     {
         return [
             'rule_id',
@@ -162,7 +140,7 @@ class TrackField extends AbstractHelper
      * Get cart promotion modules fields
      * @return array
      */
-    public function getCartPromotionFieldData()
+    public function getCartPromotionFieldData(): array
     {
         return [
             'is_rss',
@@ -176,7 +154,7 @@ class TrackField extends AbstractHelper
      * Get email modules fields
      * @return array
      */
-    public function getEmailFieldData()
+    public function getEmailFieldData(): array
     {
         return [
             'template_id',
@@ -196,7 +174,7 @@ class TrackField extends AbstractHelper
      * Get page modules fields
      * @return array
      */
-    public function getPageFieldData()
+    public function getPageFieldData(): array
     {
         return [
             'page_id',
@@ -211,7 +189,7 @@ class TrackField extends AbstractHelper
      * Get block modules fields
      * @return array
      */
-    public function getBlockFieldData()
+    public function getBlockFieldData(): array
     {
         return [
             'block_id',
@@ -225,7 +203,7 @@ class TrackField extends AbstractHelper
      * Get widget modules fields
      * @return array
      */
-    public function getWidgetFieldData()
+    public function getWidgetFieldData(): array
     {
         return [
             'check_if_is_new',
@@ -237,7 +215,7 @@ class TrackField extends AbstractHelper
      * Get theme configuration field data
      * @return array
      */
-    public function getThemeConfigFieldData()
+    public function getThemeConfigFieldData(): array
     {
         return [
             'back',
@@ -252,7 +230,7 @@ class TrackField extends AbstractHelper
      * Get theme schedule field data
      * @return array
      */
-    public function getThemeScheduleFieldData()
+    public function getThemeScheduleFieldData(): array
     {
         return [
             'store_id',
@@ -264,7 +242,7 @@ class TrackField extends AbstractHelper
      * Get system config field data
      * @return array
      */
-    public function getSystemConfigFieldData()
+    public function getSystemConfigFieldData(): array
     {
         return [
             'check_if_is_new',
@@ -275,7 +253,7 @@ class TrackField extends AbstractHelper
      * Get attribute modules fields
      * @return array
      */
-    public function getAttributeFieldData()
+    public function getAttributeFieldData(): array
     {
         return [
             'form_key',
@@ -290,7 +268,7 @@ class TrackField extends AbstractHelper
      * Get attribute set modules fields
      * @return array
      */
-    public function getAttributeSetFieldData()
+    public function getAttributeSetFieldData(): array
     {
         return [
             'entity_type_id',
@@ -303,7 +281,7 @@ class TrackField extends AbstractHelper
      * Get attribute set modules fields
      * @return array
      */
-    public function getReviewRatingFieldData()
+    public function getReviewRatingFieldData(): array
     {
         return [
             'rating_id',
@@ -315,7 +293,7 @@ class TrackField extends AbstractHelper
      * Get review modules fields
      * @return array
      */
-    public function getReviewFieldData()
+    public function getReviewFieldData(): array
     {
         return [
             'form_key',
@@ -330,7 +308,7 @@ class TrackField extends AbstractHelper
      * Get admin user modules fields
      * @return array
      */
-    public function getAdminUserFieldData()
+    public function getAdminUserFieldData(): array
     {
         return [
             'form_key',
@@ -347,7 +325,7 @@ class TrackField extends AbstractHelper
      * Get admin user role modules fields
      * @return array
      */
-    public function getAdminUserRoleFieldData()
+    public function getAdminUserRoleFieldData(): array
     {
         return [
             'name',
@@ -360,7 +338,7 @@ class TrackField extends AbstractHelper
      * Get order modules fields
      * @return array
      */
-    public function getOrderFieldData()
+    public function getOrderFieldData(): array
     {
         return [
             'check_if_is_new',
@@ -376,7 +354,7 @@ class TrackField extends AbstractHelper
      * Get tax rule modules fields
      * @return array
      */
-    public function getTaxRuleFieldData()
+    public function getTaxRuleFieldData(): array
     {
         return [
             'form_key',
@@ -390,7 +368,7 @@ class TrackField extends AbstractHelper
      * Get tax rate modules fields
      * @return array
      */
-    public function getTaxRateFieldData()
+    public function getTaxRateFieldData(): array
     {
         return [
             'form_key',
@@ -403,7 +381,7 @@ class TrackField extends AbstractHelper
      * Get url rewrites modules fields
      * @return array
      */
-    public function getUrlRewriteFieldData()
+    public function getUrlRewriteFieldData(): array
     {
         return [
             'url_rewrite_id',
@@ -415,7 +393,7 @@ class TrackField extends AbstractHelper
      * Get search term modules fields
      * @return array
      */
-    public function getSearchTermFieldData()
+    public function getSearchTermFieldData(): array
     {
         return [
             'form_key',
@@ -428,7 +406,7 @@ class TrackField extends AbstractHelper
      * Get search synonyms modules fields
      * @return array
      */
-    public function getSearchSynonymsFieldData()
+    public function getSearchSynonymsFieldData(): array
     {
         return [];
     }
@@ -437,7 +415,7 @@ class TrackField extends AbstractHelper
      * Get sitemap modules fields
      * @return array
      */
-    public function getSitemapFieldData()
+    public function getSitemapFieldData(): array
     {
         return [
             'form_key',
@@ -451,7 +429,7 @@ class TrackField extends AbstractHelper
      * Get checkout agreement modules fields
      * @return array
      */
-    public function getCheckoutAgreementFieldData()
+    public function getCheckoutAgreementFieldData(): array
     {
         return [
             'form_key',
@@ -464,7 +442,7 @@ class TrackField extends AbstractHelper
      * Get Order satus modules fields
      * @return array
      */
-    public function getOrderStatusFieldData()
+    public function getOrderStatusFieldData(): array
     {
         return [
             'form_key',
@@ -476,7 +454,7 @@ class TrackField extends AbstractHelper
      * Get System store modules fields
      * @return array
      */
-    public function getSystemStoreFieldData()
+    public function getSystemStoreFieldData(): array
     {
         return [
             'check_if_is_new'
@@ -487,7 +465,7 @@ class TrackField extends AbstractHelper
      * Get integration modules fields
      * @return array
      */
-    public function getIntegrationFieldData()
+    public function getIntegrationFieldData(): array
     {
         return [
             'form_key',
@@ -505,7 +483,7 @@ class TrackField extends AbstractHelper
      * Get Edit fields which will skip
      * @return array
      */
-    public function getSkipEditFieldData()
+    public function getSkipEditFieldData(): array
     {
         return [
             'region_code',
@@ -549,7 +527,7 @@ class TrackField extends AbstractHelper
      * @param $method
      * @return array
      */
-    public function getFields($method)
+    public function getFields($method): array
     {
         $fieldArray = [];
         if (!empty($method) && method_exists($this, $method)) {
@@ -564,7 +542,7 @@ class TrackField extends AbstractHelper
      * @param $method
      * @return array
      */
-    public function getAddData($model, $method)
+    public function getAddData($model, $method): array
     {
         $skipFieldArray = $this->getFields($method);
 
@@ -586,19 +564,19 @@ class TrackField extends AbstractHelper
 
     /**
      * Get edited activity data
-     * @param $model
-     * @param $method
+     * @param DataObject $model
+     * @param string $method
      * @return array
      */
-    public function getEditData($model, $method)
+    public function getEditData(DataObject $model, string $method): array
     {
         $fieldArray = $this->getFields($method);
         $skipFieldArray = $this->getSkipEditFieldData();
 
         if (Data::isWildCardModel($model)) {
-            if ($method == self::SYSTEM_METHOD) {
+            if ($method === self::SYSTEM_METHOD) {
                 return $this->systemConfig->getEditData($model, $fieldArray);
-            } elseif ($method == self::THEME_METHOD) {
+            } elseif ($method === self::THEME_METHOD) {
                 return $this->themeConfig->getEditData($model, $fieldArray);
             }
         }
@@ -628,11 +606,11 @@ class TrackField extends AbstractHelper
 
     /**
      * Get deleted activity data
-     * @param $model
-     * @param $method
+     * @param DataObject $model
+     * @param string $method
      * @return array
      */
-    public function getDeleteData($model, $method)
+    public function getDeleteData(DataObject $model, string $method): array
     {
         $fieldArray = $this->getFields($method);
 
@@ -654,14 +632,14 @@ class TrackField extends AbstractHelper
 
     /**
      * Get wild data
-     * @param $model
-     * @param $method
+     * @param DataObject $model
+     * @param string $method
      * @return array
      */
-    public function getWildCardData($model, $method)
+    public function getWildCardData(DataObject $model, string $method): array
     {
         $logData = [];
-        if ($method == self::PRODUCT_METHOD) {
+        if ($method === self::PRODUCT_METHOD) {
             $newQty = $model->getData('stock_data');
             $oldQty = $model->getOrigData('quantity_and_stock_status');
             if (isset($newQty['qty']) && isset($oldQty['qty']) && $newQty['qty'] != $oldQty['qty']) {
@@ -683,7 +661,7 @@ class TrackField extends AbstractHelper
      * @param $skipFields
      * @return bool
      */
-    public function validateValue($model, $key, $value, $skipFields)
+    public function validateValue($model, $key, $value, $skipFields): bool
     {
         if (is_array($value) || is_object($value) || is_array($model->getOrigData($key))
             || in_array($key, $skipFields)) {

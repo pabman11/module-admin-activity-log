@@ -26,25 +26,7 @@ use MageOS\AdminActivityLog\Model\Processor;
  */
 class DeleteAfter implements ObserverInterface
 {
-    /**
-     * @var string
-     */
     public const SYSTEM_CONFIG = 'adminhtml_system_config_save';
-
-    /**
-     * @var Processor
-     */
-    private $processor;
-
-    /**
-     * @var Helper
-     */
-    public $helper;
-
-    /**
-     * @var Benchmark
-     */
-    public $benchmark;
 
     /**
      * DeleteAfter constructor.
@@ -53,13 +35,10 @@ class DeleteAfter implements ObserverInterface
      * @param Benchmark $benchmark
      */
     public function __construct(
-        Processor $processor,
-        Helper $helper,
-        Benchmark $benchmark
+        protected readonly Processor $processor,
+        protected readonly Helper $helper,
+        protected readonly Benchmark $benchmark
     ) {
-        $this->processor = $processor;
-        $this->helper = $helper;
-        $this->benchmark = $benchmark;
     }
 
     /**

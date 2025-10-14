@@ -27,34 +27,16 @@ use MageOS\AdminActivityLog\Model\Processor;
 class LoadAfter implements ObserverInterface
 {
     /**
-     * @var Processor
-     */
-    private $processor;
-
-    /**
-     * @var Data
-     */
-    private $helper;
-
-    /**
-     * @var Benchmark
-     */
-    private $benchmark;
-
-    /**
      * LoadAfter constructor.
      * @param Processor $processor
      * @param Data $helper
      * @param Benchmark $benchmark
      */
     public function __construct(
-        Processor $processor,
-        Data $helper,
-        Benchmark $benchmark
+        protected readonly Processor $processor,
+        protected readonly Data $helper,
+        protected readonly Benchmark $benchmark
     ) {
-        $this->processor = $processor;
-        $this->helper = $helper;
-        $this->benchmark = $benchmark;
     }
 
     /**
