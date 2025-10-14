@@ -76,7 +76,11 @@ $script = <<<JS
                         }
                     });
                 }
-                jQuery(".action-revert-activity").toggle(revertable);
+                if (revertable) {
+                    jQuery(".action-revert-activity").show();
+                } else {
+                    jQuery(".action-revert-activity").hide();
+                }
                 this.modal.modal('openModal');
                 this.autoResize();
             },
@@ -89,22 +93,22 @@ $script = <<<JS
                         form_key: '{$escaper->escapeJs($block->getFormKey())}'
                     },
                     dataType: 'json',
-                    showLoader: true
-                })
-                    .success((data) => {
+                    showLoader: true,
+                    success: (data) => {
                         if (!data.error) {
                             this.closeDialogWindow(dialogWindow);
                             window.location.reload();
                         } else {
                             this.error(data.message);
                         }
-                    });
+                    }
+                })
             },
             closeDialogWindow: function (dialogWindow) {
                 jQuery('body').trigger('processStop');
                 dialogWindow.closeModal();
-                Windows.overlayShowEffectOptions = this.overlayShowEffectOptions;
-                Windows.overlayHideEffectOptions = this.overlayHideEffectOptions;
+                Window.overlayShowEffectOptions = this.overlayShowEffectOptions;
+                Window.overlayHideEffectOptions = this.overlayHideEffectOptions;
             },
             error: function (message) {
                 jQuery('body').notification('clear')
