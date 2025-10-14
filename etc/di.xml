@@ -32,14 +32,14 @@
 
     <virtualType name="MageOS\AdminActivityLog\Model\ResourceModel\Grid\Activity\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
         <arguments>
-            <argument name="mainTable" xsi:type="string">kiwicommerce_activity</argument>
+            <argument name="mainTable" xsi:type="string">admin_activity</argument>
             <argument name="resourceModel" xsi:type="string">MageOS\AdminActivityLog\Model\ResourceModel\Activity</argument>
         </arguments>
     </virtualType>
 
     <virtualType name="MageOS\AdminActivityLog\Model\ResourceModel\Grid\Login\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
         <arguments>
-            <argument name="mainTable" xsi:type="string">kiwicommerce_login_activity</argument>
+            <argument name="mainTable" xsi:type="string">admin_login_log</argument>
             <argument name="resourceModel" xsi:type="string">MageOS\AdminActivityLog\Model\ResourceModel\Login</argument>
         </arguments>
     </virtualType>

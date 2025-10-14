@@ -82,6 +82,8 @@ class Processor
         '{{id}}'
     ];
 
+    protected $eventConfig;
+
     /**
      * Processor constructor.
      * @param Config $config
