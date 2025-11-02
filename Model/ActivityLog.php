@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * KiwiCommerce
  *
@@ -15,21 +16,55 @@
 namespace MageOS\AdminActivityLog\Model;
 
 use Magento\Framework\Model\AbstractModel;
+use MageOS\AdminActivityLog\Api\Data\ActivityLogInterface;
 
-/**
- * Class Activity
- * @package KiwiCommerce\Activity\Model
- */
-class ActivityLog extends AbstractModel
+class ActivityLog extends AbstractModel implements ActivityLogInterface
 {
     public const ACTIVITYLOG_ID = 'entity_id';
 
-    /**
-     * Initialize resource model
-     * @return void
-     */
-    public function _construct()
+    public function _construct(): void
     {
         $this->_init(ResourceModel\ActivityLog::class);
+    }
+
+    public function getActivityId(): ?int
+    {
+        $value = $this->getData(self::ACTIVITY_ID);
+        return $value === null ? null : (int)$value;
+    }
+
+    public function setActivityId(?int $activityId): ActivityLogInterface
+    {
+        return $this->setData(self::ACTIVITY_ID, $activityId);
+    }
+
+    public function getFieldName(): string
+    {
+        return (string)$this->getData(self::FIELD_NAME);
+    }
+
+    public function setFieldName(string $fieldName): ActivityLogInterface
+    {
+        return $this->setData(self::FIELD_NAME, $fieldName);
+    }
+
+    public function getOldValue(): string
+    {
+        return (string)$this->getData(self::OLD_VALUE);
+    }
+
+    public function setOldValue(string $oldValue): ActivityLogInterface
+    {
+        return $this->setData(self::OLD_VALUE, $oldValue);
+    }
+
+    public function getNewValue(): string
+    {
+        return (string)$this->getData(self::NEW_VALUE);
+    }
+
+    public function setNewValue(string $newValue): ActivityLogInterface
+    {
+        return $this->setData(self::NEW_VALUE, $newValue);
     }
 }

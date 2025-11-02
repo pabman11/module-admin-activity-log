@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * KiwiCommerce
  *
@@ -15,21 +16,65 @@
 namespace MageOS\AdminActivityLog\Model;
 
 use Magento\Framework\Model\AbstractModel;
+use MageOS\AdminActivityLog\Api\Data\ActivityLogDetailInterface;
 
-/**
- * Class ActivityLogDetail
- * @package MageOS\AdminActivityLog\Model
- */
-class ActivityLogDetail extends AbstractModel
+class ActivityLogDetail extends AbstractModel implements ActivityLogDetailInterface
 {
     public const ACTIVITYLOGDETAIL_ID = 'entity_id';
 
-    /**
-     * Initialize resource model
-     * @return void
-     */
-    public function _construct()
+    public function _construct(): void
     {
         $this->_init(ResourceModel\ActivityLogDetail::class);
+    }
+
+    public function getActivityId(): int
+    {
+        return (int)$this->getData(self::ACTIVITY_ID);
+    }
+
+    public function setActivityId(int $activityId): ActivityLogDetailInterface
+    {
+        return $this->setData(self::ACTIVITY_ID, $activityId);
+    }
+
+    public function getModelClass(): string
+    {
+        return (string)$this->getData(self::MODEL_CLASS);
+    }
+
+    public function setModelClass(string $modelClass): ActivityLogDetailInterface
+    {
+        return $this->setData(self::MODEL_CLASS, $modelClass);
+    }
+
+    public function getItemId(): ?int
+    {
+        $value = $this->getData(self::ITEM_ID);
+        return $value === null ? null : (int)$value;
+    }
+
+    public function setItemId(?int $itemId): ActivityLogDetailInterface
+    {
+        return $this->setData(self::ITEM_ID, $itemId);
+    }
+
+    public function getStatus(): string
+    {
+        return (string)$this->getData(self::STATUS);
+    }
+
+    public function setStatus(string $status): ActivityLogDetailInterface
+    {
+        return $this->setData(self::STATUS, $status);
+    }
+
+    public function getResponse(): string
+    {
+        return (string)$this->getData(self::RESPONSE);
+    }
+
+    public function setResponse(string $response): ActivityLogDetailInterface
+    {
+        return $this->setData(self::RESPONSE, $response);
     }
 }
