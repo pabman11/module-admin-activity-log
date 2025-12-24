@@ -362,7 +362,7 @@ class Processor
         $activity->setItemName(
             $model->getData(
                 $this->config->getActivityModuleItemField($this->eventConfig['module'])
-            )
+            ) ?? ''
         );
         $activity->setItemUrl($this->getEditUrl($model));
 
