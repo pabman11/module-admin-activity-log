@@ -20,6 +20,7 @@ use Magento\Framework\App\Request\Http;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\HTTP\PhpEnvironment\RemoteAddress;
 use Magento\Framework\Message\ManagerInterface;
+use Magento\Framework\Phrase;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Store\Model\StoreManagerInterface;
 use MageOS\AdminActivityLog\Api\ActivityRepositoryInterface;
@@ -125,11 +126,8 @@ class Processor
 
     /**
      * Get and set event config from full action name
-     * @param $fullActionName
-     * @param $actionName
-     * @return $this
      */
-    public function init($fullActionName, $actionName)
+    public function init(string $fullActionName, string $actionName): static
     {
         $this->actionName = $actionName;
 
@@ -147,9 +145,8 @@ class Processor
     /**
      * Check Model class
      * @param $model
-     * @return bool
      */
-    public function validate($model)
+    public function validate($model): bool
     {
         if (Helper::isWildCardModel($model)) {
             if (!empty($this->activityLogs)) {
@@ -173,9 +170,8 @@ class Processor
 
     /**
      * Return method name of TrackField class
-     * @return string
      */
-    public function getMethod()
+    public function getMethod(): string
     {
         return $this->config->getTrackFieldModel($this->eventConfig['module']);
     }
@@ -183,14 +179,13 @@ class Processor
     /**
      * Get item url
      * @param $model
-     * @return string
      */
-    public function getEditUrl($model)
+    public function getEditUrl($model): string|array
     {
         $id = $model->getId();
         if ($this->eventConfig['module'] === self::SALES_ORDER && (!empty($model->getOrderId())
                 || !empty($model->getParentId()))) {
-            $id = ($model->getOrderId()) ? $model->getOrderId() : $model->getParentId();
+            $id = $model->getOrderId() ?: $model->getParentId();
         }
         if ($this->eventConfig['module'] === SystemConfig::MODULE_SYSTEM_CONFIGURATION) {
             $id = $model->getData('field_config')['path'];
@@ -212,9 +207,8 @@ class Processor
     /**
      * Set activity data after item added
      * @param $model
-     * @return $this|bool
      */
-    public function modelAddAfter($model)
+    public function modelAddAfter($model): static
     {
         if ($this->validate($model)) {
             $logData = $this->handler->modelAdd($model, $this->getMethod());
@@ -231,9 +225,8 @@ class Processor
     /**
      * Set activity data after item edited
      * @param $model
-     * @return $this|bool
      */
-    public function modelEditAfter($model)
+    public function modelEditAfter($model): static
     {
         $label = ($this->eventConfig['action'] === self::SAVE_ACTION) ? self::EDIT_ACTION : $this->eventConfig['action'];
         if ($this->validate($model)) {
@@ -253,9 +246,8 @@ class Processor
     /**
      * Set activity data after item deleted
      * @param $model
-     * @return $this|bool
      */
-    public function modelDeleteAfter($model)
+    public function modelDeleteAfter($model): static
     {
         if ($this->validate($model)) {
             $logData = $this->handler->modelDelete($model, $this->getMethod());
@@ -268,6 +260,7 @@ class Processor
                 $this->addLog($activity, $logData, $model);
             }
         }
+
         return $this;
     }
 
@@ -276,9 +269,8 @@ class Processor
      * @param $activity
      * @param $logData
      * @param $model
-     * @return void
      */
-    public function addLog($activity, $logData, $model)
+    public function addLog($activity, $logData, $model): void
     {
         $logDetail = $this->initActivityDetail($model);
         $this->activityLogs[] = [
@@ -290,9 +282,8 @@ class Processor
 
     /**
      * Insert activity log data in database
-     * @return bool
      */
-    public function saveLogs()
+    public function saveLogs(): bool
     {
         try {
             if (!empty($this->activityLogs)) {
@@ -319,7 +310,7 @@ class Processor
                 }
                 $this->activityLogs = [];
             }
-        } catch (Exception $e) {
+        } catch (Exception) {
             return false;
         }
         return true;
@@ -327,9 +318,8 @@ class Processor
 
     /**
      * Set activity details data
-     * @return Activity
      */
-    public function initLog()
+    public function initLog(): Activity
     {
         /** @var Activity $activity */
         $activity = $this->activityFactory->create();
@@ -357,7 +347,7 @@ class Processor
      * @param $model
      * @return bool|Activity
      */
-    public function initActivity($model)
+    public function initActivity($model): false|Activity
     {
         if (!$this->authSession->isLoggedIn()) {
             return false;
@@ -395,7 +385,7 @@ class Processor
     public function initActivityDetail($model)
     {
         $activity = $this->activityDetailFactory->create()
-            ->setModelClass((string)get_class($model))
+            ->setModelClass((string)$model::class)
             ->setItemId((int)$model->getId())
             ->setStatus('success')
             ->setResponse('');
@@ -404,9 +394,8 @@ class Processor
 
     /**
      * Check post dispatch method to track log for mass actions
-     * @return bool
      */
-    public function callPostDispatchCallback()
+    public function callPostDispatchCallback(): bool
     {
         $handler = $this->postDispatch;
         if (isset($this->eventConfig['post_dispatch'])) {
@@ -439,14 +428,14 @@ class Processor
 
             return (int)$storeId;
         }
+
         return $this->storeManager->getStore()->getId();
     }
 
     /**
      * Get scope name
-     * @return string
      */
-    public function getScope()
+    public function getScope(): string
     {
         if ((int)$this->request->getParam('store') === 1 || $this->request->getParam('scope') === 'stores') {
             $scope = 'stores';
@@ -460,10 +449,12 @@ class Processor
 
     /**
      * Revert last changes made in module
-     * @param $activityId
-     * @return array
+     * @return array{
+     *     error: bool,
+     *     message: string|Phrase
+     * }
      */
-    public function revertActivity($activityId)
+    public function revertActivity(int $activityId): array
     {
         $result = [
             'error' => true,
@@ -481,7 +472,7 @@ class Processor
                     $activityModel->save();
 
                     $result['error'] = false;
-                    $this->status->markSuccess((int)$activityId);
+                    $this->status->markSuccess($activityId);
                     $this->messageManager->addSuccessMessage(__('Activity data has been reverted successfully'));
                 }
             }
@@ -495,9 +486,6 @@ class Processor
 
     /**
      * Convert module and action name to user readable format
-     * @param string $name
-     * @param string $delimiter
-     * @return string
      */
     public function escapeString(string $name, string $delimiter = ' '): string
     {
@@ -517,9 +505,6 @@ class Processor
 
     /**
      * Check action to skip
-     * @param string $module
-     * @param string $fullAction
-     * @return bool
      */
     public function isValidAction(string $module, string $fullAction): bool
     {
@@ -532,8 +517,6 @@ class Processor
 
     /**
      * Track page visit history
-     * @param string $module
-     * @return void
      */
     public function addPageVisitLog(string $module): void
     {

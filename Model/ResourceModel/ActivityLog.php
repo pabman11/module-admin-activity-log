@@ -22,11 +22,7 @@ use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
  */
 class ActivityLog extends AbstractDb
 {
-    /**
-     * Initialize resource model
-     * @return void
-     */
-    public function _construct()
+    public function _construct(): void
     {
         $this->_init('admin_activity_log', 'entity_id');
     }

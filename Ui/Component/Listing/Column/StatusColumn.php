@@ -28,7 +28,7 @@ class StatusColumn extends Column
     public function __construct(
         ContextInterface $context,
         UiComponentFactory $uiComponentFactory,
-        private Escaper $escaper,
+        private readonly Escaper $escaper,
         array $components = [],
         array $data = []
     ) {
@@ -37,8 +37,8 @@ class StatusColumn extends Column
 
     /**
      * Prepare Data Source
-     * @param array $dataSource
-     * @return array
+     * @param array<string, mixed> $dataSource
+     * @return array<string, mixed>
      */
     public function prepareDataSource(array $dataSource): array
     {

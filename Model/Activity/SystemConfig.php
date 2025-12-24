@@ -41,10 +41,8 @@ class SystemConfig implements ModelInterface
 
     /**
      * Get config path
-     * @param $model
-     * @return string
      */
-    public function getPath($model): string
+    public function getPath(DataObject $model): string
     {
         if ($model->getData('path')) {
             return current(
@@ -100,10 +98,8 @@ class SystemConfig implements ModelInterface
 
     /**
      * Get old activity data of system config module
-     * @param DataObject $model
-     * @return mixed
      */
-    public function getOldData(DataObject $model)
+    public function getOldData(DataObject $model): DataObject
     {
         $path = $this->getPath($model);
         $systemData = $this->valueFactory->create()->getCollection()->addFieldToFilter(
@@ -112,11 +108,11 @@ class SystemConfig implements ModelInterface
         );
         $data = [];
         foreach ($systemData->getData() as $config) {
-            $splittedPath = explode('/', $config['path']);
+            $splittedPath = explode('/', (string) $config['path']);
             if (count($splittedPath) === 2) {
-                [$group, $field] = explode('/', $config['path']);
+                [$group, $field] = explode('/', (string) $config['path']);
             } else {
-                [$path, $group, $field] = explode('/', $config['path']);
+                [$path, $group, $field] = explode('/', (string) $config['path']);
             }
 
             $data[$group]['fields'][$field]['value'] = $config['value'];
@@ -129,9 +125,12 @@ class SystemConfig implements ModelInterface
      * Get edit activity data of system config module
      * @param DataObject $model
      * @param array $fieldArray
-     * @return mixed
+     * @return array{}|array<string, array{
+     *     old_value: mixed,
+     *     new_value: mixed
+     * }>
      */
-    public function getEditData(DataObject $model, $fieldArray)
+    public function getEditData(DataObject $model, $fieldArray): array
     {
         $logData = [];
 
@@ -172,7 +171,7 @@ class SystemConfig implements ModelInterface
      * @param mixed $scopeId
      * @return bool
      */
-    public function revertData($logData, $scopeId)
+    public function revertData($logData, $scopeId): bool
     {
         if (!empty($logData)) {
             foreach ($logData as $log) {
@@ -193,7 +192,7 @@ class SystemConfig implements ModelInterface
      * @param mixed $newData
      * @return array
      */
-    protected function collectAdditionalData(array $oldData, $newData): array
+    protected function collectAdditionalData(array $oldData, array $newData): array
     {
         $result = [];
         if (!empty($oldData) && is_array($oldData)) {

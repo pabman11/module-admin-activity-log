@@ -27,33 +27,21 @@ use MageOS\AdminActivityLog\Model\Processor;
  */
 class SaveBefore implements ObserverInterface
 {
-    /**
-     * SaveBefore constructor.
-     * @param Helper $helper
-     * @param Processor $processor
-     * @param ActivityRepositoryInterface $activityRepository
-     * @param Benchmark $benchmark
-     */
     public function __construct(
-        protected readonly Helper $helper,
-        protected readonly Processor $processor,
-        protected readonly ActivityRepositoryInterface $activityRepository,
-        protected readonly Benchmark $benchmark
+        private readonly Helper $helper,
+        private readonly Processor $processor,
+        private readonly ActivityRepositoryInterface $activityRepository,
+        private readonly Benchmark $benchmark
     ) {
     }
 
-    /**
-     * Save before
-     * @param Observer $observer
-     * @return void
-     */
     public function execute(Observer $observer): void
     {
-        $this->benchmark->start(__METHOD__);
-
         if (!$this->helper->isEnable()) {
             return;
         }
+
+        $this->benchmark->start(__METHOD__);
 
         $object = $observer->getEvent()->getObject();
         if ((int)$object->getId() === 0) {
@@ -71,6 +59,7 @@ class SaveBefore implements ObserverInterface
                 }
             }
         }
+
         $this->benchmark->end(__METHOD__);
     }
 }

@@ -65,6 +65,7 @@ class ActivityLogListing extends Template
     }
 
     /**
+     * Get admin activity details
      * @return array<string, string>
      * @throws NoSuchEntityException
      */

@@ -23,11 +23,7 @@ use MageOS\AdminActivityLog\Model\ResourceModel\ActivityLogDetail;
  */
 class Collection extends AbstractCollection
 {
-    /**
-     * Define resource model
-     * @return void
-     */
-    public function _construct()
+    public function _construct(): void
     {
         $this->_init(
             \MageOS\AdminActivityLog\Model\ActivityLogDetail::class,

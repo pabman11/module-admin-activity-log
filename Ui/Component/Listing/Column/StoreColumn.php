@@ -26,8 +26,7 @@ class StoreColumn extends Store
 
     /**
      * Prepare Item
-     * @param array $item
-     * @return string
+     * @param array<string, string> $item
      */
     public function prepareItem(array $item): string
     {
