@@ -14,34 +14,25 @@ declare(strict_types=1);
 namespace MageOS\AdminActivityLog\Model;
 
 use Magento\Framework\DataObject;
-use Magento\Framework\ObjectManagerInterface;
 use MageOS\AdminActivityLog\Api\ActivityRepositoryInterface;
+use MageOS\AdminActivityLog\Api\Data\ActivityInterface;
+use MageOS\AdminActivityLog\Api\Data\ActivityLogDetailInterface;
+use MageOS\AdminActivityLog\Api\ModelResolverInterface;
 use MageOS\AdminActivityLog\Helper\Data;
 use MageOS\AdminActivityLog\Model\Activity\SystemConfig;
 use MageOS\AdminActivityLog\Model\Activity\ThemeConfig;
-use MageOS\AdminActivityLog\Model\ResourceModel\ActivityLog\Collection;
+use MageOS\AdminActivityLog\Model\ResourceModel\Activity\Collection as ActivityCollection;
+use MageOS\AdminActivityLog\Model\ResourceModel\ActivityLog\Collection as ActivityLogCollection;
 use MageOS\AdminActivityLog\Model\ResourceModel\ActivityLog\CollectionFactory;
 
 /**
- * Class ActivityRepository
- * @package MageOS\AdminActivityLog\Model
+ * Repository for admin activity management
  */
 class ActivityRepository implements ActivityRepositoryInterface
 {
     public const THEME_MODULE = 'Themes';
     public const QTY_FIELD = 'qty';
 
-    /**
-     * ActivityRepository constructor.
-     * @param ActivityFactory $activityFactory
-     * @param ResourceModel\Activity\CollectionFactory $collectionFactory
-     * @param ActivityLogDetailFactory $activityLogDetailFactory
-     * @param ActivityLogFactory $activityLogFactory
-     * @param CollectionFactory $LogCollectionFactory
-     * @param SystemConfig $systemConfig
-     * @param Activity\ThemeConfig $themeConfig
-     * @param ObjectManagerInterface $objectManager
-     */
     public function __construct(
         protected readonly ActivityFactory $activityFactory,
         protected readonly ResourceModel\Activity\CollectionFactory $collectionFactory,
@@ -50,13 +41,12 @@ class ActivityRepository implements ActivityRepositoryInterface
         protected readonly CollectionFactory $LogCollectionFactory,
         protected readonly SystemConfig $systemConfig,
         protected readonly ThemeConfig $themeConfig,
-        protected readonly ObjectManagerInterface $objectManager
+        protected readonly ModelResolverInterface $modelResolver
     ) {
     }
 
     /**
-     * Array of protected fields
-     * @return array
+     * @inheritDoc
      */
     public function protectedFields(): array
     {
@@ -66,62 +56,49 @@ class ActivityRepository implements ActivityRepositoryInterface
     }
 
     /**
-     * Get all admin activity data
-     * @return ResourceModel\Activity\Collection
+     * @inheritDoc
      */
-    public function getList()
+    public function getList(): ActivityCollection
     {
-        $collection = $this->collectionFactory->create();
-        return $collection;
+        return $this->collectionFactory->create();
     }
 
     /**
-     * Get all admin activity data before date
-     * @param $endDate
-     * @return ResourceModel\Activity\Collection
+     * @inheritDoc
      */
-    public function getListBeforeDate($endDate)
+    public function getListBeforeDate(string $endDate): ActivityCollection
     {
-        $collection = $this->collectionFactory->create()
+        return $this->collectionFactory->create()
             ->addFieldToSelect('entity_id')
             ->addFieldToFilter('created_at', ["lteq" => $endDate]);
-        return $collection;
     }
 
     /**
-     * Remove activity log entry
-     * @param int $activityId
-     * @return void
+     * @inheritDoc
      */
-    public function deleteActivityById($activityId): void
+    public function deleteActivityById(int $activityId): void
     {
         $model = $this->activityFactory->create();
-        $model->load((int)$activityId);
+        $model->load($activityId);
         $model->delete();
     }
 
     /**
-     * Get all admin activity detail by activity id
-     * @param int $activityId
-     * @return ActivityLogDetail
+     * @inheritDoc
      */
-    public function getActivityDetail($activityId): ActivityLogDetail
+    public function getActivityDetail(int $activityId): ActivityLogDetailInterface
     {
-        $data = $this->activityLogDetailFactory->create()
+        return $this->activityLogDetailFactory->create()
             ->load($activityId, 'activity_id');
-        return $data;
     }
 
     /**
-     * Get all admin activity log by activity id
-     * @param int $activityId
-     * @return Collection
+     * @inheritDoc
      */
-    public function getActivityLog($activityId): Collection
+    public function getActivityLog(int $activityId): ActivityLogCollection
     {
-        $collection = $this->LogCollectionFactory->create()
-            ->addFieldToFilter('activity_id', ["eq" => (int)$activityId]);
-        return $collection;
+        return $this->LogCollectionFactory->create()
+            ->addFieldToFilter('activity_id', ["eq" => $activityId]);
     }
 
     /**
@@ -144,11 +121,9 @@ class ActivityRepository implements ActivityRepositoryInterface
     }
 
     /**
-     * Revert last changes made in module
-     * @param Activity $activity
-     * @return bool
+     * @inheritDoc
      */
-    public function revertActivity(Activity $activity): bool
+    public function revertActivity(ActivityInterface $activity): bool
     {
         $logData = $this->getActivityLog($activity->getId());
         $detailModel = $this->getActivityDetail($activity->getId());
@@ -160,10 +135,12 @@ class ActivityRepository implements ActivityRepositoryInterface
             return $this->systemConfig->revertData($logData, $activity->getStoreId());
         }
 
-        $model = $this->objectManager->get($detailModel->getModelClass())
-            ->setStoreId($activity->getStoreId())
-            ->setScope($activity->getScope())
-            ->load($detailModel->getItemId());
+        $model = $this->modelResolver->loadModel(
+            $detailModel->getModelClass(),
+            $detailModel->getItemId()
+        );
+        $model->setStoreId($activity->getStoreId());
+        $model->setScope($activity->getScope());
 
         if ($model->getId()) {
             foreach ($logData as $log) {
@@ -185,36 +162,37 @@ class ActivityRepository implements ActivityRepositoryInterface
     }
 
     /**
-     * Get old data for system config module
-     * @param DataObject $model
-     * @return mixed
+     * @inheritDoc
      */
-    public function getOldData(DataObject $model)
+    public function getOldData(DataObject $model): DataObject|false
     {
         if (Data::isWildCardModel($model)) {
             return $this->systemConfig->getOldData($model);
         }
-        $data = $this->objectManager->get($model::class)->load($model->getId());
-        if ($data) {
+
+        $className = $model::class;
+        if (!$this->modelResolver->isValidModelClass($className)) {
+            return false;
+        }
+
+        $data = $this->modelResolver->loadModel($className, $model->getId());
+        if ($data->getId()) {
             return $data;
         }
+
         return false;
     }
 
     /**
-     * Get admin activity by id
-     * @param int $activityId
-     * @return Activity
+     * @inheritDoc
      */
-    public function getActivityById($activityId): Activity
+    public function getActivityById(int $activityId): ActivityInterface
     {
         return $this->activityFactory->create()->load($activityId);
     }
 
     /**
-     * Check field is protected or not
-     * @param string $fieldName
-     * @return bool
+     * @inheritDoc
      */
     public function isFieldProtected(string $fieldName): bool
     {
