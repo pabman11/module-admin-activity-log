@@ -16,6 +16,7 @@ fork of the original [Magento Admin Activity Log](https://github.com/kiwicommerc
 - **Login Monitoring**: Record successful and failed login attempts with detailed information
 - **Field-Level Changes**: Track specific field modifications with before/after values
 - **IP Address Logging**: Capture IP addresses and user agent information for security analysis
+- **Extensible Configuration**: Customize tracked entities and skip fields via XML configuration
 
 ## 📋 Requirements
 
@@ -55,3 +56,63 @@ Click View on any log entry to see detailed info.
 ### Login Activity Monitoring
 
 Go to **System → Admin Activity → Admin Login Logs**
+
+## Extensibility
+
+### Customizing Tracked Entities
+
+The module uses `adminactivity.xml` to define which entities are tracked and which fields are skipped during logging.
+Third-party modules can extend this configuration by creating their own `etc/adminactivity.xml` file.
+
+Example configuration to add a custom entity:
+
+```xml
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:MageOS_AdminActivityLog:etc/adminactivity.xsd">
+    <modules>
+        <module name="customer_group">
+            <label translate="true">Customer Group</label>
+            <models>
+                <class name="Magento\Customer\Model\Group" />
+            </models>
+            <events>
+                <event controller_action="customer_group_save" action_alias="save" />
+                <event controller_action="customer_group_delete" action_alias="delete" />
+            </events>
+            <config>
+                <skip_fields>
+                    <field>customer_group_id</field>
+                    <field>check_if_is_new</field>
+                </skip_fields>
+                <configpath constant="MODULE_CUSTOMER" />
+                <editurl url="{{module}}/{{controller}}/edit/id/{{id}}" />
+                <itemfield field="customer_group_code" />
+            </config>
+        </module>
+    </modules>
+</config>
+```
+
+### Skip Fields
+
+To exclude specific fields from being logged (e.g., timestamps, internal IDs), add them to the `skip_fields` node for the relevant module in your `adminactivity.xml`.
+
+## Performance Notes
+
+- **Page Visit Logging**: Disabled by default. Enable only if needed, as it creates a log entry for every admin page view.
+- **Database Indexes**: The module includes indexes on frequently queried columns for optimal performance.
+- **Bulk Operations**: Log cleanup and activity logging use bulk database operations to minimize overhead.
+- **Field Truncation**: Large values are truncated at ~64KB to prevent database bloat.
+
+## Contributing
+
+Issues and pull requests welcome on GitHub.
+
+## License
+
+This module is licensed under the [Open Software License 3.0](https://opensource.org/licenses/OSL-3.0).
+
+## Support
+
+For bugs or feature requests, please open an issue in the GitHub repository.
