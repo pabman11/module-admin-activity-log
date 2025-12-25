@@ -1,16 +1,13 @@
 <?xml version="1.0" ?>
 <!--
 /**
- * KiwiCommerce
+ * MageOS
  *
- * Do not edit or add to this file if you wish to upgrade to newer versions in the future.
- * If you wish to customize this module for your needs.
- * Please contact us https://kiwicommerce.co.uk/contacts.
- *
- * @category   KiwiCommerce
+ * @category   MageOS
  * @package    MageOS_AdminActivityLog
  * @copyright  Copyright (C) 2018 Kiwi Commerce Ltd (https://kiwicommerce.co.uk/)
- * @license    https://kiwicommerce.co.uk/magento2-extension-license/
+ * @copyright  Copyright (C) 2024 MageOS (https://mage-os.org/)
+ * @license    https://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 -->
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
@@ -18,7 +15,8 @@
         <xs:complexType>
             <xs:all>
                 <xs:element name="actions" type="adminActions" minOccurs="0" />
-                <xs:element name='modules'  type="adminModules" minOccurs="1" />
+                <xs:element name="skip_edit_fields" type="fieldList" minOccurs="0" />
+                <xs:element name="modules" type="adminModules" minOccurs="1" />
             </xs:all>
         </xs:complexType>
     </xs:element>
@@ -65,11 +63,17 @@
         </xs:sequence>
     </xs:complexType>
     <xs:complexType name="configEvents">
+        <xs:all>
+            <xs:element name="trackfield" type="classMethod" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="skip_fields" type="fieldList" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="configpath" type="modelConstant" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="editurl" type="editurl" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="itemfield" type="field" minOccurs="1" maxOccurs="1"/>
+        </xs:all>
+    </xs:complexType>
+    <xs:complexType name="fieldList">
         <xs:sequence>
-            <xs:element name="trackfield" type="classMethod" minOccurs="1" maxOccurs="unbounded"/>
-            <xs:element name="configpath" type="modelConstant" minOccurs="1" maxOccurs="unbounded"/>
-            <xs:element name="editurl" type="editurl" minOccurs="1" maxOccurs="unbounded"/>
-            <xs:element name="itemfield" type="field" minOccurs="1" maxOccurs="unbounded"/>
+            <xs:element name="field" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
         </xs:sequence>
     </xs:complexType>
     <xs:complexType name="classMethod">

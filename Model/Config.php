@@ -136,17 +136,39 @@ class Config
     }
 
     /**
-     * Return model class name
+     * Return skip fields for a module
+     *
+     * Returns either:
+     * - array of skip fields (from XML skip_fields element)
+     * - string method name (legacy, from trackfield attribute)
+     * - false if module not found
+     *
      * @param string $module
-     * @return mixed
+     * @return string[]|string|false
      */
-    public function getTrackFieldModel(string $module)
+    public function getTrackFieldModel(string $module): array|string|false
     {
         if (!array_key_exists($module, $this->xmlConfig)) {
             return false;
         }
 
-        return $this->xmlConfig[$module]['config']['trackfield'];
+        // Prefer skip_fields from XML over trackfield method
+        $skipFields = $this->xmlConfig[$module]['config']['skip_fields'] ?? null;
+        if ($skipFields !== null) {
+            return $skipFields;
+        }
+
+        // Fall back to legacy trackfield method name
+        return $this->xmlConfig[$module]['config']['trackfield'] ?? false;
+    }
+
+    /**
+     * Return global skip edit fields from XML config
+     * @return string[]
+     */
+    public function getGlobalSkipEditFields(): array
+    {
+        return $this->xmlConfig['skip_edit_fields'] ?? [];
     }
 
     /**

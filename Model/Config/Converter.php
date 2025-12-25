@@ -34,11 +34,27 @@ class Converter implements ConverterInterface
         $result = ['config' => []];
         $xpath = new DOMXPath($source);
         $result['config']['actions'] = $this->getActions($xpath);
+        $result['config']['skip_edit_fields'] = $this->getGlobalSkipEditFields($xpath);
 
         $modules = $xpath->query('/config/modules/module');
         foreach ($modules as $module) {
             $moduleId = $module->attributes->getNamedItem('name')->nodeValue;
             $result['config'][$moduleId] = $this->processModule($module, $moduleId);
+        }
+
+        return $result;
+    }
+
+    /**
+     * Retrieves global skip_edit_fields from Xpath object
+     */
+    protected function getGlobalSkipEditFields(DOMXPath $xpath): array
+    {
+        $result = [];
+        $fields = $xpath->query('/config/skip_edit_fields/field');
+
+        foreach ($fields as $field) {
+            $result[] = trim($field->nodeValue);
         }
 
         return $result;
@@ -151,6 +167,9 @@ class Converter implements ConverterInterface
                 case 'trackfield':
                     $result['trackfield'] = $config->attributes->getNamedItem('method')->nodeValue;
                     break;
+                case 'skip_fields':
+                    $result['skip_fields'] = $this->processSkipFields($config);
+                    break;
                 case 'configpath':
                     $result['configpath'] = $config->attributes->getNamedItem('constant')->nodeValue;
                     break;
@@ -160,6 +179,20 @@ class Converter implements ConverterInterface
                 case 'itemfield':
                     $result['itemfield'] = $config->attributes->getNamedItem('field')->nodeValue;
                     break;
+            }
+        }
+        return $result;
+    }
+
+    /**
+     * Converts skip_fields to array
+     */
+    protected function processSkipFields(DOMNode $skipFieldsNode): array
+    {
+        $result = [];
+        foreach ($skipFieldsNode->childNodes as $field) {
+            if ($field->nodeName === 'field') {
+                $result[] = trim($field->nodeValue);
             }
         }
         return $result;

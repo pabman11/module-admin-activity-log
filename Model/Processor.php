@@ -130,9 +130,10 @@ class Processor
     }
 
     /**
-     * Return method name of TrackField class
+     * Return skip fields or method name for TrackField class
+     * @return string[]|string|false Array of skip fields, method name, or false if not found
      */
-    public function getMethod(): string
+    public function getMethod(): array|string|false
     {
         return $this->config->getTrackFieldModel($this->eventConfig['module']);
     }

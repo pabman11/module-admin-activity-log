@@ -62,39 +62,39 @@ class Handler
     /**
      * Get add activity log data
      * @param DataObject $model
-     * @param string $method
+     * @param string|array $methodOrFields Method name or array of skip fields
      * @return array
      */
-    public function modelAdd(DataObject $model, string $method): array
+    public function modelAdd(DataObject $model, string|array $methodOrFields): array
     {
         return $this->initLog(
-            $this->helper->getAddData($model, $method)
+            $this->helper->getAddData($model, $methodOrFields)
         );
     }
 
     /**
      * Get edit activity log data
      * @param DataObject $model
-     * @param string $method
+     * @param string|array $methodOrFields Method name or array of skip fields
      * @return array
      */
-    public function modelEdit(DataObject $model, string $method): array
+    public function modelEdit(DataObject $model, string|array $methodOrFields): array
     {
         return $this->initLog(
-            $this->helper->getEditData($model, $method)
+            $this->helper->getEditData($model, $methodOrFields)
         );
     }
 
     /**
      * Get delete activity log data
      * @param DataObject $model
-     * @param string $method
+     * @param string|array $methodOrFields Method name or array of skip fields
      * @return array
      */
-    public function modelDelete(DataObject $model, string $method): array
+    public function modelDelete(DataObject $model, string|array $methodOrFields): array
     {
         return $this->initLog(
-            $this->helper->getDeleteData($model, $method)
+            $this->helper->getDeleteData($model, $methodOrFields)
         );
     }
 

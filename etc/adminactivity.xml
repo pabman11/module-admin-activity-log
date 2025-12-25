@@ -1,16 +1,13 @@
 <?xml version="1.0" ?>
 <!--
 /**
- * KiwiCommerce
+ * MageOS
  *
- * Do not edit or add to this file if you wish to upgrade to newer versions in the future.
- * If you wish to customize this module for your needs.
- * Please contact us https://kiwicommerce.co.uk/contacts.
- *
- * @category   KiwiCommerce
+ * @category   MageOS
  * @package    MageOS_AdminActivityLog
  * @copyright  Copyright (C) 2018 Kiwi Commerce Ltd (https://kiwicommerce.co.uk/)
- * @license    https://kiwicommerce.co.uk/magento2-extension-license/
+ * @copyright  Copyright (C) 2024 MageOS (https://mage-os.org/)
+ * @license    https://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="adminactivity.xsd">
@@ -82,6 +79,39 @@
             <label translate="true">Unassign</label>
         </action>
     </actions>
+    <skip_edit_fields>
+        <field>region_code</field>
+        <field>default_shipping</field>
+        <field>default_billing</field>
+        <field>is_default_billing</field>
+        <field>is_default_shipping</field>
+        <field>url_key_create_redirect</field>
+        <field>attribute_set_id</field>
+        <field>rp_token</field>
+        <field>rp_token_created_at</field>
+        <field>Page</field>
+        <field>role_id</field>
+        <field>field</field>
+        <field>group_id</field>
+        <field>scope</field>
+        <field>id</field>
+        <field>path</field>
+        <field>config_id</field>
+        <field>use_config_gift_message_available</field>
+        <field>new_variations_attribute_set_id</field>
+        <field>can_save_configurable_attributes</field>
+        <field>type_has_options</field>
+        <field>type_has_required_options</field>
+        <field>special_to_date_is_formated</field>
+        <field>custom_design_to_is_formated</field>
+        <field>news_to_date_is_formated</field>
+        <field>is_changed_categories</field>
+        <field>save_rewrites_history</field>
+        <field>custom_design_from_is_formated</field>
+        <field>image_label</field>
+        <field>small_image_label</field>
+        <field>thumbnail_label</field>
+    </skip_edit_fields>
     <modules>
         <module name="catalog_products">
             <label translate="true">Catalog Product</label>
@@ -98,7 +128,27 @@
                 <event controller_action="catalog_product_action_attribute_save" action_alias="massEdit" post_dispatch="productUpdate" />
             </events>
             <config>
-                <trackfield method="getProductFieldData" />
+                <skip_fields>
+                    <field>form_key</field>
+                    <field>current_product_id</field>
+                    <field>force_reindex_eav_required</field>
+                    <field>news_from_date_is_formated</field>
+                    <field>can_save_custom_options</field>
+                    <field>save_rewrites_history</field>
+                    <field>is_custom_option_changed</field>
+                    <field>special_from_date_is_formated</field>
+                    <field>custom_design_from_is_formated</field>
+                    <field>affect_product_custom_options</field>
+                    <field>product_has_weight</field>
+                    <field>check_if_is_new</field>
+                    <field>entity_id</field>
+                    <field>updated_at</field>
+                    <field>edit_mode</field>
+                    <field>gift_message_available</field>
+                    <field>use_config_gift_message_available</field>
+                    <field>created_at</field>
+                    <field>is_changed_websites</field>
+                </skip_fields>
                 <configpath constant="MODULE_PRODUCT" />
                 <editurl url="{{module}}/{{controller}}/edit/id/{{id}}" />
                 <itemfield field="name" />
@@ -115,7 +165,11 @@
                 <event controller_action="catalog_category_delete" action_alias="delete" />
             </events>
             <config>
-                <trackfield method="getCategoryFieldData" />
+                <skip_fields>
+                    <field>form_key</field>
+                    <field>updated_at</field>
+                    <field>created_at</field>
+                </skip_fields>
                 <configpath constant="MODULE_CATEGORY" />
                 <editurl url="{{module}}/{{controller}}/edit/id/{{id}}" />
                 <itemfield field="name" />
@@ -138,7 +192,23 @@
                 <event controller_action="customer_index_inlineEdit" action_alias="massEdit" />
             </events>
             <config>
-                <trackfield method="getCustomerFieldData" />
+                <skip_fields>
+                    <field>id</field>
+                    <field>attribute_set_id</field>
+                    <field>entity_id</field>
+                    <field>form_key</field>
+                    <field>check_if_is_new</field>
+                    <field>dob_is_formated</field>
+                    <field>updated_at</field>
+                    <field>created_at</field>
+                    <field>rp_token</field>
+                    <field>rp_token_created_at</field>
+                    <field>is_customer_save_transaction</field>
+                    <field>store_id</field>
+                    <field>customer_id</field>
+                    <field>parent_id</field>
+                    <field>force_process</field>
+                </skip_fields>
                 <configpath constant="MODULE_CUSTOMER" />
                 <editurl url="{{module}}/{{controller}}/edit/id/{{id}}" />
                 <itemfield field="firstname" />
@@ -154,7 +224,10 @@
                 <event controller_action="customer_group_delete" action_alias="delete" />
             </events>
             <config>
-                <trackfield method="getCustomerGroupFieldData" />
+                <skip_fields>
+                    <field>customer_group_id</field>
+                    <field>check_if_is_new</field>
+                </skip_fields>
                 <configpath constant="MODULE_CUSTOMER" />
                 <editurl url="{{module}}/{{controller}}/edit/id/{{id}}" />
                 <itemfield field="customer_group_code" />
@@ -171,7 +244,11 @@
                 <event controller_action="catalog_rule_promo_catalog_delete" action_alias="delete" />
             </events>
             <config>
-                <trackfield method="getCatalogPromotionFieldData" />
+                <skip_fields>
+                    <field>rule_id</field>
+                    <field>form_key</field>
+                    <field>check_if_is_new</field>
+                </skip_fields>
                 <configpath constant="MODULE_PROMOTION" />
                 <editurl url="{{module}}/{{controller}}/edit/id/{{id}}" />
                 <itemfield field="name" />
@@ -188,7 +265,12 @@
                 <event controller_action="sales_rule_promo_quote_delete" action_alias="delete" />
             </events>
             <config>
-                <trackfield method="getCartPromotionFieldData" />
+                <skip_fields>
+                    <field>is_rss</field>
+                    <field>form_key</field>
+                    <field>check_if_is_new</field>
+                    <field>rule_id</field>
+                </skip_fields>
                 <configpath constant="MODULE_PROMOTION" />
                 <editurl url="{{module}}/{{controller}}/edit/id/{{id}}" />
                 <itemfield field="name" />
@@ -208,7 +290,18 @@
                 <event controller_action="newsletter_template_delete" action_alias="delete" />
             </events>
             <config>
-                <trackfield method="getEmailFieldData" />
+                <skip_fields>
+                    <field>template_id</field>
+                    <field>check_if_is_new</field>
+                    <field>form_key</field>
+                    <field>template_actual</field>
+                    <field>code</field>
+                    <field>subject</field>
+                    <field>sender_name</field>
+                    <field>sender_email</field>
+                    <field>text</field>
+                    <field>key</field>
+                </skip_fields>
                 <configpath constant="MODULE_EMAIL" />
                 <editurl url="{{module}}/{{controller}}/edit/id/{{id}}" />
                 <itemfield field="template_subject" />
@@ -229,7 +322,13 @@
                 <event controller_action="cms_page_inlineEdit" action_alias="massEdit" />
             </events>
             <config>
-                <trackfield method="getPageFieldData" />
+                <skip_fields>
+                    <field>page_id</field>
+                    <field>form_key</field>
+                    <field>check_if_is_new</field>
+                    <field>store_code</field>
+                    <field>first_store_id</field>
+                </skip_fields>
                 <configpath constant="MODULE_PAGE" />
                 <editurl url="{{module}}/{{controller}}/edit/page_id/{{id}}" />
                 <itemfield field="title" />
@@ -248,7 +347,12 @@
                 <event controller_action="cms_block_inlineEdit" action_alias="massEdit" />
             </events>
             <config>
-                <trackfield method="getBlockFieldData" />
+                <skip_fields>
+                    <field>block_id</field>
+                    <field>form_key</field>
+                    <field>check_if_is_new</field>
+                    <field>store_code</field>
+                </skip_fields>
                 <configpath constant="MODULE_BLOCK" />
                 <editurl url="{{module}}/{{controller}}/edit/block_id/{{id}}" />
                 <itemfield field="title" />
@@ -265,7 +369,10 @@
                 <event controller_action="adminhtml_widget_instance_delete" action_alias="delete" />
             </events>
             <config>
-                <trackfield method="getWidgetFieldData" />
+                <skip_fields>
+                    <field>check_if_is_new</field>
+                    <field>instance_id</field>
+                </skip_fields>
                 <configpath constant="MODULE_WIDGET" />
                 <editurl url="{{module}}/{{controller}}/edit/instance_id/{{id}}" />
                 <itemfield field="title" />
@@ -280,7 +387,13 @@
                 <event controller_action="theme_design_config_save" action_alias="edit" />
             </events>
             <config>
-                <trackfield method="getThemeConfigFieldData" />
+                <skip_fields>
+                    <field>back</field>
+                    <field>scope</field>
+                    <field>scope_id</field>
+                    <field>form_key</field>
+                    <field>head_includes</field>
+                </skip_fields>
                 <configpath constant="MODULE_THEME" />
                 <editurl url="theme/design_config/edit/scope/{{id}}" />
                 <itemfield field="config" />
@@ -296,7 +409,10 @@
                 <event controller_action="adminhtml_system_design_delete" action_alias="delete" />
             </events>
             <config>
-                <trackfield method="getThemeScheduleFieldData" />
+                <skip_fields>
+                    <field>store_id</field>
+                    <field>check_if_is_new</field>
+                </skip_fields>
                 <configpath constant="MODULE_THEME" />
                 <editurl url="{{module}}/{{controller}}/edit/id/{{id}}" />
                 <itemfield field="design_change_id" />
@@ -312,7 +428,9 @@
                 <event controller_action="adminhtml_system_currencysymbol_save" action_alias="save" />
             </events>
             <config>
-                <trackfield method="getSystemConfigFieldData" />
+                <skip_fields>
+                    <field>check_if_is_new</field>
+                </skip_fields>
                 <configpath constant="MODULE_SYSTEM_CONFIG" />
                 <editurl url="admin/system_config/edit/section/{{id}}" />
                 <itemfield field="field_config" />
@@ -332,7 +450,9 @@
                 <event controller_action="adminhtml_system_store_deleteGroupPost" action_alias="delete" />
             </events>
             <config>
-                <trackfield method="getSystemStoreFieldData" />
+                <skip_fields>
+                    <field>check_if_is_new</field>
+                </skip_fields>
                 <configpath constant="MODULE_SYSTEM_CONFIG" />
                 <editurl url="admin/system_store/editStore/store_id/{{id}}" />
                 <itemfield field="code" />
@@ -349,7 +469,13 @@
                 <event controller_action="catalog_product_attribute_delete" action_alias="delete" />
             </events>
             <config>
-                <trackfield method="getAttributeFieldData" />
+                <skip_fields>
+                    <field>form_key</field>
+                    <field>check_if_is_new</field>
+                    <field>attribute_id</field>
+                    <field>id</field>
+                    <field>modulePrefix</field>
+                </skip_fields>
                 <configpath constant="MODULE_ATTRIBUTE" />
                 <editurl url="{{module}}/{{controller}}/edit/attribute_id/{{id}}" />
                 <itemfield field="frontend_label" />
@@ -366,7 +492,11 @@
                 <event controller_action="catalog_product_set_delete" action_alias="delete" />
             </events>
             <config>
-                <trackfield method="getAttributeSetFieldData" />
+                <skip_fields>
+                    <field>entity_type_id</field>
+                    <field>check_if_is_new</field>
+                    <field>id</field>
+                </skip_fields>
                 <configpath constant="MODULE_ATTRIBUTE" />
                 <editurl url="{{module}}/{{controller}}/edit/id/{{id}}" />
                 <itemfield field="attribute_set_name" />
@@ -383,7 +513,10 @@
                 <event controller_action="review_rating_delete" action_alias="delete" />
             </events>
             <config>
-                <trackfield method="getReviewRatingFieldData" />
+                <skip_fields>
+                    <field>rating_id</field>
+                    <field>check_if_is_new</field>
+                </skip_fields>
                 <configpath constant="MODULE_ATTRIBUTE" />
                 <editurl url="{{module}}/{{controller}}/edit/id/{{id}}" />
                 <itemfield field="rating_code" />
@@ -400,7 +533,13 @@
                 <event controller_action="review_product_delete" action_alias="delete" />
             </events>
             <config>
-                <trackfield method="getReviewFieldData" />
+                <skip_fields>
+                    <field>form_key</field>
+                    <field>entity_id</field>
+                    <field>check_if_is_new</field>
+                    <field>review_id</field>
+                    <field>entity_pk_value</field>
+                </skip_fields>
                 <configpath constant="MODULE_ATTRIBUTE" />
                 <editurl url="{{module}}/{{controller}}/edit/id/{{id}}" />
                 <itemfield field="nickname" />
@@ -417,7 +556,15 @@
                 <event controller_action="adminhtml_user_delete" action_alias="delete" />
             </events>
             <config>
-                <trackfield method="getAdminUserFieldData" />
+                <skip_fields>
+                    <field>form_key</field>
+                    <field>password_confirmation</field>
+                    <field>current_password</field>
+                    <field>limit</field>
+                    <field>user_roles</field>
+                    <field>check_if_is_new</field>
+                    <field>user_id</field>
+                </skip_fields>
                 <configpath constant="MODULE_ADMIN_USER" />
                 <editurl url="{{module}}/{{controller}}/edit/user_id/{{id}}" />
                 <itemfield field="username" />
@@ -433,7 +580,11 @@
                 <event controller_action="adminhtml_user_role_delete" action_alias="delete" />
             </events>
             <config>
-                <trackfield method="getAdminUserRoleFieldData" />
+                <skip_fields>
+                    <field>name</field>
+                    <field>check_if_is_new</field>
+                    <field>role_id</field>
+                </skip_fields>
                 <configpath constant="MODULE_ADMIN_USER" />
                 <editurl url="{{module}}/{{controller}}/editrole/rid/{{id}}" />
                 <itemfield field="role_name" />
@@ -476,7 +627,14 @@
                 <event controller_action="adminhtml_order_shipment_addComment" action_alias="addComment" />
             </events>
             <config>
-                <trackfield method="getOrderFieldData" />
+                <skip_fields>
+                    <field>check_if_is_new</field>
+                    <field>created_at</field>
+                    <field>updated_at</field>
+                    <field>entity_id</field>
+                    <field>id</field>
+                    <field>protect_code</field>
+                </skip_fields>
                 <configpath constant="MODULE_ORDER" />
                 <editurl url="{{module}}/order/view/order_id/{{id}}" />
                 <itemfield field="increment_id" />
@@ -493,7 +651,12 @@
                 <event controller_action="tax_rule_delete" action_alias="delete" />
             </events>
             <config>
-                <trackfield method="getTaxRuleFieldData" />
+                <skip_fields>
+                    <field>form_key</field>
+                    <field>check_if_is_new</field>
+                    <field>id</field>
+                    <field>tax_calculation_rule_id</field>
+                </skip_fields>
                 <configpath constant="MODULE_ORDER" />
                 <editurl url="{{module}}/{{controller}}/edit/rule/{{id}}" />
                 <itemfield field="code" />
@@ -509,7 +672,11 @@
                 <event controller_action="tax_rate_delete" action_alias="delete" />
             </events>
             <config>
-                <trackfield method="getTaxRateFieldData" />
+                <skip_fields>
+                    <field>form_key</field>
+                    <field>check_if_is_new</field>
+                    <field>tax_calculation_rate_id</field>
+                </skip_fields>
                 <configpath constant="MODULE_ORDER" />
                 <editurl url="{{module}}/{{controller}}/edit/rate/{{id}}" />
                 <itemfield field="code" />
@@ -525,7 +692,10 @@
                 <event controller_action="adminhtml_url_rewrite_delete" action_alias="delete" />
             </events>
             <config>
-                <trackfield method="getUrlRewriteFieldData" />
+                <skip_fields>
+                    <field>url_rewrite_id</field>
+                    <field>store_id</field>
+                </skip_fields>
                 <configpath constant="MODULE_SEO" />
                 <editurl url="{{module}}/{{controller}}/edit/id/{{id}}" />
                 <itemfield field="entity_type" />
@@ -541,7 +711,11 @@
                 <event controller_action="search_term_delete" action_alias="delete" />
             </events>
             <config>
-                <trackfield method="getSearchTermFieldData" />
+                <skip_fields>
+                    <field>form_key</field>
+                    <field>check_if_is_new</field>
+                    <field>query_id</field>
+                </skip_fields>
                 <configpath constant="MODULE_SEO" />
                 <editurl url="{{module}}/{{controller}}/edit/id/{{id}}" />
                 <itemfield field="query_text" />
@@ -558,7 +732,7 @@
                 <event controller_action="search_synonyms_massDelete" action_alias="massDelete" />
             </events>
             <config>
-                <trackfield method="getSearchSynonymsFieldData" />
+                <skip_fields/>
                 <configpath constant="MODULE_SEO" />
                 <editurl url="{{module}}/{{controller}}/edit/id/{{id}}" />
                 <itemfield field="group_id" />
@@ -574,7 +748,12 @@
                 <event controller_action="adminhtml_sitemap_delete" action_alias="delete" />
             </events>
             <config>
-                <trackfield method="getSitemapFieldData" />
+                <skip_fields>
+                    <field>form_key</field>
+                    <field>check_if_is_new</field>
+                    <field>store_id</field>
+                    <field>sitemap_id</field>
+                </skip_fields>
                 <configpath constant="MODULE_SEO" />
                 <editurl url="{{module}}/{{controller}}/edit/sitemap_id/{{id}}" />
                 <itemfield field="sitemap_filename" />
@@ -590,7 +769,11 @@
                 <event controller_action="checkout_agreement_delete" action_alias="delete" />
             </events>
             <config>
-                <trackfield method="getCheckoutAgreementFieldData" />
+                <skip_fields>
+                    <field>form_key</field>
+                    <field>check_if_is_new</field>
+                    <field>id</field>
+                </skip_fields>
                 <configpath constant="MODULE_SYSTEM_CONFIG" />
                 <editurl url="{{module}}/{{controller}}/edit/id/{{id}}" />
                 <itemfield field="name" />
@@ -608,7 +791,10 @@
                 <event controller_action="sales_order_status_unassign" action_alias="unassign" />
             </events>
             <config>
-                <trackfield method="getOrderStatusFieldData" />
+                <skip_fields>
+                    <field>form_key</field>
+                    <field>check_if_is_new</field>
+                </skip_fields>
                 <configpath constant="MODULE_SYSTEM_CONFIG" />
                 <editurl url="{{module}}/{{controller}}/edit/status/{{id}}" />
                 <itemfield field="label" />
@@ -624,7 +810,16 @@
                 <event controller_action="adminhtml_integration_delete" action_alias="delete" />
             </events>
             <config>
-                <trackfield method="getIntegrationFieldData" />
+                <skip_fields>
+                    <field>form_key</field>
+                    <field>current_password</field>
+                    <field>integration_id</field>
+                    <field>check_if_is_new</field>
+                    <field>consumer_id</field>
+                    <field>consumer_key</field>
+                    <field>consumer_secret</field>
+                    <field>identity_link_url</field>
+                </skip_fields>
                 <configpath constant="MODULE_SYSTEM_CONFIG" />
                 <editurl url="{{module}}/{{controller}}/edit/id/{{id}}" />
                 <itemfield field="name" />

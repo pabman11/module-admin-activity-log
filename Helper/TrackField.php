@@ -18,13 +18,20 @@ use Magento\Framework\App\Helper\Context;
 use Magento\Framework\DataObject;
 use MageOS\AdminActivityLog\Model\Activity\SystemConfig;
 use MageOS\AdminActivityLog\Model\Activity\ThemeConfig;
+use MageOS\AdminActivityLog\Model\Config;
 
 /**
- * Class Data
- * @package MageOS\AdminActivityLog\Helper
+ * Helper for tracking field changes in admin activity log
+ *
+ * Skip fields configuration is now managed via adminactivity.xml.
+ * This class provides methods to get tracked field data for add/edit/delete operations.
  */
 class TrackField extends AbstractHelper
 {
+    /**
+     * Method name constants for wildcard model detection
+     * @deprecated Use skip_fields XML configuration instead
+     */
     public const SYSTEM_METHOD = 'getSystemConfigFieldData';
     public const THEME_METHOD = 'getThemeConfigFieldData';
     public const PRODUCT_METHOD = 'getProductFieldData';
@@ -32,13 +39,16 @@ class TrackField extends AbstractHelper
     public function __construct(
         Context $context,
         protected readonly SystemConfig $systemConfig,
-        protected readonly ThemeConfig $themeConfig
+        protected readonly ThemeConfig $themeConfig,
+        protected readonly Config $config
     ) {
         parent::__construct($context);
     }
 
     /**
      * Get product module fields
+     *
+     * @deprecated Skip fields are now configured in adminactivity.xml. This method is kept for backward compatibility.
      * @return string[]
      */
     public function getProductFieldData(): array
@@ -68,6 +78,8 @@ class TrackField extends AbstractHelper
 
     /**
      * Get category module fields
+     *
+     * @deprecated Skip fields are now configured in adminactivity.xml.
      * @return string[]
      */
     public function getCategoryFieldData(): array
@@ -81,6 +93,8 @@ class TrackField extends AbstractHelper
 
     /**
      * Get customer module fields
+     *
+     * @deprecated Skip fields are now configured in adminactivity.xml.
      * @return string[]
      */
     public function getCustomerFieldData(): array
@@ -106,6 +120,8 @@ class TrackField extends AbstractHelper
 
     /**
      * Get customer group modules fields
+     *
+     * @deprecated Skip fields are now configured in adminactivity.xml.
      * @return string[]
      */
     public function getCustomerGroupFieldData(): array
@@ -118,6 +134,8 @@ class TrackField extends AbstractHelper
 
     /**
      * Get catalog promotion modules fields
+     *
+     * @deprecated Skip fields are now configured in adminactivity.xml.
      * @return string[]
      */
     public function getCatalogPromotionFieldData(): array
@@ -131,6 +149,8 @@ class TrackField extends AbstractHelper
 
     /**
      * Get cart promotion modules fields
+     *
+     * @deprecated Skip fields are now configured in adminactivity.xml.
      * @return string[]
      */
     public function getCartPromotionFieldData(): array
@@ -145,6 +165,8 @@ class TrackField extends AbstractHelper
 
     /**
      * Get email modules fields
+     *
+     * @deprecated Skip fields are now configured in adminactivity.xml.
      * @return string[]
      */
     public function getEmailFieldData(): array
@@ -165,6 +187,8 @@ class TrackField extends AbstractHelper
 
     /**
      * Get page modules fields
+     *
+     * @deprecated Skip fields are now configured in adminactivity.xml.
      * @return string[]
      */
     public function getPageFieldData(): array
@@ -180,6 +204,8 @@ class TrackField extends AbstractHelper
 
     /**
      * Get block modules fields
+     *
+     * @deprecated Skip fields are now configured in adminactivity.xml.
      * @return string[]
      */
     public function getBlockFieldData(): array
@@ -194,6 +220,8 @@ class TrackField extends AbstractHelper
 
     /**
      * Get widget modules fields
+     *
+     * @deprecated Skip fields are now configured in adminactivity.xml.
      * @return string[]
      */
     public function getWidgetFieldData(): array
@@ -206,6 +234,8 @@ class TrackField extends AbstractHelper
 
     /**
      * Get theme configuration field data
+     *
+     * @deprecated Skip fields are now configured in adminactivity.xml.
      * @return string[]
      */
     public function getThemeConfigFieldData(): array
@@ -221,6 +251,8 @@ class TrackField extends AbstractHelper
 
     /**
      * Get theme schedule field data
+     *
+     * @deprecated Skip fields are now configured in adminactivity.xml.
      * @return string[]
      */
     public function getThemeScheduleFieldData(): array
@@ -233,6 +265,8 @@ class TrackField extends AbstractHelper
 
     /**
      * Get system config field data
+     *
+     * @deprecated Skip fields are now configured in adminactivity.xml.
      * @return string[]
      */
     public function getSystemConfigFieldData(): array
@@ -244,6 +278,8 @@ class TrackField extends AbstractHelper
 
     /**
      * Get attribute modules fields
+     *
+     * @deprecated Skip fields are now configured in adminactivity.xml.
      * @return string[]
      */
     public function getAttributeFieldData(): array
@@ -259,6 +295,8 @@ class TrackField extends AbstractHelper
 
     /**
      * Get attribute set modules fields
+     *
+     * @deprecated Skip fields are now configured in adminactivity.xml.
      * @return string[]
      */
     public function getAttributeSetFieldData(): array
@@ -271,7 +309,9 @@ class TrackField extends AbstractHelper
     }
 
     /**
-     * Get attribute set modules fields
+     * Get review rating modules fields
+     *
+     * @deprecated Skip fields are now configured in adminactivity.xml.
      * @return string[]
      */
     public function getReviewRatingFieldData(): array
@@ -284,6 +324,8 @@ class TrackField extends AbstractHelper
 
     /**
      * Get review modules fields
+     *
+     * @deprecated Skip fields are now configured in adminactivity.xml.
      * @return string[]
      */
     public function getReviewFieldData(): array
@@ -299,6 +341,8 @@ class TrackField extends AbstractHelper
 
     /**
      * Get admin user modules fields
+     *
+     * @deprecated Skip fields are now configured in adminactivity.xml.
      * @return string[]
      */
     public function getAdminUserFieldData(): array
@@ -316,6 +360,8 @@ class TrackField extends AbstractHelper
 
     /**
      * Get admin user role modules fields
+     *
+     * @deprecated Skip fields are now configured in adminactivity.xml.
      * @return string[]
      */
     public function getAdminUserRoleFieldData(): array
@@ -329,6 +375,8 @@ class TrackField extends AbstractHelper
 
     /**
      * Get order modules fields
+     *
+     * @deprecated Skip fields are now configured in adminactivity.xml.
      * @return string[]
      */
     public function getOrderFieldData(): array
@@ -345,6 +393,8 @@ class TrackField extends AbstractHelper
 
     /**
      * Get tax rule modules fields
+     *
+     * @deprecated Skip fields are now configured in adminactivity.xml.
      * @return string[]
      */
     public function getTaxRuleFieldData(): array
@@ -359,6 +409,8 @@ class TrackField extends AbstractHelper
 
     /**
      * Get tax rate modules fields
+     *
+     * @deprecated Skip fields are now configured in adminactivity.xml.
      * @return string[]
      */
     public function getTaxRateFieldData(): array
@@ -372,6 +424,8 @@ class TrackField extends AbstractHelper
 
     /**
      * Get url rewrites modules fields
+     *
+     * @deprecated Skip fields are now configured in adminactivity.xml.
      * @return string[]
      */
     public function getUrlRewriteFieldData(): array
@@ -384,6 +438,8 @@ class TrackField extends AbstractHelper
 
     /**
      * Get search term modules fields
+     *
+     * @deprecated Skip fields are now configured in adminactivity.xml.
      * @return string[]
      */
     public function getSearchTermFieldData(): array
@@ -397,6 +453,8 @@ class TrackField extends AbstractHelper
 
     /**
      * Get search synonyms modules fields
+     *
+     * @deprecated Skip fields are now configured in adminactivity.xml.
      * @return array{}
      */
     public function getSearchSynonymsFieldData(): array
@@ -406,6 +464,8 @@ class TrackField extends AbstractHelper
 
     /**
      * Get sitemap modules fields
+     *
+     * @deprecated Skip fields are now configured in adminactivity.xml.
      * @return string[]
      */
     public function getSitemapFieldData(): array
@@ -420,6 +480,8 @@ class TrackField extends AbstractHelper
 
     /**
      * Get checkout agreement modules fields
+     *
+     * @deprecated Skip fields are now configured in adminactivity.xml.
      * @return string[]
      */
     public function getCheckoutAgreementFieldData(): array
@@ -432,7 +494,9 @@ class TrackField extends AbstractHelper
     }
 
     /**
-     * Get Order satus modules fields
+     * Get Order status modules fields
+     *
+     * @deprecated Skip fields are now configured in adminactivity.xml.
      * @return string[]
      */
     public function getOrderStatusFieldData(): array
@@ -445,6 +509,8 @@ class TrackField extends AbstractHelper
 
     /**
      * Get System store modules fields
+     *
+     * @deprecated Skip fields are now configured in adminactivity.xml.
      * @return string[]
      */
     public function getSystemStoreFieldData(): array
@@ -456,6 +522,8 @@ class TrackField extends AbstractHelper
 
     /**
      * Get integration modules fields
+     *
+     * @deprecated Skip fields are now configured in adminactivity.xml.
      * @return string[]
      */
     public function getIntegrationFieldData(): array
@@ -473,75 +541,55 @@ class TrackField extends AbstractHelper
     }
 
     /**
-     * Get Edit fields which will skip
+     * Get global skip edit fields from XML config
      * @return string[]
      */
     public function getSkipEditFieldData(): array
     {
-        return [
-            'region_code',
-            'default_shipping',
-            'default_billing',
-            'is_default_billing',
-            'is_default_shipping',
-            'url_key_create_redirect',
-            'attribute_set_id',
-            'rp_token',
-            'rp_token_created_at',
-            'Page',
-            'role_id',
-            'field',
-            'group_id',
-            'scope',
-            'id',
-            'path',
-            'config_id',
-            'use_config_gift_message_available',
-            'new_variations_attribute_set_id',
-            'can_save_configurable_attributes',
-            'type_has_options',
-            'type_has_required_options',
-            'special_to_date_is_formated',
-            'custom_design_to_is_formated',
-            'news_to_date_is_formated',
-            'is_changed_categories',
-            'url_key_create_redirect',
-            'save_rewrites_history',
-            'custom_design_from_is_formated',
-            'custom_design_to_is_formated',
-            'image_label',
-            'small_image_label',
-            'thumbnail_label'
-        ];
+        return $this->config->getGlobalSkipEditFields();
     }
 
     /**
-     * Get all fields by method
+     * Get skip fields from method name or array
+     *
+     * Accepts either:
+     * - string method name (legacy): calls the method dynamically
+     * - array of field names (new): returns the array directly
+     *
+     * @param string|array $methodOrFields Method name or array of fields
      * @return string[]
      */
-    public function getFields(string $method): array
+    public function getFields(string|array $methodOrFields): array
     {
-        $fieldArray = [];
-        if (!empty($method) && method_exists($this, $method)) {
-            $fieldArray = $this->{$method}();
+        // New XML-based config: skip_fields array passed directly
+        if (is_array($methodOrFields)) {
+            return $methodOrFields;
         }
-        return $fieldArray;
+
+        // Legacy support: method name passed as string
+        if (!empty($methodOrFields) && method_exists($this, $methodOrFields)) {
+            return $this->{$methodOrFields}();
+        }
+
+        return [];
     }
 
     /**
      * Get added activity data
+     * @param DataObject $model
+     * @param string|array $methodOrFields Method name or array of skip fields
      * @return array{}|array<string, array{
      *     old_value: string,
      *     new_value: string
      * }>
      */
-    public function getAddData(DataObject $model, string $method): array
+    public function getAddData(DataObject $model, string|array $methodOrFields): array
     {
-        $skipFieldArray = $this->getFields($method);
+        $skipFieldArray = $this->getFields($methodOrFields);
 
         $logData = [];
         if (!empty($model->getData()) && is_array($model->getData())) {
-            $logData = $this->getWildCardData($model, $method);
+            $logData = $this->getWildCardData($model, $methodOrFields);
             foreach ($model->getData() as $key => $value) {
                 if ($this->validateValue($model, $key, $value, $skipFieldArray) || empty($value)) {
                     continue;
@@ -557,27 +605,33 @@ class TrackField extends AbstractHelper
 
     /**
      * Get edited activity data
+     * @param DataObject $model
+     * @param string|array $methodOrFields Method name or array of skip fields
      * @return array{}|array<string, array{
      *     old_value: string,
      *     new_value: string
      * }>
      */
-    public function getEditData(DataObject $model, string $method): array
+    public function getEditData(DataObject $model, string|array $methodOrFields): array
     {
-        $fieldArray = $this->getFields($method);
+        $fieldArray = $this->getFields($methodOrFields);
         $skipFieldArray = $this->getSkipEditFieldData();
 
         if (Data::isWildCardModel($model)) {
-            if ($method === self::SYSTEM_METHOD) {
+            // Check for wildcard model types using method name or skip_fields pattern
+            $isSystemConfig = $this->isSystemConfigMethod($methodOrFields);
+            $isThemeConfig = $this->isThemeConfigMethod($methodOrFields);
+
+            if ($isSystemConfig) {
                 return $this->systemConfig->getEditData($model, $fieldArray);
-            } elseif ($method === self::THEME_METHOD) {
+            } elseif ($isThemeConfig) {
                 return $this->themeConfig->getEditData($model, $fieldArray);
             }
         }
 
         $logData = [];
         if (!empty($model->getData()) && is_array($model->getData())) {
-            $logData = $this->getWildCardData($model, $method);
+            $logData = $this->getWildCardData($model, $methodOrFields);
             $skipFieldArray = array_merge($skipFieldArray, $fieldArray);
             foreach ($model->getData() as $key => $value) {
                 if ($this->validateValue($model, $key, $value, $skipFieldArray)) {
@@ -599,19 +653,46 @@ class TrackField extends AbstractHelper
     }
 
     /**
+     * Check if method/fields indicates system config
+     */
+    private function isSystemConfigMethod(string|array $methodOrFields): bool
+    {
+        if (is_string($methodOrFields)) {
+            return $methodOrFields === self::SYSTEM_METHOD;
+        }
+        // For array (skip_fields), check if it matches system config pattern
+        return $methodOrFields === ['check_if_is_new'];
+    }
+
+    /**
+     * Check if method/fields indicates theme config
+     */
+    private function isThemeConfigMethod(string|array $methodOrFields): bool
+    {
+        if (is_string($methodOrFields)) {
+            return $methodOrFields === self::THEME_METHOD;
+        }
+        // For array (skip_fields), check if it matches theme config pattern
+        return in_array('head_includes', $methodOrFields, true)
+            && in_array('scope', $methodOrFields, true);
+    }
+
+    /**
      * Get deleted activity data
+     * @param DataObject $model
+     * @param string|array $methodOrFields Method name or array of skip fields
      * @return array{}|array<string, array{
      *     old_value: string,
      *     new_value: string
      * }>
      */
-    public function getDeleteData(DataObject $model, string $method): array
+    public function getDeleteData(DataObject $model, string|array $methodOrFields): array
     {
-        $fieldArray = $this->getFields($method);
+        $fieldArray = $this->getFields($methodOrFields);
 
         $logData = [];
         if (!empty($model->getOrigData()) && is_array($model->getOrigData())) {
-            $logData = $this->getWildCardData($model, $method);
+            $logData = $this->getWildCardData($model, $methodOrFields);
             foreach ($model->getOrigData() as $key => $value) {
                 if ($this->validateValue($model, $key, $value, $fieldArray) || empty($value)) {
                     continue;
@@ -626,16 +707,22 @@ class TrackField extends AbstractHelper
     }
 
     /**
-     * Get wild data
+     * Get wild data (special field handling like product quantity)
+     * @param DataObject $model
+     * @param string|array $methodOrFields Method name or array of skip fields
      * @return array{}|array<string, array{
      *     old_value: string,
      *     new_value: string
      * }>
      */
-    public function getWildCardData(DataObject $model, string $method): array
+    public function getWildCardData(DataObject $model, string|array $methodOrFields): array
     {
         $logData = [];
-        if ($method === self::PRODUCT_METHOD) {
+
+        // Check if this is a product method/fields
+        $isProductMethod = $this->isProductMethod($methodOrFields);
+
+        if ($isProductMethod) {
             $newQty = $model->getData('stock_data');
             $oldQty = $model->getOrigData('quantity_and_stock_status');
             if (isset($newQty['qty']) && isset($oldQty['qty']) && $newQty['qty'] != $oldQty['qty']) {
@@ -647,6 +734,19 @@ class TrackField extends AbstractHelper
         }
 
         return $logData;
+    }
+
+    /**
+     * Check if method/fields indicates product module
+     */
+    private function isProductMethod(string|array $methodOrFields): bool
+    {
+        if (is_string($methodOrFields)) {
+            return $methodOrFields === self::PRODUCT_METHOD;
+        }
+        // For array (skip_fields), check if it matches product pattern
+        return in_array('current_product_id', $methodOrFields, true)
+            || in_array('product_has_weight', $methodOrFields, true);
     }
 
     /**
