@@ -1,16 +1,15 @@
 <?php
 /**
- * KiwiCommerce
+ * MageOS
  *
- * Do not edit or add to this file if you wish to upgrade to newer versions in the future.
- * If you wish to customize this module for your needs.
- * Please contact us https://kiwicommerce.co.uk/contacts.
- *
- * @category   KiwiCommerce
+ * @category   MageOS
  * @package    MageOS_AdminActivityLog
  * @copyright  Copyright (C) 2018 Kiwi Commerce Ltd (https://kiwicommerce.co.uk/)
- * @license    https://kiwicommerce.co.uk/magento2-extension-license/
+ * @copyright  Copyright (C) 2024 MageOS (https://mage-os.org/)
+ * @license    https://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
+
+declare(strict_types=1);
 
 namespace MageOS\AdminActivityLog\Helper;
 
@@ -18,11 +17,11 @@ use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\Config\Value;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
+use Magento\Framework\DataObject;
 use MageOS\AdminActivityLog\Model\Config;
 
 /**
- * Class Data
- * @package MageOS\AdminActivityLog\Helper
+ * Configuration helper for admin activity logging
  */
 class Data extends AbstractHelper
 {
@@ -41,22 +40,15 @@ class Data extends AbstractHelper
     public const MODULE_WIDGET = 'admin/admin_activity/module/widget';
     public const MODULE_THEME = 'admin/admin_activity/module/theme';
     public const MODULE_SYSTEM_CONFIG = 'admin/admin_activity/module/system_config';
-    public const MODULE_ATTRIBUTE = 'admin/admin_activity/module/attibute';
+    public const MODULE_ATTRIBUTE = 'admin/admin_activity/module/attribute';
     public const MODULE_ADMIN_USER = 'admin/admin_activity/module/admin_user';
     public const MODULE_SEO = 'admin/admin_activity/module/seo';
 
-    /**
-     * @var array
-     */
-    public static $wildcardModels = [
+    /** @var array<class-string> */
+    public static array $wildcardModels = [
         Value::class
     ];
 
-    /**
-     * Data constructor.
-     * @param Context $context
-     * @param Config $config
-     */
     public function __construct(
         Context $context,
         protected readonly Config $config
@@ -138,21 +130,18 @@ class Data extends AbstractHelper
 
     /**
      * Get activity module name
-     * @return string
      */
-    public function getActivityModuleName(string $module)
+    public function getActivityModuleName(string $module): string
     {
         return $this->config->getActivityModuleName($module);
     }
 
     /**
-     * Get module name is valid or not
-     * @param $model
-     * @return bool
+     * Check if model is a wildcard model (system config value)
      */
-    public static function isWildCardModel($model): bool
+    public static function isWildCardModel(DataObject|string $model): bool
     {
-        $model = is_string($model) ? $model : $model::class;
-        return in_array($model, self::$wildcardModels, true);
+        $className = is_string($model) ? $model : $model::class;
+        return in_array($className, self::$wildcardModels, true);
     }
 }

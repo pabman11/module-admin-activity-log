@@ -1,46 +1,40 @@
 <?php
 /**
- * KiwiCommerce
+ * MageOS
  *
- * Do not edit or add to this file if you wish to upgrade to newer versions in the future.
- * If you wish to customize this module for your needs.
- * Please contact us https://kiwicommerce.co.uk/contacts.
- *
- * @category   KiwiCommerce
+ * @category   MageOS
  * @package    MageOS_AdminActivityLog
  * @copyright  Copyright (C) 2018 Kiwi Commerce Ltd (https://kiwicommerce.co.uk/)
- * @license    https://kiwicommerce.co.uk/magento2-extension-license/
+ * @copyright  Copyright (C) 2024 MageOS (https://mage-os.org/)
+ * @license    https://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
+
+declare(strict_types=1);
 
 namespace MageOS\AdminActivityLog\Observer;
 
 use Magento\Framework\Event\Observer;
-use Magento\Framework\Event\ObserverInterface;
 use MageOS\AdminActivityLog\Api\LoginRepositoryInterface;
 use MageOS\AdminActivityLog\Helper\Benchmark;
 use MageOS\AdminActivityLog\Helper\Data as Helper;
 
-/**
- * Class LoginSuccess
- * @package MageOS\AdminActivityLog\Observer
- */
-class LoginSuccess implements ObserverInterface
+class LoginSuccess extends AbstractActivityObserver
 {
     public function __construct(
-        private readonly Helper $helper,
-        private readonly LoginRepositoryInterface $loginRepository,
-        private readonly Benchmark $benchmark
+        Helper $helper,
+        Benchmark $benchmark,
+        private readonly LoginRepositoryInterface $loginRepository
     ) {
+        parent::__construct($helper, $benchmark);
     }
 
-    public function execute(Observer $observer): void
+    protected function isEnabled(): bool
     {
-        if (!$this->helper->isLoginEnable()) {
-            return;
-        }
+        return $this->helper->isLoginEnable();
+    }
 
-        $this->benchmark->start(__METHOD__);
+    protected function process(Observer $observer): void
+    {
         $this->loginRepository->setUser($observer->getUser())->addSuccessLog();
-        $this->benchmark->end(__METHOD__);
     }
 }

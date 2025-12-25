@@ -1,24 +1,22 @@
 <?xml version="1.0"?>
 <!--
 /**
- * KiwiCommerce
+ * MageOS
  *
- * Do not edit or add to this file if you wish to upgrade to newer versions in the future.
- * If you wish to customize this module for your needs.
- * Please contact us https://kiwicommerce.co.uk/contacts.
- *
- * @category   KiwiCommerce
+ * @category   MageOS
  * @package    MageOS_AdminActivityLog
  * @copyright  Copyright (C) 2018 Kiwi Commerce Ltd (https://kiwicommerce.co.uk/)
- * @license    https://kiwicommerce.co.uk/magento2-extension-license/
+ * @copyright  Copyright (C) 2024 MageOS (https://mage-os.org/)
+ * @license    https://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
 
-    <!-- Create our type ActivityRepositoryInterface-->
+    <!-- Repository interfaces -->
     <preference for="MageOS\AdminActivityLog\Api\ActivityRepositoryInterface" type="MageOS\AdminActivityLog\Model\ActivityRepository" />
     <preference for="MageOS\AdminActivityLog\Api\LoginRepositoryInterface" type="MageOS\AdminActivityLog\Model\LoginRepository" />
     <preference for="MageOS\AdminActivityLog\Api\Data\ActivitySearchResultsInterface" type="Magento\Framework\Api\SearchResults" />
+    <preference for="MageOS\AdminActivityLog\Api\ModelResolverInterface" type="MageOS\AdminActivityLog\Model\ModelResolver" />
 
     <!-- Type for admin_activity_listing_data_source -->
     <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
@@ -58,7 +56,7 @@
     <type name="MageOS\AdminActivityLog\Model\Config\Data">
         <arguments>
             <argument name="reader" xsi:type="object">AAConfigReader</argument>
-            <argument name="cacheId" xsi:type="string">KiwiCommerce_admin_activity_cache</argument>
+            <argument name="cacheId" xsi:type="string">MageOS_admin_activity_cache</argument>
         </arguments>
     </type>
 </config>

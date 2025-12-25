@@ -1,16 +1,15 @@
 <?php
 /**
- * KiwiCommerce
+ * MageOS
  *
- * Do not edit or add to this file if you wish to upgrade to newer versions in the future.
- * If you wish to customize this module for your needs.
- * Please contact us https://kiwicommerce.co.uk/contacts.
- *
- * @category   KiwiCommerce
+ * @category   MageOS
  * @package    MageOS_AdminActivityLog
  * @copyright  Copyright (C) 2018 Kiwi Commerce Ltd (https://kiwicommerce.co.uk/)
- * @license    https://kiwicommerce.co.uk/magento2-extension-license/
+ * @copyright  Copyright (C) 2024 MageOS (https://mage-os.org/)
+ * @license    https://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
+
+declare(strict_types=1);
 
 namespace MageOS\AdminActivityLog\Model;
 
@@ -20,7 +19,6 @@ use Magento\Framework\App\Request\Http;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\HTTP\PhpEnvironment\RemoteAddress;
 use Magento\Framework\Message\ManagerInterface;
-use Magento\Framework\Phrase;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Store\Model\StoreManagerInterface;
 use MageOS\AdminActivityLog\Api\ActivityRepositoryInterface;
@@ -28,10 +26,10 @@ use MageOS\AdminActivityLog\Helper\Data as Helper;
 use MageOS\AdminActivityLog\Model\Activity\Status;
 use MageOS\AdminActivityLog\Model\Activity\SystemConfig;
 use MageOS\AdminActivityLog\Model\Handler\PostDispatch;
+use Psr\Log\LoggerInterface;
 
 /**
- * Class Processor
- * @package MageOS\AdminActivityLog\Model
+ * Processor for admin activity logging
  */
 class Processor
 {
@@ -49,34 +47,13 @@ class Processor
     public const SAVE_ACTION = 'save';
     public const EDIT_ACTION = 'edit';
 
-    /**
-     * Last action name
-     * @var string
-     */
-    protected $actionName = '';
+    protected string $actionName = '';
+    protected string $lastAction = '';
+    protected string $initAction = '';
+    protected array $activityLogs = [];
 
-    /**
-     * Last full action name
-     * @var string
-     */
-    protected $lastAction = '';
-
-    /**
-     * Initialization full action name
-     * @var string
-     */
-    protected $initAction = '';
-
-    /**
-     * Temporary storage for model changes before saving to table.
-     * @var array
-     */
-    protected $activityLogs = [];
-
-    /**
-     * @var array
-     */
-    protected $urlParams = [
+    /** @var array<string> */
+    protected array $urlParams = [
         '{{module}}',
         '{{controller}}',
         '{{action}}',
@@ -84,26 +61,9 @@ class Processor
         '{{id}}'
     ];
 
-    protected $eventConfig;
+    /** @var array<string, mixed>|null */
+    protected ?array $eventConfig = null;
 
-    /**
-     * Processor constructor.
-     * @param Config $config
-     * @param Session $authSession
-     * @param Handler $handler
-     * @param RemoteAddress $remoteAddress
-     * @param ActivityFactory $activityFactory
-     * @param ActivityLogDetailFactory $activityDetailFactory
-     * @param StoreManagerInterface $storeManager
-     * @param DateTime $dateTime
-     * @param ActivityRepositoryInterface $activityRepository
-     * @param Helper $helper
-     * @param ManagerInterface $messageManager
-     * @param RequestInterface $request
-     * @param Http $httpRequest
-     * @param Status $status
-     * @param PostDispatch $postDispatch
-     */
     public function __construct(
         protected readonly Config $config,
         protected readonly Session $authSession,
@@ -120,7 +80,8 @@ class Processor
         protected readonly Http $httpRequest,
         protected readonly Status $status,
         protected readonly PostDispatch $postDispatch,
-        private readonly SystemConfig $systemConfig
+        private readonly SystemConfig $systemConfig,
+        private readonly LoggerInterface $logger
     ) {
     }
 
@@ -310,7 +271,11 @@ class Processor
                 }
                 $this->activityLogs = [];
             }
-        } catch (Exception) {
+        } catch (Exception $e) {
+            $this->logger->error('Failed to save admin activity logs', [
+                'exception' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
             return false;
         }
         return true;
@@ -477,6 +442,11 @@ class Processor
                 }
             }
         } catch (Exception $e) {
+            $this->logger->error('Failed to revert admin activity', [
+                'activity_id' => $activityId,
+                'exception' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
             $result['message'] = $e->getMessage();
             $this->status->markFail($activityId);
         }

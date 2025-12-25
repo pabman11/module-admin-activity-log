@@ -1,94 +1,104 @@
 <?php
 /**
- * KiwiCommerce
+ * MageOS
  *
- * Do not edit or add to this file if you wish to upgrade to newer versions in the future.
- * If you wish to customize this module for your needs.
- * Please contact us https://kiwicommerce.co.uk/contacts.
- *
- * @category   KiwiCommerce
+ * @category   MageOS
  * @package    MageOS_AdminActivityLog
  * @copyright  Copyright (C) 2018 Kiwi Commerce Ltd (https://kiwicommerce.co.uk/)
- * @license    https://kiwicommerce.co.uk/magento2-extension-license/
+ * @copyright  Copyright (C) 2024 MageOS (https://mage-os.org/)
+ * @license    https://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
+
+declare(strict_types=1);
 
 namespace MageOS\AdminActivityLog\Api;
 
 use Magento\Framework\DataObject;
-use MageOS\AdminActivityLog\Model\Activity;
-use MageOS\AdminActivityLog\Model\ActivityLogDetail;
+use MageOS\AdminActivityLog\Api\Data\ActivityInterface;
+use MageOS\AdminActivityLog\Api\Data\ActivityLogDetailInterface;
 use MageOS\AdminActivityLog\Model\ResourceModel\Activity\Collection;
 use MageOS\AdminActivityLog\Model\ResourceModel\ActivityLog\Collection as ActivityLogCollection;
 
 /**
- * Interface ActivityRepositoryInterface
- * @package MageOS\AdminActivityLog\Api
+ * Repository interface for admin activity management
+ *
+ * @api
  */
 interface ActivityRepositoryInterface
 {
     /**
-     * Array of protected fields
-     * @return array
+     * Get array of protected fields that should not be logged or reverted
+     *
+     * @return string[]
      */
     public function protectedFields(): array;
 
     /**
-     * Get collection of admin activity
+     * Get collection of all admin activity records
+     *
      * @return Collection
      */
-    public function getList();
+    public function getList(): Collection;
 
     /**
-     * Get all admin activity data before date
-     * @param $endDate
+     * Get all admin activity data before specified date
+     *
+     * @param string $endDate Date in Y-m-d H:i:s format
      * @return Collection
      */
-    public function getListBeforeDate($endDate);
+    public function getListBeforeDate(string $endDate): Collection;
 
     /**
-     * Remove activity log entry
+     * Remove activity log entry by ID
+     *
      * @param int $activityId
      * @return void
      */
-    public function deleteActivityById($activityId): void;
+    public function deleteActivityById(int $activityId): void;
 
     /**
-     * Get all admin activity detail by activity id
+     * Get activity detail by activity ID
+     *
      * @param int $activityId
-     * @return ActivityLogDetail
+     * @return ActivityLogDetailInterface
      */
-    public function getActivityDetail($activityId): ActivityLogDetail;
+    public function getActivityDetail(int $activityId): ActivityLogDetailInterface;
 
     /**
-     * Get all admin activity log by activity id
+     * Get activity log collection by activity ID
+     *
      * @param int $activityId
      * @return ActivityLogCollection
      */
-    public function getActivityLog($activityId): ActivityLogCollection;
+    public function getActivityLog(int $activityId): ActivityLogCollection;
 
     /**
-     * Revert last changes made in module
-     * @param Activity $activity
+     * Revert changes made in the specified activity
+     *
+     * @param ActivityInterface $activity
      * @return bool
      */
-    public function revertActivity(Activity $activity): bool;
+    public function revertActivity(ActivityInterface $activity): bool;
 
     /**
-     * Get old data for system config module
+     * Get old data for a model before changes were made
+     *
      * @param DataObject $model
-     * @return mixed
+     * @return DataObject|false
      */
-    public function getOldData(DataObject $model);
+    public function getOldData(DataObject $model): DataObject|false;
 
     /**
-     * Get admin activity by id
+     * Get admin activity by ID
+     *
      * @param int $activityId
-     * @return Activity
+     * @return ActivityInterface
      */
-    public function getActivityById($activityId): Activity;
+    public function getActivityById(int $activityId): ActivityInterface;
 
     /**
-     * Check field is protected or not
+     * Check if a field is protected from logging/reverting
+     *
      * @param string $fieldName
      * @return bool
      */

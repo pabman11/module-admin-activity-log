@@ -1,15 +1,12 @@
 <?php
 /**
- * KiwiCommerce
+ * MageOS
  *
- * Do not edit or add to this file if you wish to upgrade to newer versions in the future.
- * If you wish to customize this module for your needs.
- * Please contact us https://kiwicommerce.co.uk/contacts.
- *
- * @category   KiwiCommerce
+ * @category   MageOS
  * @package    MageOS_AdminActivityLog
  * @copyright  Copyright (C) 2018 Kiwi Commerce Ltd (https://kiwicommerce.co.uk/)
- * @license    https://kiwicommerce.co.uk/magento2-extension-license/
+ * @copyright  Copyright (C) 2024 MageOS (https://mage-os.org/)
+ * @license    https://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 
 use Magento\Framework\Escaper;
@@ -26,8 +23,8 @@ $script = <<<JS
         'Magento_Ui/js/modal/modal',
         'mage/backend/notification'
     ], function (jQuery, modal, notification) {
-        Window.keepMultiModalWindow = true;
-        window.adminActivityLogView = {
+        window.keepMultiModalWindow = true;
+        const adminActivityLogView = {
             overlayShowEffectOptions: null,
             overlayHideEffectOptions: null,
             modal: null,
@@ -41,9 +38,12 @@ $script = <<<JS
                         },
                         showLoader: true,
                         dataType: 'html',
-                        success: function (data) {
+                        success: (data) => {
                             this.openDialogWindow(data, elementId, revertable);
-                        }.bind(this)
+                        },
+                        error: (xhr, status, error) => {
+                            this.error('Failed to load activity log: ' + error);
+                        }
                     });
                 }
             },
@@ -101,14 +101,17 @@ $script = <<<JS
                         } else {
                             this.error(data.message);
                         }
+                    },
+                    error: (xhr, status, error) => {
+                        this.error('Failed to revert activity: ' + error);
                     }
-                })
+                });
             },
             closeDialogWindow: function (dialogWindow) {
                 jQuery('body').trigger('processStop');
                 dialogWindow.closeModal();
-                Window.overlayShowEffectOptions = this.overlayShowEffectOptions;
-                Window.overlayHideEffectOptions = this.overlayHideEffectOptions;
+                window.overlayShowEffectOptions = this.overlayShowEffectOptions;
+                window.overlayHideEffectOptions = this.overlayHideEffectOptions;
             },
             error: function (message) {
                 jQuery('body').notification('clear')
@@ -127,12 +130,15 @@ $script = <<<JS
                     const resizeTextarea = function (el) {
                         jQuery(el).css('height', 'auto').css('height', el.scrollHeight + offset);
                     };
-                    jQuery(this).unbind().on('click', function () {
+                    jQuery(this).off('click').on('click', function () {
                         resizeTextarea(this);
                     }).trigger('click');
                 });
             }
         };
+
+        // Export to window for backward compatibility with UI component onclick handlers
+        window.adminActivityLogView = adminActivityLogView;
     });
 JS;
 echo $secureRenderer->renderTag('script', [], $script, false);
