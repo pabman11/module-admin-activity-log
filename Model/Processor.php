@@ -17,6 +17,7 @@ use Exception;
 use Magento\Backend\Model\Auth\Session;
 use Magento\Framework\App\Request\Http;
 use Magento\Framework\App\RequestInterface;
+use Magento\Framework\App\ResourceConnection;
 use Magento\Framework\HTTP\PhpEnvironment\RemoteAddress;
 use Magento\Framework\Message\ManagerInterface;
 use Magento\Framework\Stdlib\DateTime\DateTime;
@@ -81,7 +82,8 @@ class Processor
         protected readonly Status $status,
         protected readonly PostDispatch $postDispatch,
         private readonly SystemConfig $systemConfig,
-        private readonly LoggerInterface $logger
+        private readonly LoggerInterface $logger,
+        private readonly ResourceConnection $resourceConnection
     ) {
     }
 
@@ -244,42 +246,106 @@ class Processor
 
     /**
      * Insert activity log data in database
+     *
+     * Uses transaction wrapping for data integrity and batch inserts
+     * for improved performance when logging multiple field changes.
      */
     public function saveLogs(): bool
     {
+        if (empty($this->activityLogs)) {
+            return true;
+        }
+
+        $connection = $this->resourceConnection->getConnection();
+
         try {
-            if (!empty($this->activityLogs)) {
-                foreach ($this->activityLogs as $model) {
-                    $activity = $model[Activity::class];
-                    $activity->save();
-                    $activityId = $activity->getId();
+            $connection->beginTransaction();
 
-                    if (isset($model[ActivityLog::class])) {
-                        $logData = $model[ActivityLog::class];
-                        if ($logData) {
-                            foreach ($logData as $log) {
-                                $log->setActivityId((int)$activityId);
-                                $log->save();
-                            }
-                        }
-                    }
+            foreach ($this->activityLogs as $model) {
+                $activity = $model[Activity::class];
+                $activity->save();
+                $activityId = (int)$activity->getId();
 
-                    if (isset($model[ActivityLogDetail::class])) {
-                        $detail = $model[ActivityLogDetail::class];
-                        $detail->setActivityId($activityId);
-                        $detail->save();
-                    }
+                // Batch insert activity logs (field-level changes)
+                if (isset($model[ActivityLog::class]) && !empty($model[ActivityLog::class])) {
+                    $this->batchInsertActivityLogs($model[ActivityLog::class], $activityId);
                 }
-                $this->activityLogs = [];
+
+                // Insert activity detail
+                if (isset($model[ActivityLogDetail::class])) {
+                    $detail = $model[ActivityLogDetail::class];
+                    $detail->setActivityId($activityId);
+                    $detail->save();
+                }
             }
+
+            $connection->commit();
+            $this->activityLogs = [];
         } catch (Exception $e) {
+            $connection->rollBack();
             $this->logger->error('Failed to save admin activity logs', [
                 'exception' => $e->getMessage(),
                 'trace' => $e->getTraceAsString()
             ]);
             return false;
         }
+
         return true;
+    }
+
+    /**
+     * Batch insert activity log records for improved performance
+     *
+     * Uses insertMultiple to reduce database round-trips when logging
+     * multiple field changes in a single operation.
+     *
+     * @param ActivityLog[] $logs Array of activity log models
+     * @param int $activityId Parent activity ID
+     */
+    private function batchInsertActivityLogs(array $logs, int $activityId): void
+    {
+        if (empty($logs)) {
+            return;
+        }
+
+        $connection = $this->resourceConnection->getConnection();
+        $tableName = $this->resourceConnection->getTableName('admin_activity_log');
+
+        $insertData = [];
+        foreach ($logs as $log) {
+            $insertData[] = [
+                'activity_id' => $activityId,
+                'field_name' => $log->getFieldName(),
+                'old_value' => $this->truncateValue($log->getOldValue()),
+                'new_value' => $this->truncateValue($log->getNewValue()),
+            ];
+        }
+
+        if (!empty($insertData)) {
+            $connection->insertMultiple($tableName, $insertData);
+        }
+    }
+
+    /**
+     * Truncate large values to prevent database bloat
+     *
+     * TEXT columns can store up to 65,535 bytes. We truncate to prevent extremely large log entries.
+     *
+     * @param string|null $value Value to truncate
+     * @return string|null Truncated value or null
+     */
+    private function truncateValue(?string $value): ?string
+    {
+        if ($value === null) {
+            return null;
+        }
+
+        $maxLength = 65000; // ~64KB, leaving headroom for TEXT column
+        if (strlen($value) > $maxLength) {
+            return substr($value, 0, $maxLength) . '... [truncated]';
+        }
+
+        return $value;
     }
 
     /**

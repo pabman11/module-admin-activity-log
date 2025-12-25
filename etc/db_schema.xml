@@ -107,5 +107,14 @@
         <index referenceId="ADMIN_LOGIN_LOG_CREATED_AT" indexType="btree">
             <column name="created_at"/>
         </index>
+        <index referenceId="ADMIN_LOGIN_LOG_USERNAME" indexType="btree">
+            <column name="username"/>
+        </index>
+        <index referenceId="ADMIN_LOGIN_LOG_STATUS" indexType="btree">
+            <column name="status"/>
+        </index>
+        <index referenceId="ADMIN_LOGIN_LOG_TYPE" indexType="btree">
+            <column name="type"/>
+        </index>
     </table>
 </schema>

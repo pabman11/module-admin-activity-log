@@ -79,7 +79,10 @@
             "created_at": true
         },
         "index": {
-            "ADMIN_LOGIN_LOG_CREATED_AT": true
+            "ADMIN_LOGIN_LOG_CREATED_AT": true,
+            "ADMIN_LOGIN_LOG_USERNAME": true,
+            "ADMIN_LOGIN_LOG_STATUS": true,
+            "ADMIN_LOGIN_LOG_TYPE": true
         },
         "constraint": {
             "PRIMARY": true

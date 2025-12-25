@@ -16,6 +16,7 @@ namespace MageOS\AdminActivityLog\Test\Unit\Model;
 use Magento\Backend\Model\Auth\Session;
 use Magento\Framework\App\Request\Http;
 use Magento\Framework\App\RequestInterface;
+use Magento\Framework\App\ResourceConnection;
 use Magento\Framework\HTTP\PhpEnvironment\RemoteAddress;
 use Magento\Framework\Message\ManagerInterface;
 use Magento\Framework\Stdlib\DateTime\DateTime;
@@ -53,6 +54,7 @@ class ProcessorTest extends TestCase
     private PostDispatch&MockObject $postDispatch;
     private SystemConfig&MockObject $systemConfig;
     private LoggerInterface&MockObject $logger;
+    private ResourceConnection&MockObject $resourceConnection;
     private Processor $processor;
 
     protected function setUp(): void
@@ -74,6 +76,7 @@ class ProcessorTest extends TestCase
         $this->postDispatch = $this->createMock(PostDispatch::class);
         $this->systemConfig = $this->createMock(SystemConfig::class);
         $this->logger = $this->createMock(LoggerInterface::class);
+        $this->resourceConnection = $this->createMock(ResourceConnection::class);
 
         $this->processor = new Processor(
             $this->config,
@@ -92,7 +95,8 @@ class ProcessorTest extends TestCase
             $this->status,
             $this->postDispatch,
             $this->systemConfig,
-            $this->logger
+            $this->logger,
+            $this->resourceConnection
         );
     }
 

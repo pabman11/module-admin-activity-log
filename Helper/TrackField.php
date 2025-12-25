@@ -36,6 +36,12 @@ class TrackField extends AbstractHelper
     public const THEME_METHOD = 'getThemeConfigFieldData';
     public const PRODUCT_METHOD = 'getProductFieldData';
 
+    /**
+     * Maximum length for stored field values (in bytes)
+     * TEXT columns support up to 65,535 bytes; cut off before
+     */
+    private const MAX_VALUE_LENGTH = 65000;
+
     public function __construct(
         Context $context,
         protected readonly SystemConfig $systemConfig,
@@ -48,8 +54,8 @@ class TrackField extends AbstractHelper
     /**
      * Get product module fields
      *
-     * @deprecated Skip fields are now configured in adminactivity.xml. This method is kept for backward compatibility.
      * @return string[]
+     * @deprecated Skip fields are now configured in adminactivity.xml. This method is kept for backward compatibility.
      */
     public function getProductFieldData(): array
     {
@@ -79,8 +85,8 @@ class TrackField extends AbstractHelper
     /**
      * Get category module fields
      *
-     * @deprecated Skip fields are now configured in adminactivity.xml.
      * @return string[]
+     * @deprecated Skip fields are now configured in adminactivity.xml.
      */
     public function getCategoryFieldData(): array
     {
@@ -94,8 +100,8 @@ class TrackField extends AbstractHelper
     /**
      * Get customer module fields
      *
-     * @deprecated Skip fields are now configured in adminactivity.xml.
      * @return string[]
+     * @deprecated Skip fields are now configured in adminactivity.xml.
      */
     public function getCustomerFieldData(): array
     {
@@ -121,8 +127,8 @@ class TrackField extends AbstractHelper
     /**
      * Get customer group modules fields
      *
-     * @deprecated Skip fields are now configured in adminactivity.xml.
      * @return string[]
+     * @deprecated Skip fields are now configured in adminactivity.xml.
      */
     public function getCustomerGroupFieldData(): array
     {
@@ -135,8 +141,8 @@ class TrackField extends AbstractHelper
     /**
      * Get catalog promotion modules fields
      *
-     * @deprecated Skip fields are now configured in adminactivity.xml.
      * @return string[]
+     * @deprecated Skip fields are now configured in adminactivity.xml.
      */
     public function getCatalogPromotionFieldData(): array
     {
@@ -150,8 +156,8 @@ class TrackField extends AbstractHelper
     /**
      * Get cart promotion modules fields
      *
-     * @deprecated Skip fields are now configured in adminactivity.xml.
      * @return string[]
+     * @deprecated Skip fields are now configured in adminactivity.xml.
      */
     public function getCartPromotionFieldData(): array
     {
@@ -166,8 +172,8 @@ class TrackField extends AbstractHelper
     /**
      * Get email modules fields
      *
-     * @deprecated Skip fields are now configured in adminactivity.xml.
      * @return string[]
+     * @deprecated Skip fields are now configured in adminactivity.xml.
      */
     public function getEmailFieldData(): array
     {
@@ -188,8 +194,8 @@ class TrackField extends AbstractHelper
     /**
      * Get page modules fields
      *
-     * @deprecated Skip fields are now configured in adminactivity.xml.
      * @return string[]
+     * @deprecated Skip fields are now configured in adminactivity.xml.
      */
     public function getPageFieldData(): array
     {
@@ -205,8 +211,8 @@ class TrackField extends AbstractHelper
     /**
      * Get block modules fields
      *
-     * @deprecated Skip fields are now configured in adminactivity.xml.
      * @return string[]
+     * @deprecated Skip fields are now configured in adminactivity.xml.
      */
     public function getBlockFieldData(): array
     {
@@ -221,8 +227,8 @@ class TrackField extends AbstractHelper
     /**
      * Get widget modules fields
      *
-     * @deprecated Skip fields are now configured in adminactivity.xml.
      * @return string[]
+     * @deprecated Skip fields are now configured in adminactivity.xml.
      */
     public function getWidgetFieldData(): array
     {
@@ -235,8 +241,8 @@ class TrackField extends AbstractHelper
     /**
      * Get theme configuration field data
      *
-     * @deprecated Skip fields are now configured in adminactivity.xml.
      * @return string[]
+     * @deprecated Skip fields are now configured in adminactivity.xml.
      */
     public function getThemeConfigFieldData(): array
     {
@@ -252,8 +258,8 @@ class TrackField extends AbstractHelper
     /**
      * Get theme schedule field data
      *
-     * @deprecated Skip fields are now configured in adminactivity.xml.
      * @return string[]
+     * @deprecated Skip fields are now configured in adminactivity.xml.
      */
     public function getThemeScheduleFieldData(): array
     {
@@ -266,8 +272,8 @@ class TrackField extends AbstractHelper
     /**
      * Get system config field data
      *
-     * @deprecated Skip fields are now configured in adminactivity.xml.
      * @return string[]
+     * @deprecated Skip fields are now configured in adminactivity.xml.
      */
     public function getSystemConfigFieldData(): array
     {
@@ -279,8 +285,8 @@ class TrackField extends AbstractHelper
     /**
      * Get attribute modules fields
      *
-     * @deprecated Skip fields are now configured in adminactivity.xml.
      * @return string[]
+     * @deprecated Skip fields are now configured in adminactivity.xml.
      */
     public function getAttributeFieldData(): array
     {
@@ -296,8 +302,8 @@ class TrackField extends AbstractHelper
     /**
      * Get attribute set modules fields
      *
-     * @deprecated Skip fields are now configured in adminactivity.xml.
      * @return string[]
+     * @deprecated Skip fields are now configured in adminactivity.xml.
      */
     public function getAttributeSetFieldData(): array
     {
@@ -311,8 +317,8 @@ class TrackField extends AbstractHelper
     /**
      * Get review rating modules fields
      *
-     * @deprecated Skip fields are now configured in adminactivity.xml.
      * @return string[]
+     * @deprecated Skip fields are now configured in adminactivity.xml.
      */
     public function getReviewRatingFieldData(): array
     {
@@ -325,8 +331,8 @@ class TrackField extends AbstractHelper
     /**
      * Get review modules fields
      *
-     * @deprecated Skip fields are now configured in adminactivity.xml.
      * @return string[]
+     * @deprecated Skip fields are now configured in adminactivity.xml.
      */
     public function getReviewFieldData(): array
     {
@@ -342,8 +348,8 @@ class TrackField extends AbstractHelper
     /**
      * Get admin user modules fields
      *
-     * @deprecated Skip fields are now configured in adminactivity.xml.
      * @return string[]
+     * @deprecated Skip fields are now configured in adminactivity.xml.
      */
     public function getAdminUserFieldData(): array
     {
@@ -361,8 +367,8 @@ class TrackField extends AbstractHelper
     /**
      * Get admin user role modules fields
      *
-     * @deprecated Skip fields are now configured in adminactivity.xml.
      * @return string[]
+     * @deprecated Skip fields are now configured in adminactivity.xml.
      */
     public function getAdminUserRoleFieldData(): array
     {
@@ -376,8 +382,8 @@ class TrackField extends AbstractHelper
     /**
      * Get order modules fields
      *
-     * @deprecated Skip fields are now configured in adminactivity.xml.
      * @return string[]
+     * @deprecated Skip fields are now configured in adminactivity.xml.
      */
     public function getOrderFieldData(): array
     {
@@ -394,8 +400,8 @@ class TrackField extends AbstractHelper
     /**
      * Get tax rule modules fields
      *
-     * @deprecated Skip fields are now configured in adminactivity.xml.
      * @return string[]
+     * @deprecated Skip fields are now configured in adminactivity.xml.
      */
     public function getTaxRuleFieldData(): array
     {
@@ -410,8 +416,8 @@ class TrackField extends AbstractHelper
     /**
      * Get tax rate modules fields
      *
-     * @deprecated Skip fields are now configured in adminactivity.xml.
      * @return string[]
+     * @deprecated Skip fields are now configured in adminactivity.xml.
      */
     public function getTaxRateFieldData(): array
     {
@@ -425,8 +431,8 @@ class TrackField extends AbstractHelper
     /**
      * Get url rewrites modules fields
      *
-     * @deprecated Skip fields are now configured in adminactivity.xml.
      * @return string[]
+     * @deprecated Skip fields are now configured in adminactivity.xml.
      */
     public function getUrlRewriteFieldData(): array
     {
@@ -439,8 +445,8 @@ class TrackField extends AbstractHelper
     /**
      * Get search term modules fields
      *
-     * @deprecated Skip fields are now configured in adminactivity.xml.
      * @return string[]
+     * @deprecated Skip fields are now configured in adminactivity.xml.
      */
     public function getSearchTermFieldData(): array
     {
@@ -454,8 +460,8 @@ class TrackField extends AbstractHelper
     /**
      * Get search synonyms modules fields
      *
-     * @deprecated Skip fields are now configured in adminactivity.xml.
      * @return array{}
+     * @deprecated Skip fields are now configured in adminactivity.xml.
      */
     public function getSearchSynonymsFieldData(): array
     {
@@ -465,8 +471,8 @@ class TrackField extends AbstractHelper
     /**
      * Get sitemap modules fields
      *
-     * @deprecated Skip fields are now configured in adminactivity.xml.
      * @return string[]
+     * @deprecated Skip fields are now configured in adminactivity.xml.
      */
     public function getSitemapFieldData(): array
     {
@@ -481,8 +487,8 @@ class TrackField extends AbstractHelper
     /**
      * Get checkout agreement modules fields
      *
-     * @deprecated Skip fields are now configured in adminactivity.xml.
      * @return string[]
+     * @deprecated Skip fields are now configured in adminactivity.xml.
      */
     public function getCheckoutAgreementFieldData(): array
     {
@@ -496,8 +502,8 @@ class TrackField extends AbstractHelper
     /**
      * Get Order status modules fields
      *
-     * @deprecated Skip fields are now configured in adminactivity.xml.
      * @return string[]
+     * @deprecated Skip fields are now configured in adminactivity.xml.
      */
     public function getOrderStatusFieldData(): array
     {
@@ -510,8 +516,8 @@ class TrackField extends AbstractHelper
     /**
      * Get System store modules fields
      *
-     * @deprecated Skip fields are now configured in adminactivity.xml.
      * @return string[]
+     * @deprecated Skip fields are now configured in adminactivity.xml.
      */
     public function getSystemStoreFieldData(): array
     {
@@ -523,8 +529,8 @@ class TrackField extends AbstractHelper
     /**
      * Get integration modules fields
      *
-     * @deprecated Skip fields are now configured in adminactivity.xml.
      * @return string[]
+     * @deprecated Skip fields are now configured in adminactivity.xml.
      */
     public function getIntegrationFieldData(): array
     {
@@ -596,7 +602,7 @@ class TrackField extends AbstractHelper
                 }
                 $logData[$key] = [
                     'old_value' => '',
-                    'new_value' => $value
+                    'new_value' => $this->prepareValue($value)
                 ];
             }
         }
@@ -642,8 +648,8 @@ class TrackField extends AbstractHelper
                 if (!empty($newData) || !empty($oldData)) {
                     if ($newData != $oldData) {
                         $logData[$key] = [
-                            'old_value' => $oldData,
-                            'new_value' => $newData
+                            'old_value' => $this->prepareValue($oldData),
+                            'new_value' => $this->prepareValue($newData)
                         ];
                     }
                 }
@@ -698,7 +704,7 @@ class TrackField extends AbstractHelper
                     continue;
                 }
                 $logData[$key] = [
-                    'old_value' => $value,
+                    'old_value' => $this->prepareValue($value),
                     'new_value' => ''
                 ];
             }
@@ -727,8 +733,8 @@ class TrackField extends AbstractHelper
             $oldQty = $model->getOrigData('quantity_and_stock_status');
             if (isset($newQty['qty']) && isset($oldQty['qty']) && $newQty['qty'] != $oldQty['qty']) {
                 $logData['qty'] = [
-                    'old_value' => $oldQty['qty'],
-                    'new_value' => $newQty['qty']
+                    'old_value' => $this->prepareValue($oldQty['qty']),
+                    'new_value' => $this->prepareValue($newQty['qty'])
                 ];
             }
         }
@@ -759,5 +765,55 @@ class TrackField extends AbstractHelper
             return true;
         }
         return false;
+    }
+
+    /**
+     * Truncate a value if it exceeds the maximum length
+     *
+     * Prevents database bloat by limiting the size of stored field values.
+     * Large values (e.g., serialized arrays, long text content) are truncated
+     * with an indicator that truncation occurred.
+     *
+     * @param mixed $value The value to truncate
+     * @return string The truncated string value
+     */
+    public function truncateValue(mixed $value): string
+    {
+        if ($value === null || $value === '') {
+            return '';
+        }
+
+        // Convert to string if not already
+        if (!is_string($value)) {
+            if (is_array($value) || is_object($value)) {
+                $value = json_encode($value, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+                if ($value === false) {
+                    return '[unserializable]';
+                }
+            } else {
+                $value = (string)$value;
+            }
+        }
+
+        if (strlen($value) > self::MAX_VALUE_LENGTH) {
+            return substr($value, 0, self::MAX_VALUE_LENGTH - 20) . '... [truncated]';
+        }
+
+        return $value;
+    }
+
+    /**
+     * Prepare a value for storage, applying truncation
+     *
+     * @param mixed $value Raw value from model
+     * @return string Prepared value ready for storage
+     */
+    private function prepareValue(mixed $value): string
+    {
+        if ($value === null || $value === '') {
+            return '';
+        }
+
+        return $this->truncateValue($value);
     }
 }

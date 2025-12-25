@@ -14,15 +14,17 @@ declare(strict_types=1);
 namespace MageOS\AdminActivityLog\Cron;
 
 use Exception;
+use Magento\Framework\App\ResourceConnection;
 use Magento\Framework\Stdlib\DateTime\DateTime;
-use MageOS\AdminActivityLog\Api\ActivityRepositoryInterface;
-use MageOS\AdminActivityLog\Api\LoginRepositoryInterface;
 use MageOS\AdminActivityLog\Helper\Data as Helper;
 use Psr\Log\LoggerInterface;
 
 /**
- * Class ClearLog
- * @package MageOS\AdminActivityLog\Cron
+ * Cron job for cleaning up old activity logs
+ *
+ * Uses batch deletion to avoid memory issues with large datasets.
+ * Related tables (admin_activity_log, admin_activity_detail) are cleaned
+ * automatically via CASCADE DELETE foreign key constraints.
  */
 class ClearLog
 {
@@ -31,20 +33,23 @@ class ClearLog
      */
     protected const DATE_FORMAT = 'Y-m-d H:i:s';
 
+    /**
+     * Batch size for deletion operations
+     */
+    protected const BATCH_SIZE = 1000;
+
     public function __construct(
         protected readonly LoggerInterface $logger,
         protected readonly DateTime $dateTime,
         protected readonly Helper $helper,
-        protected readonly ActivityRepositoryInterface $activityRepository,
-        protected readonly LoginRepositoryInterface $loginRepository
+        protected readonly ResourceConnection $resourceConnection
     ) {
     }
 
     /**
      * Return cron cleanup date
-     * @return null|string
      */
-    public function __getDate()
+    public function getCleanupDate(): ?string
     {
         $timestamp = $this->dateTime->gmtTimestamp();
         $day = $this->helper->getConfigValue('CLEAR_LOG_DAYS');
@@ -56,8 +61,10 @@ class ClearLog
     }
 
     /**
-     * Delete record which date is less than the current date
-     * @return void
+     * Delete records older than the configured retention period
+     *
+     * Uses batch deletion to prevent memory exhaustion and long-running queries.
+     * CASCADE DELETE on foreign keys handles related table cleanup automatically.
      */
     public function execute(): void
     {
@@ -66,34 +73,73 @@ class ClearLog
                 return;
             }
 
-            if ($date = $this->__getDate()) {
-                $activities = $this->activityRepository->getListBeforeDate($date);
-                $this->deleteActivities($activities);
+            $date = $this->getCleanupDate();
+            if ($date === null) {
+                return;
+            }
 
-                // Remove login activity detail
-                if ($this->helper->isLoginEnable()) {
-                    $activities = $this->loginRepository->getListBeforeDate($date);
-                    $this->deleteActivities($activities);
-                }
+            // Delete activity logs in batches
+            $this->deleteInBatches('admin_activity', $date);
+
+            // Delete login logs in batches if enabled
+            if ($this->helper->isLoginEnable()) {
+                $this->deleteInBatches('admin_login_log', $date);
             }
         } catch (Exception $e) {
-            $this->logger->debug($e->getMessage());
+            $this->logger->error('Failed to clear admin activity logs', [
+                'exception' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
         }
     }
 
     /**
-     * Remove activity detail
-     * @param iterable<\Magento\Framework\Model\AbstractModel> $activities
-     * @return void
+     * Delete records from table in batches
+     *
+     * This approach:
+     * - Limits memory usage by not loading all records
+     * - Reduces lock contention with smaller transactions
+     * - Uses direct SQL DELETE with LIMIT for efficiency
+     *
+     * @param string $tableName Table name without prefix
+     * @param string $endDate Cutoff date for deletion
      */
-    protected function deleteActivities(iterable $activities): void
+    protected function deleteInBatches(string $tableName, string $endDate): void
     {
-        if (empty($activities)) {
-            return;
-        }
+        $connection = $this->resourceConnection->getConnection();
+        $table = $this->resourceConnection->getTableName($tableName);
 
-        foreach ($activities as $activity) {
-            $activity->delete();
+        $totalDeleted = 0;
+
+        do {
+            // Use subquery with LIMIT to get IDs to delete
+            // This is more efficient than DELETE with LIMIT on large tables
+            $select = $connection->select()
+                ->from($table, ['entity_id'])
+                ->where('created_at <= ?', $endDate)
+                ->limit(self::BATCH_SIZE);
+
+            $ids = $connection->fetchCol($select);
+
+            if (empty($ids)) {
+                break;
+            }
+
+            $deleted = $connection->delete(
+                $table,
+                ['entity_id IN (?)' => $ids]
+            );
+
+            $totalDeleted += $deleted;
+
+            // Small delay to reduce database load on high-traffic systems
+            if ($deleted === self::BATCH_SIZE) {
+                usleep(10000); // 10ms
+            }
+        } while (count($ids) === self::BATCH_SIZE);
+
+        if ($totalDeleted > 0) {
+            $this->logger->info("Cleared {$totalDeleted} records from {$tableName}");
         }
     }
 }
