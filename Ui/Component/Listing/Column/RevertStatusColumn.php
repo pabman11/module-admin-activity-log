@@ -28,16 +28,22 @@ class RevertStatusColumn extends Column
      */
     public function prepareDataSource(array $dataSource): array
     {
-        if (isset($dataSource['data']['items'])) {
-            $name = (string)$this->getData('name');
-            foreach ($dataSource['data']['items'] as & $item) {
-                if ((bool)$item['is_revertable'] === true) {
-                    $item[$name] = '<span class="grid-severity-minor" title=""><span>Revert</span></span>';
-                } elseif ((bool)$item['is_revertable'] === false && !empty($item['revert_by'])) {
-                    $item[$name] = '<span class="grid-severity-notice" title=""><span>Success</span></span>';
-                    $item[$name] .= '<br/><strong>Reverted By:</strong> ' . $item['revert_by'];
+        if (isset($dataSource['data']['items']) && is_array($dataSource['data']['items'])) {
+            $name = $this->getData('name');
+            $columnName = is_string($name) ? $name : '';
+            foreach ($dataSource['data']['items'] as &$item) {
+                if (!is_array($item)) {
+                    continue;
+                }
+                $isRevertable = (bool)($item['is_revertable'] ?? false);
+                $revertBy = (string)($item['revert_by'] ?? '');
+                if ($isRevertable === true) {
+                    $item[$columnName] = '<span class="grid-severity-minor" title=""><span>Revert</span></span>';
+                } elseif ($isRevertable === false && !empty($revertBy)) {
+                    $item[$columnName] = '<span class="grid-severity-notice" title=""><span>Success</span></span>';
+                    $item[$columnName] .= '<br/><strong>Reverted By:</strong> ' . $revertBy;
                 } else {
-                    $item[$name] = '-';
+                    $item[$columnName] = '-';
                 }
             }
         }

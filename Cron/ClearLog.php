@@ -83,10 +83,10 @@ class ClearLog
 
     /**
      * Remove activity detail
-     * @param Iterable $activities
+     * @param iterable<\Magento\Framework\Model\AbstractModel> $activities
      * @return void
      */
-    protected function deleteActivities($activities): void
+    protected function deleteActivities(iterable $activities): void
     {
         if (empty($activities)) {
             return;

@@ -59,19 +59,25 @@ class ActivityLogListing extends Template
     public function getLogListing(): ?array
     {
         $id = $this->getRequest()->getParam('id');
-        $data = $this->activityRepository->getActivityLog($id);
+        if (!is_numeric($id)) {
+            return null;
+        }
+        $data = $this->activityRepository->getActivityLog((int)$id);
         return $data->getData();
     }
 
     /**
      * Get admin activity details
-     * @return array<string, string>
+     * @return array<string, string|null>
      * @throws NoSuchEntityException
      */
     public function getAdminDetails(): array
     {
         $id = $this->getRequest()->getParam('id');
-        $activity = $this->activityRepository->getActivityById($id);
+        if (!is_numeric($id)) {
+            return [];
+        }
+        $activity = $this->activityRepository->getActivityById((int)$id);
 
         $this->browser->reset();
         $this->browser->setUserAgent($activity->getUserAgent());
@@ -81,6 +87,7 @@ class ActivityLogListing extends Template
         if ($store->getId() == 0) {
             $storeViewName = 'Default Config';
         } else {
+            /** @var \Magento\Store\Model\Store $store */
             $storeViewName = sprintf('%s > %s > %s', $store->getWebsite()->getName(), $store->getGroup()->getName(), $store->getName());
         }
 

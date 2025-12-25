@@ -64,8 +64,9 @@ class ItemColumn extends Column
     /**
      * @param string|array<int|string, string> $data
      * @param string[]|null $allowedTags
+     * @return string|array<int|string, string>
      */
-    public function escapeHtml(array|string $data, ?array $allowedTags = null): string
+    public function escapeHtml(array|string $data, ?array $allowedTags = null): string|array
     {
         return $this->escaper->escapeHtml($data, $allowedTags);
     }
@@ -76,11 +77,13 @@ class ItemColumn extends Column
     public function _toHtml(): string
     {
         $length = 30;
+        $label = $this->getData('label');
         $itemName = $this->filterManager->truncate(
-            $this->getLabel(),
+            is_string($label) ? $label : '',
             ['length' => $length, 'etc' => '...', 'remainder' => '', 'breakWords' => false]
         );
-        return '<a ' . $this->getLinkAttributes() . ' >' . $this->escapeHtml($itemName) . '</a></li>';
+        $escaped = $this->escapeHtml($itemName);
+        return '<a ' . $this->getLinkAttributes() . ' >' . (is_string($escaped) ? $escaped : '') . '</a></li>';
     }
 
     /**
@@ -105,12 +108,12 @@ class ItemColumn extends Column
 
     /**
      * Serialize attributes
-     * @param array $keys
+     * @param array<string, string> $keys
      * @param string $valueSeparator
      * @param string $fieldSeparator
      * @param string $quote
      */
-    public function serialize($keys = [], $valueSeparator = '=', $fieldSeparator = ' ', $quote = '"'): string
+    public function serialize(array $keys = [], string $valueSeparator = '=', string $fieldSeparator = ' ', string $quote = '"'): string
     {
         $data = [];
         foreach ($keys as $key => $value) {
@@ -146,10 +149,10 @@ class ItemColumn extends Column
      */
     protected function initLinkParams(array $item): void
     {
-        $this->setHref($this->prepareUrl($item['item_url']));
-        $this->setTitle($item['item_name']);
-        $this->setTarget('_blank');
-        $this->setLabel($item['item_name']);
+        $this->setData('href', $this->prepareUrl($item['item_url']));
+        $this->setData('title', $item['item_name']);
+        $this->setData('target', '_blank');
+        $this->setData('label', $item['item_name']);
     }
 
     /**
@@ -159,11 +162,17 @@ class ItemColumn extends Column
      */
     public function prepareDataSource(array $dataSource): array
     {
-        if (isset($dataSource['data']['items'])) {
-            foreach ($dataSource['data']['items'] as & $item) {
+        if (isset($dataSource['data']['items']) && is_array($dataSource['data']['items'])) {
+            $name = $this->getData('name');
+            $columnName = is_string($name) ? $name : '';
+            foreach ($dataSource['data']['items'] as &$item) {
+                if (!is_array($item)) {
+                    continue;
+                }
                 if (!empty($item['item_url'])) {
+                    /** @var array<string, string> $item */
                     $this->initLinkParams($item);
-                    $item[$this->getData('name')] = $this->_toHtml();
+                    $item[$columnName] = $this->_toHtml();
                 }
             }
         }

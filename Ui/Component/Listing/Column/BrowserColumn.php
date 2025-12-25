@@ -55,9 +55,15 @@ class BrowserColumn extends Column
      */
     public function prepareDataSource(array $dataSource): array
     {
-        if (isset($dataSource['data']['items'])) {
-            foreach ($dataSource['data']['items'] as & $item) {
-                $item[$this->getData('name')] = $this->getAgent($item);
+        if (isset($dataSource['data']['items']) && is_array($dataSource['data']['items'])) {
+            $name = $this->getData('name');
+            $columnName = is_string($name) ? $name : '';
+            foreach ($dataSource['data']['items'] as &$item) {
+                if (!is_array($item)) {
+                    continue;
+                }
+                /** @var array<string, string> $item */
+                $item[$columnName] = $this->getAgent($item);
             }
         }
         return $dataSource;

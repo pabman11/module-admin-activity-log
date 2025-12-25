@@ -43,8 +43,9 @@ class ViewAction extends Column
 
     public function getViewUrl(): string
     {
+        $urlPath = $this->getData('config/viewUrlPath');
         return $this->urlBuilder->getUrl(
-            $this->getData('config/viewUrlPath')
+            is_string($urlPath) ? $urlPath : ''
         );
     }
 
@@ -54,10 +55,17 @@ class ViewAction extends Column
      */
     public function prepareDataSource(array $dataSource): array
     {
-        if (isset($dataSource['data']['items'])) {
-            foreach ($dataSource['data']['items'] as & $item) {
+        if (isset($dataSource['data']['items']) && is_array($dataSource['data']['items'])) {
+            $name = $this->getData('name');
+            $columnName = is_string($name) ? $name : '';
+            foreach ($dataSource['data']['items'] as &$item) {
+                if (!is_array($item)) {
+                    continue;
+                }
                 if (isset($item['entity_id'])) {
-                    $item[$this->getData('name')] = $this->layout->createBlock(
+                    $entityId = (string)$item['entity_id'];
+                    $isRevertable = (string)($item['is_revertable'] ?? '0');
+                    $item[$columnName] = $this->layout->createBlock(
                         Button::class,
                         '',
                         [
@@ -67,8 +75,8 @@ class ViewAction extends Column
                                 'disabled' => false,
                                 'class' => 'action-activity-log-view',
                                 'onclick' => 'adminActivityLogView.open(\''
-                                    . $this->getViewUrl() . '\', \'' . $item['entity_id']
-                                    . '\', \'' . $item['is_revertable'] . '\')',
+                                    . $this->getViewUrl() . '\', \'' . $entityId
+                                    . '\', \'' . $isRevertable . '\')',
                             ]
                         ]
                     )->toHtml();

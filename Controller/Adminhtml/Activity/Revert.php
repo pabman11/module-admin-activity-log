@@ -39,8 +39,9 @@ class Revert extends Action
     public function execute()
     {
         $activityId = $this->getRequest()->getParam('id');
+        $activityId = is_numeric($activityId) ? (int)$activityId : 0;
 
-        $result = $this->processor->revertActivity((int)$activityId);
+        $result = $this->processor->revertActivity($activityId);
 
         $json = $this->resultJsonFactory->create();
         $json->setData($result);

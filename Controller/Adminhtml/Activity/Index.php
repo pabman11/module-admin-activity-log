@@ -41,7 +41,7 @@ class Index extends Action
         /** @var Page $resultPage */
         $resultPage = $this->resultPageFactory->create();
         $resultPage->setActiveMenu('MageOS_AdminActivityLog::activity');
-        $resultPage->getConfig()->getTitle()->prepend(__('Admin Activity'));
+        $resultPage->getConfig()->getTitle()->prepend((string)__('Admin Activity'));
 
         return $resultPage;
     }

@@ -41,15 +41,19 @@ class StatusColumn extends Column
      */
     public function prepareDataSource(array $dataSource): array
     {
-        if (isset($dataSource['data']['items'])) {
-            $name = (string)$this->getData('name');
-            foreach ($dataSource['data']['items'] as & $item) {
-                if ($item[$name]) {
-                    $item[$name] = '<span class="grid-severity-notice"><span>Success</span></span>';
+        if (isset($dataSource['data']['items']) && is_array($dataSource['data']['items'])) {
+            $name = $this->getData('name');
+            $columnName = is_string($name) ? $name : '';
+            foreach ($dataSource['data']['items'] as &$item) {
+                if (!is_array($item)) {
+                    continue;
+                }
+                if (!empty($item[$columnName])) {
+                    $item[$columnName] = '<span class="grid-severity-notice"><span>Success</span></span>';
                 } else {
-                    $remark = $this->escaper->escapeHtmlAttr((string)$item['remarks']);
-                    $item[$name] = '<span class="grid-severity-critical" title="' . $remark . '">';
-                    $item[$name] .= '<span>Failed</span></span>';
+                    $remark = $this->escaper->escapeHtmlAttr((string)($item['remarks'] ?? ''));
+                    $item[$columnName] = '<span class="grid-severity-critical" title="' . $remark . '">';
+                    $item[$columnName] .= '<span>Failed</span></span>';
                 }
             }
         }

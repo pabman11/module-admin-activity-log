@@ -24,23 +24,23 @@ interface LoginRepositoryInterface
 {
     /**
      * Set login data
-     * @param $status
-     * @param $type
+     * @param int $status
+     * @param string $type
      * @return bool
      */
-    public function addLog($status, $type): bool;
+    public function addLog(int $status, string $type): bool;
 
     /**
      * Get all admin activity data before date
-     * @param $endDate
+     * @param string $endDate
      * @return Collection
      */
-    public function getListBeforeDate($endDate): Collection;
+    public function getListBeforeDate(string $endDate): Collection;
 
     /**
      * Set login user
      * @param User $user
      * @return LoginRepositoryInterface
      */
-    public function setUser($user): LoginRepositoryInterface;
+    public function setUser(User $user): LoginRepositoryInterface;
 }

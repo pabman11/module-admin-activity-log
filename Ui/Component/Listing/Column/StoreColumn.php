@@ -25,7 +25,7 @@ class StoreColumn extends Store
 
     /**
      * Prepare Item
-     * @param array<string, string> $item
+     * @param array<string, mixed> $item
      */
     public function prepareItem(array $item): string
     {
@@ -45,18 +45,19 @@ class StoreColumn extends Store
             $origStores = [$origStores];
         }
         if (in_array(0, $origStores, true) && count($origStores) === 1) {
-            return __('All Store Views');
+            return (string)__('All Store Views');
         }
 
         $data = $this->systemStore->getStoresStructure(false, $origStores);
 
         $content = '';
         foreach ($data as $website) {
-            $content .= $website['label'] . "<br/>";
+            /** @var array{label: string, children: array<array{label: string, children: array<array{label: string}>}>} $website */
+            $content .= (string)$website['label'] . "<br/>";
             foreach ($website['children'] as $group) {
-                $content .= str_repeat('&nbsp;', 3) . $this->escaper->escapeHtml($group['label']) . "<br/>";
+                $content .= str_repeat('&nbsp;', 3) . $this->escaper->escapeHtml((string)$group['label']) . "<br/>";
                 foreach ($group['children'] as $store) {
-                    $content .= str_repeat('&nbsp;', 6) . $this->escaper->escapeHtml($store['label']) . "<br/>";
+                    $content .= str_repeat('&nbsp;', 6) . $this->escaper->escapeHtml((string)$store['label']) . "<br/>";
                 }
             }
         }

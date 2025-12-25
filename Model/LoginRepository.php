@@ -59,7 +59,7 @@ class LoginRepository implements LoginRepositoryInterface
      * @param User $user
      * @return $this
      */
-    public function setUser($user): LoginRepositoryInterface
+    public function setUser(User $user): LoginRepositoryInterface
     {
         $this->user = $user;
         return $this;
@@ -89,16 +89,16 @@ class LoginRepository implements LoginRepositoryInterface
 
     /**
      * Set login data
-     * @param $status
-     * @param $type
+     * @param int $status
+     * @param string $type
      * @param string $remark
      * @return bool
      */
-    public function addLog($status, $type, string $remark = ''): bool
+    public function addLog(int $status, string $type, string $remark = ''): bool
     {
         $login = $this->initLoginActivity();
 
-        $login->setStatus($status);
+        $login->setStatus((bool)$status);
         $login->setType($type);
         $login->setRemarks($remark);
         $login->save();
@@ -136,10 +136,10 @@ class LoginRepository implements LoginRepositoryInterface
 
     /**
      * Get all admin activity data before date
-     * @param $endDate
+     * @param string $endDate
      * @return Collection
      */
-    public function getListBeforeDate($endDate): Collection
+    public function getListBeforeDate(string $endDate): Collection
     {
         $collection = $this->collectionFactory->create()
             ->addFieldToSelect('entity_id')
