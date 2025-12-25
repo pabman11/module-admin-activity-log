@@ -57,12 +57,13 @@ class Login extends AbstractModel implements LoginInterface
         return $this->setData(self::REMOTE_IP, $remoteIp);
     }
 
-    public function getForwardedIp(): string
+    public function getForwardedIp(): ?string
     {
-        return (string)$this->getData(self::FORWARDED_IP);
+        $value = $this->getData(self::FORWARDED_IP);
+        return $value === null ? null : (string)$value;
     }
 
-    public function setForwardedIp(string $forwardedIp): LoginInterface
+    public function setForwardedIp(?string $forwardedIp): LoginInterface
     {
         return $this->setData(self::FORWARDED_IP, $forwardedIp);
     }
@@ -98,12 +99,13 @@ class Login extends AbstractModel implements LoginInterface
         return $this->setData(self::STATUS, $status);
     }
 
-    public function getRemarks(): string
+    public function getRemarks(): ?string
     {
-        return (string)$this->getData(self::REMARKS);
+        $value = $this->getData(self::REMARKS);
+        return $value === null ? null : (string)$value;
     }
 
-    public function setRemarks(string $remarks): LoginInterface
+    public function setRemarks(?string $remarks): LoginInterface
     {
         return $this->setData(self::REMARKS, $remarks);
     }

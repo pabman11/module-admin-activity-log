@@ -74,8 +74,8 @@ interface ActivityInterface
 
     public function getItemName(): string;
     public function setItemName(string $itemName): self;
-    public function getItemPath(): string;
-    public function setItemPath(string $itemPath): self;
+    public function getItemPath(): ?string;
+    public function setItemPath(?string $itemPath): self;
 
     public function getItemUrl(): ?string;
     public function setItemUrl(?string $itemUrl): self;

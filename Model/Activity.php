@@ -147,12 +147,13 @@ class Activity extends AbstractModel implements ActivityInterface
         return $this->setData(self::ITEM_NAME, $itemName);
     }
 
-    public function getItemPath(): string
+    public function getItemPath(): ?string
     {
-        return (string)$this->getData(self::ITEM_PATH);
+        $value = $this->getData(self::ITEM_PATH);
+        return $value === null ? null : (string)$value;
     }
 
-    public function setItemPath(string $itemPath): ActivityInterface
+    public function setItemPath(?string $itemPath): ActivityInterface
     {
         return $this->setData(self::ITEM_PATH, $itemPath);
     }

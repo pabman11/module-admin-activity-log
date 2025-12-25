@@ -49,8 +49,8 @@
         <column xsi:type="int" name="entity_id" unsigned="true" nullable="false" identity="true" comment="Primary key for the Table"/>
         <column xsi:type="int" name="activity_id" unsigned="true" nullable="true" comment="Entity id of admin_activity table"/>
         <column xsi:type="varchar" name="field_name" nullable="false" length="255" default="" comment="Name of field which is affected"/>
-        <column xsi:type="text" name="old_value" nullable="false" comment="Old value of field"/>
-        <column xsi:type="text" name="new_value" nullable="false" comment="New value of field"/>
+        <column xsi:type="text" name="old_value" nullable="true" comment="Old value of field"/>
+        <column xsi:type="text" name="new_value" nullable="true" comment="New value of field"/>
 
         <constraint xsi:type="primary" referenceId="PRIMARY">
             <column name="entity_id"/>
@@ -72,7 +72,7 @@
         <column xsi:type="varchar" name="model_class" nullable="false" length="255" default="" comment="Name of field which is affected"/>
         <column xsi:type="int" name="item_id" nullable="true" comment="ID of the item being modified"/>
         <column xsi:type="varchar" name="status" nullable="false" length="16" default="" comment="Status of revert process"/>
-        <column xsi:type="text" name="response" nullable="false" comment="Error message faced during revert process"/>
+        <column xsi:type="text" name="response" nullable="true" comment="Error message faced during revert process"/>
 
         <constraint xsi:type="primary" referenceId="PRIMARY">
             <column name="entity_id"/>
@@ -93,11 +93,11 @@
         <column xsi:type="varchar" name="username" nullable="false" length="40" default="" comment="Admin username"/>
         <column xsi:type="varchar" name="name" nullable="false" length="64" default="" comment="Full name of admin"/>
         <column xsi:type="varchar" name="remote_ip" nullable="false" length="40" default="" comment="IP address of logged in admin user"/>
-        <column xsi:type="varchar" name="forwarded_ip" nullable="false" length="40" default="" comment="Real IP address if visitor used proxy"/>
+        <column xsi:type="varchar" name="forwarded_ip" nullable="true" length="40" comment="Real IP address if visitor used proxy"/>
         <column xsi:type="text" name="user_agent" nullable="false" comment="Store browser's user agent"/>
         <column xsi:type="varchar" name="type" nullable="false" length="8" default="" comment="Is it Login/Logout?"/>
         <column xsi:type="boolean" name="status" nullable="true" comment="0 = Failed, 1= Success"/>
-        <column xsi:type="text" name="remarks" nullable="false" comment="Reason for failure"/>
+        <column xsi:type="text" name="remarks" nullable="true" comment="Reason for failure"/>
         <column xsi:type="timestamp" name="created_at" nullable="false" default="CURRENT_TIMESTAMP" comment="The date when the activity was created"/>
 
         <constraint xsi:type="primary" referenceId="PRIMARY">

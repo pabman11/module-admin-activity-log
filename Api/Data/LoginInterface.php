@@ -27,8 +27,8 @@ interface LoginInterface
     public function getRemoteIp(): string;
     public function setRemoteIp(string $remoteIp): self;
 
-    public function getForwardedIp(): string;
-    public function setForwardedIp(string $forwardedIp): self;
+    public function getForwardedIp(): ?string;
+    public function setForwardedIp(?string $forwardedIp): self;
 
     public function getUserAgent(): string;
     public function setUserAgent(string $userAgent): self;
@@ -39,8 +39,8 @@ interface LoginInterface
     public function getStatus(): ?bool;
     public function setStatus(?bool $status): self;
 
-    public function getRemarks(): string;
-    public function setRemarks(string $remarks): self;
+    public function getRemarks(): ?string;
+    public function setRemarks(?string $remarks): self;
 
     public function getCreatedAt(): string;
     public function setCreatedAt(string $createdAt): self;

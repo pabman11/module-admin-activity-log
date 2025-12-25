@@ -23,7 +23,10 @@
         },
         "index": {
             "ADMIN_ACTIVITY_ADMIN_ID": true,
-            "ADMIN_ACTIVITY_STORE_ID": true
+            "ADMIN_ACTIVITY_STORE_ID": true,
+            "ADMIN_ACTIVITY_CREATED_AT": true,
+            "ADMIN_ACTIVITY_ACTION_TYPE": true,
+            "ADMIN_ACTIVITY_MODULE": true
         },
         "constraint": {
             "PRIMARY": true
@@ -74,6 +77,9 @@
             "status": true,
             "remarks": true,
             "created_at": true
+        },
+        "index": {
+            "ADMIN_LOGIN_LOG_CREATED_AT": true
         },
         "constraint": {
             "PRIMARY": true

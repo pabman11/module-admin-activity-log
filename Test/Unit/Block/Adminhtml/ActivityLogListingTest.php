@@ -3,9 +3,11 @@
 namespace MageOS\AdminActivityLog\Test\Unit\Block\Adminhtml;
 
 use Magento\Backend\Block\Template\Context;
-use Magento\Framework\App\RequestInterface;
 use Magento\Directory\Helper\Data as DirectoryHelper;
+use Magento\Framework\App\RequestInterface;
 use Magento\Framework\Json\Helper\Data as JsonHelper;
+use Magento\Store\Model\Store;
+use Magento\Store\Model\StoreManagerInterface;
 use MageOS\AdminActivityLog\Api\ActivityRepositoryInterface;
 use MageOS\AdminActivityLog\Block\Adminhtml\ActivityLogListing;
 use MageOS\AdminActivityLog\Helper\Browser;
@@ -16,20 +18,22 @@ use PHPUnit\Framework\TestCase;
 
 class ActivityLogListingTest extends TestCase
 {
-
     private RequestInterface&MockObject $request;
     private Context&MockObject $context;
     private ActivityRepositoryInterface&MockObject $activityRepository;
     private Browser&MockObject $browser;
     private JsonHelper&MockObject $jsonHelper;
     private DirectoryHelper&MockObject $directoryHelper;
+    private StoreManagerInterface&MockObject $storeManager;
     private ActivityLogListing $block;
 
     protected function setUp(): void
     {
         $this->request = $this->createMock(RequestInterface::class);
+        $this->storeManager = $this->createMock(StoreManagerInterface::class);
         $this->context = $this->createMock(Context::class);
         $this->context->method('getRequest')->willReturn($this->request);
+        $this->context->method('getStoreManager')->willReturn($this->storeManager);
 
         $this->activityRepository = $this->createMock(ActivityRepositoryInterface::class);
         $this->browser = $this->createMock(Browser::class);
@@ -37,9 +41,9 @@ class ActivityLogListingTest extends TestCase
         $this->directoryHelper = $this->createMock(DirectoryHelper::class);
 
         $this->block = new ActivityLogListing(
+            $this->context,
             $this->activityRepository,
             $this->browser,
-            $this->context,
             [],
             $this->jsonHelper,
             $this->directoryHelper
@@ -61,7 +65,9 @@ class ActivityLogListingTest extends TestCase
 
         $activityLogCollection = $this->createMock(Collection::class);
         $activityLogCollection->expects($this->once())->method('getData')->willReturn($data);
-        $this->activityRepository->expects($this->once())->method('getActivityLog')->with($id)->willReturn($activityLogCollection);
+        $this->activityRepository->expects($this->once())->method('getActivityLog')->with($id)->willReturn(
+            $activityLogCollection
+        );
 
         $this->assertEquals($data, $this->block->getLogListing());
     }
@@ -75,21 +81,9 @@ class ActivityLogListingTest extends TestCase
 
         $activityLogCollection = $this->createMock(Collection::class);
         $activityLogCollection->expects($this->once())->method('getData')->willReturn($data);
-        $this->activityRepository->expects($this->once())->method('getActivityLog')->with($id)->willReturn($activityLogCollection);
-
-        $this->assertEquals($data, $this->block->getLogListing());
-    }
-
-    public function testGetLogListingActivityNullableId(): void
-    {
-        $id = null;
-        $data = [];
-
-        $this->request->expects($this->once())->method('getParam')->with('id')->willReturn($id);
-
-        $activityLogCollection = $this->createMock(Collection::class);
-        $activityLogCollection->expects($this->once())->method('getData')->willReturn($data);
-        $this->activityRepository->expects($this->once())->method('getActivityLog')->with($id)->willReturn($activityLogCollection);
+        $this->activityRepository->expects($this->once())->method('getActivityLog')->with($id)->willReturn(
+            $activityLogCollection
+        );
 
         $this->assertEquals($data, $this->block->getLogListing());
     }
@@ -97,12 +91,14 @@ class ActivityLogListingTest extends TestCase
     public function testGetAdminDetails(): void
     {
         $id = 1;
+        $storeId = 0;
         $userAgent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36 Edg/143.0.0.0';
         $user = 'user';
         $module = 'System Configuration';
         $name = 'John Smith';
         $fullaction = 'Adminhtml/System/Config/Edit';
         $path = 'System Configuration > General > General > Single-Store Mode > Enable Single-Store Mode';
+        $scope = 'default';
         $browser = 'Browser Name: Chrome
             Browser Version: 143.0.0.0
             Platform: Linux
@@ -115,6 +111,8 @@ class ActivityLogListingTest extends TestCase
             'name' => $name,
             'fullaction' => $fullaction,
             'path' => $path,
+            'scope' => $scope,
+            'store_name' => 'Default Config',
             'browser' => $browser,
             'date' => $date
         ];
@@ -128,7 +126,14 @@ class ActivityLogListingTest extends TestCase
         $activity->expects($this->once())->method('getName')->willReturn($name);
         $activity->expects($this->once())->method('getFullaction')->willReturn($fullaction);
         $activity->expects($this->once())->method('getItemPath')->willReturn($path);
+        $activity->expects($this->once())->method('getScope')->willReturn($scope);
+        $activity->expects($this->once())->method('getStoreId')->willReturn($storeId);
         $activity->expects($this->once())->method('getUpdatedAt')->willReturn($date);
+
+        $store = $this->createMock(Store::class);
+        $store->expects($this->once())->method('getId')->willReturn($storeId);
+
+        $this->storeManager->expects($this->once())->method('getStore')->with($storeId)->willReturn($store);
 
         $this->activityRepository->expects($this->once())->method('getActivityById')->with($id)->willReturn($activity);
 

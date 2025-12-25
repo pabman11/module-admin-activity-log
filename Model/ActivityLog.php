@@ -48,22 +48,24 @@ class ActivityLog extends AbstractModel implements ActivityLogInterface
         return $this->setData(self::FIELD_NAME, $fieldName);
     }
 
-    public function getOldValue(): string
+    public function getOldValue(): ?string
     {
-        return (string)$this->getData(self::OLD_VALUE);
+        $value = $this->getData(self::OLD_VALUE);
+        return $value === null ? null : (string)$value;
     }
 
-    public function setOldValue(string $oldValue): ActivityLogInterface
+    public function setOldValue(?string $oldValue): ActivityLogInterface
     {
         return $this->setData(self::OLD_VALUE, $oldValue);
     }
 
-    public function getNewValue(): string
+    public function getNewValue(): ?string
     {
-        return (string)$this->getData(self::NEW_VALUE);
+        $value = $this->getData(self::NEW_VALUE);
+        return $value === null ? null : (string)$value;
     }
 
-    public function setNewValue(string $newValue): ActivityLogInterface
+    public function setNewValue(?string $newValue): ActivityLogInterface
     {
         return $this->setData(self::NEW_VALUE, $newValue);
     }

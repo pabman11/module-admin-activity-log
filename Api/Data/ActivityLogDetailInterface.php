@@ -38,6 +38,6 @@ interface ActivityLogDetailInterface
     public function getStatus(): string;
     public function setStatus(string $status): self;
 
-    public function getResponse(): string;
-    public function setResponse(string $response): self;
+    public function getResponse(): ?string;
+    public function setResponse(?string $response): self;
 }

@@ -19,9 +19,9 @@ interface ActivityLogInterface
     public function getFieldName(): string;
     public function setFieldName(string $fieldName): self;
 
-    public function getOldValue(): string;
-    public function setOldValue(string $oldValue): self;
+    public function getOldValue(): ?string;
+    public function setOldValue(?string $oldValue): self;
 
-    public function getNewValue(): string;
-    public function setNewValue(string $newValue): self;
+    public function getNewValue(): ?string;
+    public function setNewValue(?string $newValue): self;
 }
