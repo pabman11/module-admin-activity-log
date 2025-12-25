@@ -33,6 +33,15 @@
         <index referenceId="ADMIN_ACTIVITY_STORE_ID" indexType="btree">
             <column name="store_id"/>
         </index>
+        <index referenceId="ADMIN_ACTIVITY_CREATED_AT" indexType="btree">
+            <column name="created_at"/>
+        </index>
+        <index referenceId="ADMIN_ACTIVITY_ACTION_TYPE" indexType="btree">
+            <column name="action_type"/>
+        </index>
+        <index referenceId="ADMIN_ACTIVITY_MODULE" indexType="btree">
+            <column name="module"/>
+        </index>
     </table>
 
     <!-- Activity log table for detailed field changes -->
@@ -61,7 +70,7 @@
         <column xsi:type="int" name="entity_id" unsigned="true" nullable="false" identity="true" comment="Primary key for the Table"/>
         <column xsi:type="int" name="activity_id" unsigned="true" nullable="false" comment="Entity id of admin_activity table"/>
         <column xsi:type="varchar" name="model_class" nullable="false" length="255" default="" comment="Name of field which is affected"/>
-        <column xsi:type="int" name="item_id" nullable="true" comment="Old value of field"/>
+        <column xsi:type="int" name="item_id" nullable="true" comment="ID of the item being modified"/>
         <column xsi:type="varchar" name="status" nullable="false" length="16" default="" comment="Status of revert process"/>
         <column xsi:type="text" name="response" nullable="false" comment="Error message faced during revert process"/>
 
@@ -94,5 +103,9 @@
         <constraint xsi:type="primary" referenceId="PRIMARY">
             <column name="entity_id"/>
         </constraint>
+
+        <index referenceId="ADMIN_LOGIN_LOG_CREATED_AT" indexType="btree">
+            <column name="created_at"/>
+        </index>
     </table>
 </schema>
