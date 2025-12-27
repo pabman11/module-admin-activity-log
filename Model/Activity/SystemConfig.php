@@ -5,7 +5,7 @@
  * @category   MageOS
  * @package    MageOS_AdminActivityLog
  * @copyright  Copyright (C) 2018 Kiwi Commerce Ltd (https://kiwicommerce.co.uk/)
- * @copyright  Copyright (C) 2024 MageOS (https://mage-os.org/)
+ * @copyright  Copyright (C) 2025 MageOS (https://mage-os.org/)
  * @license    https://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 
@@ -107,11 +107,11 @@ class SystemConfig implements ModelInterface
         );
         $data = [];
         foreach ($systemData->getData() as $config) {
-            $splittedPath = explode('/', (string) $config['path']);
+            $splittedPath = explode('/', (string)$config['path']);
             if (count($splittedPath) === 2) {
-                [$group, $field] = explode('/', (string) $config['path']);
+                [$group, $field] = explode('/', (string)$config['path']);
             } else {
-                [$path, $group, $field] = explode('/', (string) $config['path']);
+                [$path, $group, $field] = explode('/', (string)$config['path']);
             }
 
             $data[$group]['fields'][$field]['value'] = $config['value'];

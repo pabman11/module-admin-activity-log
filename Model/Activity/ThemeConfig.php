@@ -5,7 +5,7 @@
  * @category   MageOS
  * @package    MageOS_AdminActivityLog
  * @copyright  Copyright (C) 2018 Kiwi Commerce Ltd (https://kiwicommerce.co.uk/)
- * @copyright  Copyright (C) 2024 MageOS (https://mage-os.org/)
+ * @copyright  Copyright (C) 2025 MageOS (https://mage-os.org/)
  * @license    https://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 
@@ -127,7 +127,7 @@ class ThemeConfig implements ModelInterface
             $oldValue = !empty($oldData[$key]) ? $oldData[$key] : '';
 
             if ($newValue != $oldValue) {
-                $key = 'design/' . preg_replace('/_/', '/', (string) $key, 1);
+                $key = 'design/' . preg_replace('/_/', '/', (string)$key, 1);
                 $logData[$key] = [
                     'old_value' => $oldValue,
                     'new_value' => $newValue

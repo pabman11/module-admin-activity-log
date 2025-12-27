@@ -5,7 +5,7 @@
  * @category   MageOS
  * @package    MageOS_AdminActivityLog
  * @copyright  Copyright (C) 2018 Kiwi Commerce Ltd (https://kiwicommerce.co.uk/)
- * @copyright  Copyright (C) 2024 MageOS (https://mage-os.org/)
+ * @copyright  Copyright (C) 2025 MageOS (https://mage-os.org/)
  * @license    https://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 
@@ -22,22 +22,27 @@ interface ActivityLogDetailInterface
 {
     public const ACTIVITY_ID = 'activity_id';
     public const MODEL_CLASS = 'model_class';
-    public const ITEM_ID     = 'item_id';
-    public const STATUS      = 'status';
-    public const RESPONSE    = 'response';
+    public const ITEM_ID = 'item_id';
+    public const STATUS = 'status';
+    public const RESPONSE = 'response';
 
     public function getActivityId(): int;
+
     public function setActivityId(int $activityId): self;
 
     public function getModelClass(): string;
+
     public function setModelClass(string $modelClass): self;
 
     public function getItemId(): ?int;
+
     public function setItemId(?int $itemId): self;
 
     public function getStatus(): string;
+
     public function setStatus(string $status): self;
 
     public function getResponse(): ?string;
+
     public function setResponse(?string $response): self;
 }

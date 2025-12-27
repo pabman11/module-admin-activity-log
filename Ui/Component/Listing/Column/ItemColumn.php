@@ -5,7 +5,7 @@
  * @category   MageOS
  * @package    MageOS_AdminActivityLog
  * @copyright  Copyright (C) 2018 Kiwi Commerce Ltd (https://kiwicommerce.co.uk/)
- * @copyright  Copyright (C) 2024 MageOS (https://mage-os.org/)
+ * @copyright  Copyright (C) 2025 MageOS (https://mage-os.org/)
  * @license    https://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 
@@ -113,8 +113,12 @@ class ItemColumn extends Column
      * @param string $fieldSeparator
      * @param string $quote
      */
-    public function serialize(array $keys = [], string $valueSeparator = '=', string $fieldSeparator = ' ', string $quote = '"'): string
-    {
+    public function serialize(
+        array $keys = [],
+        string $valueSeparator = '=',
+        string $fieldSeparator = ' ',
+        string $quote = '"'
+    ): string {
         $data = [];
         foreach ($keys as $key => $value) {
             $data[] = $key . $valueSeparator . $quote . $value . $quote;

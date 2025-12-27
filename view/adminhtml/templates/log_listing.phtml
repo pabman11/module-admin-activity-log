@@ -5,11 +5,12 @@
  * @category   MageOS
  * @package    MageOS_AdminActivityLog
  * @copyright  Copyright (C) 2018 Kiwi Commerce Ltd (https://kiwicommerce.co.uk/)
- * @copyright  Copyright (C) 2024 MageOS (https://mage-os.org/)
+ * @copyright  Copyright (C) 2025 MageOS (https://mage-os.org/)
  * @license    https://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 
 /** @var Escaper $escaper */
+
 /** @var ActivityLogListing $block */
 
 use Magento\Framework\Escaper;
@@ -32,7 +33,7 @@ $adminDetails = $block->getAdminDetails();
                                 echo $escaper->escapeHtml(" (" . ucwords(strtolower($adminDetails['name'])) . ")");
                             }
                         }
-                    ?></td>
+                        ?></td>
                 </tr>
                 <tr class="admin-details-row">
                     <td class="admin-details-label"><?= $escaper->escapeHtml(__('Module')) ?></td>
@@ -63,9 +64,9 @@ $adminDetails = $block->getAdminDetails();
                     <td class="admin-details-label"><?= $escaper->escapeHtml(__('User Agent')) ?></td>
                     <td class="admin-details-separator">:</td>
                     <td class="admin-details-value"><?= $escaper->escapeHtml(
-                        $adminDetails['browser'],
-                        ['strong', 'br']
-                    ) ?></td>
+                            $adminDetails['browser'],
+                            ['strong', 'br']
+                        ) ?></td>
                 </tr>
                 <tr class="admin-details-row">
                     <td class="admin-details-label"><?= $escaper->escapeHtml(__('Date')) ?></td>
@@ -78,40 +79,44 @@ $adminDetails = $block->getAdminDetails();
     <tr class="spacer-row">
         <td></td>
     </tr>
-    <?php if (!empty($collection)): ?>
+    <?php
+    if (!empty($collection)): ?>
         <tr>
             <td>
                 <table class="activity-details-table">
                     <thead>
-                        <tr>
-                            <th class="field-name-col"><?= $escaper->escapeHtml(__('Field Name')) ?></th>
-                            <th class="value-col"><?= $escaper->escapeHtml(__('Old Value')) ?></th>
-                            <th class="value-col"><?= $escaper->escapeHtml(__('New Value')) ?></th>
-                        </tr>
+                    <tr>
+                        <th class="field-name-col"><?= $escaper->escapeHtml(__('Field Name')) ?></th>
+                        <th class="value-col"><?= $escaper->escapeHtml(__('Old Value')) ?></th>
+                        <th class="value-col"><?= $escaper->escapeHtml(__('New Value')) ?></th>
+                    </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($collection as $item): ?>
-                            <tr>
-                                <td class="field-name-col">
-                                    <?= $escaper->escapeHtml(ucfirst(str_replace('_', ' ', $item["field_name"]))) ?>
-                                </td>
-                                <td class="value-col">
+                    <?php
+                    foreach ($collection as $item): ?>
+                        <tr>
+                            <td class="field-name-col">
+                                <?= $escaper->escapeHtml(ucfirst(str_replace('_', ' ', $item["field_name"]))) ?>
+                            </td>
+                            <td class="value-col">
                                     <textarea class="value-container" readonly><?php
-                                    if (!$block->getActivityRepository()->isFieldProtected($item['field_name'])):
-                                        echo $escaper->escapeHtml($item['old_value']);
-                                    endif ?></textarea>
-                                </td>
-                                <td class="value-col">
+                                        if (!$block->getProtectedFieldChecker()->isFieldProtected($item['field_name'])):
+                                            echo $escaper->escapeHtml($item['old_value']);
+                                        endif ?></textarea>
+                            </td>
+                            <td class="value-col">
                                     <textarea class="value-container" readonly><?php
-                                    if (!$block->getActivityRepository()->isFieldProtected($item['field_name'])):
-                                        echo $escaper->escapeHtml($item['new_value']);
-                                    endif ?></textarea>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
+                                        if (!$block->getProtectedFieldChecker()->isFieldProtected($item['field_name'])):
+                                            echo $escaper->escapeHtml($item['new_value']);
+                                        endif ?></textarea>
+                            </td>
+                        </tr>
+                    <?php
+                    endforeach; ?>
                     </tbody>
                 </table>
             </td>
         </tr>
-    <?php endif; ?>
+    <?php
+    endif; ?>
 </table>
