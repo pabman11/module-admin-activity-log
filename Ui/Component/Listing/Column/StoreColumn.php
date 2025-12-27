@@ -53,7 +53,7 @@ class StoreColumn extends Store
         $content = '';
         foreach ($data as $website) {
             /** @var array{label: string, children: array<array{label: string, children: array<array{label: string}>}>} $website */
-            $content .= (string)$website['label'] . "<br/>";
+            $content .= $this->escaper->escapeHtml((string)$website['label']) . "<br/>";
             foreach ($website['children'] as $group) {
                 $content .= str_repeat('&nbsp;', 3) . $this->escaper->escapeHtml((string)$group['label']) . "<br/>";
                 foreach ($group['children'] as $store) {

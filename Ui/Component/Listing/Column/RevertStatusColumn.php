@@ -13,16 +13,29 @@ declare(strict_types=1);
 
 namespace MageOS\AdminActivityLog\Ui\Component\Listing\Column;
 
+use Magento\Framework\Escaper;
+use Magento\Framework\View\Element\UiComponent\ContextInterface;
+use Magento\Framework\View\Element\UiComponentFactory;
 use Magento\Ui\Component\Listing\Columns\Column;
 
 /**
- * Class StatusColumn
- * @package MageOS\AdminActivityLog\Ui\Component\Listing\Column
+ * Renders revert status column with proper XSS protection
  */
 class RevertStatusColumn extends Column
 {
+    public function __construct(
+        ContextInterface $context,
+        UiComponentFactory $uiComponentFactory,
+        private readonly Escaper $escaper,
+        array $components = [],
+        array $data = []
+    ) {
+        parent::__construct($context, $uiComponentFactory, $components, $data);
+    }
+
     /**
      * Prepare Data Source
+     *
      * @param array<string, mixed> $dataSource
      * @return array<string, mixed>
      */
@@ -40,8 +53,9 @@ class RevertStatusColumn extends Column
                 if ($isRevertable === true) {
                     $item[$columnName] = '<span class="grid-severity-minor" title=""><span>Revert</span></span>';
                 } elseif ($isRevertable === false && !empty($revertBy)) {
+                    $escapedRevertBy = $this->escaper->escapeHtml($revertBy);
                     $item[$columnName] = '<span class="grid-severity-notice" title=""><span>Success</span></span>';
-                    $item[$columnName] .= '<br/><strong>Reverted By:</strong> ' . $revertBy;
+                    $item[$columnName] .= '<br/><strong>Reverted By:</strong> ' . $escapedRevertBy;
                 } else {
                     $item[$columnName] = '-';
                 }

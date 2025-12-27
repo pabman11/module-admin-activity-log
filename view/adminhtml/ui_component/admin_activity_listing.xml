@@ -151,12 +151,6 @@
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
-                    <item name="editor" xsi:type="array">
-                        <item name="editorType" xsi:type="string">text</item>
-                        <item name="validation" xsi:type="array">
-                            <item name="required-entry" xsi:type="boolean">true</item>
-                        </item>
-                    </item>
                     <item name="label" xsi:type="string" translate="true">Username</item>
                 </item>
             </argument>
@@ -166,13 +160,7 @@
         <column name="name">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
-                    <item name="filter" xsi:type="string">false</item>
-                    <item name="editor" xsi:type="array">
-                        <item name="editorType" xsi:type="string">text</item>
-                        <item name="validation" xsi:type="array">
-                            <item name="required-entry" xsi:type="boolean">true</item>
-                        </item>
-                    </item>
+                    <item name="filter" xsi:type="string">text</item>
                     <item name="label" xsi:type="string" translate="true">Name</item>
                 </item>
             </argument>
@@ -183,7 +171,7 @@
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">false</item>
-                    <item name="label" translate="true" xsi:type="string">Activity Type</item>
+                    <item name="label" xsi:type="string" translate="true">Activity Type</item>
                 </item>
             </argument>
         </column>
@@ -194,7 +182,7 @@
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">true</item>
                     <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
-                    <item name="label" translate="true" xsi:type="string">Store View</item>
+                    <item name="label" xsi:type="string" translate="true">Store View</item>
                 </item>
             </argument>
         </column>
@@ -204,12 +192,6 @@
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
-                    <item name="editor" xsi:type="array">
-                        <item name="editorType" xsi:type="string">text</item>
-                        <item name="validation" xsi:type="array">
-                            <item name="required-entry" xsi:type="boolean">true</item>
-                        </item>
-                    </item>
                     <item name="label" xsi:type="string" translate="true">Module</item>
                 </item>
             </argument>
@@ -220,12 +202,6 @@
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
-                    <item name="editor" xsi:type="array">
-                        <item name="editorType" xsi:type="string">text</item>
-                        <item name="validation" xsi:type="array">
-                            <item name="required-entry" xsi:type="boolean">true</item>
-                        </item>
-                    </item>
                     <item name="label" xsi:type="string" translate="true">Full Action</item>
                 </item>
             </argument>
@@ -236,13 +212,7 @@
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
-                    <item name="editor" xsi:type="array">
-                        <item name="editorType" xsi:type="string">text</item>
-                        <item name="validation" xsi:type="array">
-                            <item name="required-entry" xsi:type="boolean">true</item>
-                        </item>
-                    </item>
-                    <item name="label" xsi:type="string" translate="true">IP</item>
+                    <item name="label" xsi:type="string" translate="true">IP Address</item>
                 </item>
             </argument>
         </column>
@@ -253,7 +223,7 @@
                 <item name="config" xsi:type="array">
                     <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
                     <item name="filter" xsi:type="string">text</item>
-                    <item name="label" translate="true" xsi:type="string">Item</item>
+                    <item name="label" xsi:type="string" translate="true">Item</item>
                 </item>
             </argument>
         </column>
@@ -263,13 +233,7 @@
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
-                    <item name="editor" xsi:type="array">
-                        <item name="editorType" xsi:type="string">text</item>
-                        <item name="validation" xsi:type="array">
-                            <item name="required-entry" xsi:type="boolean">true</item>
-                        </item>
-                    </item>
-                    <item name="label" translate="true" xsi:type="string">Path</item>
+                    <item name="label" xsi:type="string" translate="true">Path</item>
                 </item>
             </argument>
         </column>
@@ -280,18 +244,19 @@
                 <item name="config" xsi:type="array">
                     <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
                     <item name="urlEntityParamName" xsi:type="string">id</item>
-                    <item name="label" translate="true" xsi:type="string">Revert</item>
+                    <item name="label" xsi:type="string" translate="true">Revert</item>
                 </item>
             </argument>
         </actionsColumn>
 
-        <!-- Action Type Column -->
+        <!-- View Action Column -->
         <actionsColumn name="entity_id" class="MageOS\AdminActivityLog\Ui\Component\Listing\Column\ViewAction">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
                     <item name="viewUrlPath" xsi:type="string">adminactivity/Activity/Log</item>
                     <item name="urlEntityParamName" xsi:type="string">id</item>
+                    <item name="label" xsi:type="string" translate="true">Action</item>
                 </item>
             </argument>
         </actionsColumn>

@@ -20,21 +20,22 @@
                 <label>Admin Activity Logs</label>
                 <group id="general" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
                     <label>General Configuration</label>
-                    <field id="enable" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <field id="enable" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
                         <label>Enable Admin Audit Logs</label>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     </field>
-                    <field id="login_activity" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <field id="login_activity" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
                         <label>Record Login Activity</label>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     </field>
-                    <field id="page_visit" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <field id="page_visit" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0">
                         <label>Record Page Visits</label>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     </field>
-                    <field id="clearlog" translate="label comment" type="text" sortOrder="2" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <field id="clearlog" translate="label comment" type="text" sortOrder="40" showInDefault="1" showInWebsite="0" showInStore="0">
                         <label>Clear Admin Activity Logs After</label>
                         <comment>Number of days</comment>
+                        <validate>validate-digits</validate>
                     </field>
                 </group>
             </group>
