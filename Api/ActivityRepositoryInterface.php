@@ -5,7 +5,7 @@
  * @category   MageOS
  * @package    MageOS_AdminActivityLog
  * @copyright  Copyright (C) 2018 Kiwi Commerce Ltd (https://kiwicommerce.co.uk/)
- * @copyright  Copyright (C) 2024 MageOS (https://mage-os.org/)
+ * @copyright  Copyright (C) 2025 MageOS (https://mage-os.org/)
  * @license    https://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 
@@ -26,13 +26,6 @@ use MageOS\AdminActivityLog\Model\ResourceModel\ActivityLog\Collection as Activi
  */
 interface ActivityRepositoryInterface
 {
-    /**
-     * Get array of protected fields that should not be logged or reverted
-     *
-     * @return string[]
-     */
-    public function protectedFields(): array;
-
     /**
      * Get collection of all admin activity records
      *
@@ -95,12 +88,4 @@ interface ActivityRepositoryInterface
      * @return ActivityInterface
      */
     public function getActivityById(int $activityId): ActivityInterface;
-
-    /**
-     * Check if a field is protected from logging/reverting
-     *
-     * @param string $fieldName
-     * @return bool
-     */
-    public function isFieldProtected(string $fieldName): bool;
 }

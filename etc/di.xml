@@ -6,17 +6,54 @@
  * @category   MageOS
  * @package    MageOS_AdminActivityLog
  * @copyright  Copyright (C) 2018 Kiwi Commerce Ltd (https://kiwicommerce.co.uk/)
- * @copyright  Copyright (C) 2024 MageOS (https://mage-os.org/)
+ * @copyright  Copyright (C) 2025 MageOS (https://mage-os.org/)
  * @license    https://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
 
-    <!-- Repository interfaces -->
+    <!-- Repository and service interfaces -->
     <preference for="MageOS\AdminActivityLog\Api\ActivityRepositoryInterface" type="MageOS\AdminActivityLog\Model\ActivityRepository" />
     <preference for="MageOS\AdminActivityLog\Api\LoginRepositoryInterface" type="MageOS\AdminActivityLog\Model\LoginRepository" />
     <preference for="MageOS\AdminActivityLog\Api\Data\ActivitySearchResultsInterface" type="Magento\Framework\Api\SearchResults" />
     <preference for="MageOS\AdminActivityLog\Api\ModelResolverInterface" type="MageOS\AdminActivityLog\Model\ModelResolver" />
+    <preference for="MageOS\AdminActivityLog\Api\FieldCheckerInterface" type="MageOS\AdminActivityLog\Model\FieldChecker" />
+
+    <!-- Protected fields configuration for activity logging -->
+    <type name="MageOS\AdminActivityLog\Model\FieldChecker">
+        <arguments>
+            <argument name="protectedFields" xsi:type="array">
+                <item name="password" xsi:type="string">password</item>
+                <item name="password_hash" xsi:type="string">password_hash</item>
+                <item name="rp_token" xsi:type="string">rp_token</item>
+                <item name="rp_token_created_at" xsi:type="string">rp_token_created_at</item>
+                <item name="cc_number" xsi:type="string">cc_number</item>
+                <item name="cc_number_enc" xsi:type="string">cc_number_enc</item>
+                <item name="cc_cid" xsi:type="string">cc_cid</item>
+                <item name="cc_cid_enc" xsi:type="string">cc_cid_enc</item>
+                <item name="cc_exp_month" xsi:type="string">cc_exp_month</item>
+                <item name="cc_exp_year" xsi:type="string">cc_exp_year</item>
+                <item name="cc_ss_issue" xsi:type="string">cc_ss_issue</item>
+                <item name="cc_ss_start_month" xsi:type="string">cc_ss_start_month</item>
+                <item name="cc_ss_start_year" xsi:type="string">cc_ss_start_year</item>
+                <item name="cc_owner" xsi:type="string">cc_owner</item>
+                <item name="cc_type" xsi:type="string">cc_type</item>
+                <item name="echeck_account_name" xsi:type="string">echeck_account_name</item>
+                <item name="echeck_account_type" xsi:type="string">echeck_account_type</item>
+                <item name="echeck_bank_name" xsi:type="string">echeck_bank_name</item>
+                <item name="echeck_routing_number" xsi:type="string">echeck_routing_number</item>
+                <item name="api_key" xsi:type="string">api_key</item>
+                <item name="api_secret" xsi:type="string">api_secret</item>
+                <item name="secret_key" xsi:type="string">secret_key</item>
+                <item name="private_key" xsi:type="string">private_key</item>
+                <item name="access_token" xsi:type="string">access_token</item>
+                <item name="refresh_token" xsi:type="string">refresh_token</item>
+                <item name="session_id" xsi:type="string">session_id</item>
+                <item name="form_key" xsi:type="string">form_key</item>
+                <item name="secret" xsi:type="string">secret</item>
+            </argument>
+        </arguments>
+    </type>
 
     <!-- Type for admin_activity_listing_data_source -->
     <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">

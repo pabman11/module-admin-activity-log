@@ -5,7 +5,7 @@
  * @category   MageOS
  * @package    MageOS_AdminActivityLog
  * @copyright  Copyright (C) 2018 Kiwi Commerce Ltd (https://kiwicommerce.co.uk/)
- * @copyright  Copyright (C) 2024 MageOS (https://mage-os.org/)
+ * @copyright  Copyright (C) 2025 MageOS (https://mage-os.org/)
  * @license    https://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 
@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace MageOS\AdminActivityLog\Test\Unit\Model;
 
+use MageOS\AdminActivityLog\Api\FieldCheckerInterface;
 use MageOS\AdminActivityLog\Api\ModelResolverInterface;
 use MageOS\AdminActivityLog\Model\Activity;
 use MageOS\AdminActivityLog\Model\Activity\SystemConfig;
@@ -38,6 +39,7 @@ class ActivityRepositoryTest extends TestCase
     private SystemConfig&MockObject $systemConfig;
     private ThemeConfig&MockObject $themeConfig;
     private ModelResolverInterface&MockObject $modelResolver;
+    private FieldCheckerInterface&MockObject $protectedFieldChecker;
     private ActivityRepository $repository;
 
     protected function setUp(): void
@@ -50,6 +52,7 @@ class ActivityRepositoryTest extends TestCase
         $this->systemConfig = $this->createMock(SystemConfig::class);
         $this->themeConfig = $this->createMock(ThemeConfig::class);
         $this->modelResolver = $this->createMock(ModelResolverInterface::class);
+        $this->protectedFieldChecker = $this->createMock(FieldCheckerInterface::class);
 
         $this->repository = new ActivityRepository(
             $this->activityFactory,
@@ -59,16 +62,9 @@ class ActivityRepositoryTest extends TestCase
             $this->logCollectionFactory,
             $this->systemConfig,
             $this->themeConfig,
-            $this->modelResolver
+            $this->modelResolver,
+            $this->protectedFieldChecker
         );
-    }
-
-    public function testProtectedFieldsContainsPassword(): void
-    {
-        $result = $this->repository->protectedFields();
-
-        $this->assertContains('password', $result);
-        $this->assertCount(1, $result);
     }
 
     /**
@@ -114,45 +110,6 @@ class ActivityRepositoryTest extends TestCase
             'trailing underscore' => [
                 'field' => 'field_name_',
                 'expected' => 'FieldName'
-            ],
-        ];
-    }
-
-    /**
-     * @dataProvider isFieldProtectedDataProvider
-     */
-    public function testIsFieldProtected(string $fieldName, bool $expected): void
-    {
-        $result = $this->repository->isFieldProtected($fieldName);
-
-        $this->assertSame($expected, $result);
-    }
-
-    /**
-     * @return array<string, array{fieldName: string, expected: bool}>
-     */
-    public static function isFieldProtectedDataProvider(): array
-    {
-        return [
-            'password is protected' => [
-                'fieldName' => 'password',
-                'expected' => true
-            ],
-            'username is not protected' => [
-                'fieldName' => 'username',
-                'expected' => false
-            ],
-            'email is not protected' => [
-                'fieldName' => 'email',
-                'expected' => false
-            ],
-            'PASSWORD uppercase is not protected' => [
-                'fieldName' => 'PASSWORD',
-                'expected' => false
-            ],
-            'empty string is not protected' => [
-                'fieldName' => '',
-                'expected' => false
             ],
         ];
     }

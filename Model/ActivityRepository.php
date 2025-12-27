@@ -5,7 +5,7 @@
  * @category   MageOS
  * @package    MageOS_AdminActivityLog
  * @copyright  Copyright (C) 2018 Kiwi Commerce Ltd (https://kiwicommerce.co.uk/)
- * @copyright  Copyright (C) 2024 MageOS (https://mage-os.org/)
+ * @copyright  Copyright (C) 2025 MageOS (https://mage-os.org/)
  * @license    https://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 
@@ -17,6 +17,7 @@ use Magento\Framework\DataObject;
 use MageOS\AdminActivityLog\Api\ActivityRepositoryInterface;
 use MageOS\AdminActivityLog\Api\Data\ActivityInterface;
 use MageOS\AdminActivityLog\Api\Data\ActivityLogDetailInterface;
+use MageOS\AdminActivityLog\Api\FieldCheckerInterface;
 use MageOS\AdminActivityLog\Api\ModelResolverInterface;
 use MageOS\AdminActivityLog\Helper\Data;
 use MageOS\AdminActivityLog\Model\Activity\SystemConfig;
@@ -41,18 +42,9 @@ class ActivityRepository implements ActivityRepositoryInterface
         protected readonly CollectionFactory $LogCollectionFactory,
         protected readonly SystemConfig $systemConfig,
         protected readonly ThemeConfig $themeConfig,
-        protected readonly ModelResolverInterface $modelResolver
+        protected readonly ModelResolverInterface $modelResolver,
+        protected readonly FieldCheckerInterface $protectedFieldChecker
     ) {
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function protectedFields(): array
-    {
-        return [
-            'password'
-        ];
     }
 
     /**
@@ -144,7 +136,7 @@ class ActivityRepository implements ActivityRepositoryInterface
 
         if ($model->getId()) {
             foreach ($logData as $log) {
-                if ($this->isFieldProtected($log->getFieldName())) {
+                if ($this->protectedFieldChecker->isFieldProtected($log->getFieldName())) {
                     continue;
                 }
                 if ($log->getFieldName() === self::QTY_FIELD) {
@@ -189,14 +181,5 @@ class ActivityRepository implements ActivityRepositoryInterface
     public function getActivityById(int $activityId): ActivityInterface
     {
         return $this->activityFactory->create()->load($activityId);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function isFieldProtected(string $fieldName): bool
-    {
-        $fieldArray = $this->protectedFields();
-        return in_array($fieldName, $fieldArray, true);
     }
 }
