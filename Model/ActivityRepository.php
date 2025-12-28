@@ -39,7 +39,7 @@ class ActivityRepository implements ActivityRepositoryInterface
         protected readonly ResourceModel\Activity\CollectionFactory $collectionFactory,
         protected readonly ActivityLogDetailFactory $activityLogDetailFactory,
         protected readonly ActivityLogFactory $activityLogFactory,
-        protected readonly CollectionFactory $LogCollectionFactory,
+        protected readonly CollectionFactory $logCollectionFactory,
         protected readonly SystemConfig $systemConfig,
         protected readonly ThemeConfig $themeConfig,
         protected readonly ModelResolverInterface $modelResolver,
@@ -90,7 +90,7 @@ class ActivityRepository implements ActivityRepositoryInterface
      */
     public function getActivityLog(int $activityId): ActivityLogCollection
     {
-        return $this->LogCollectionFactory->create()
+        return $this->logCollectionFactory->create()
             ->addFieldToFilter('activity_id', ["eq" => $activityId]);
     }
 
