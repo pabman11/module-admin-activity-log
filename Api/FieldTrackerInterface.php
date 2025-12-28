@@ -18,9 +18,6 @@ use Magento\Framework\DataObject;
 /**
  * Service interface for tracking field changes in admin activity log
  *
- * Provides methods to get tracked field data for add/edit/delete operations.
- * Replaces Helper\TrackField for proper service-oriented architecture.
- *
  * @api
  */
 interface FieldTrackerInterface

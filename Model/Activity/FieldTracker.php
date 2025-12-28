@@ -20,9 +20,6 @@ use MageOS\AdminActivityLog\Model\Config;
 
 /**
  * Service for tracking field changes in admin activity log
- *
- * Provides methods to get tracked field data for add/edit/delete operations.
- * This is the preferred way to track field changes over Helper\TrackField.
  */
 class FieldTracker implements FieldTrackerInterface
 {
@@ -71,8 +68,11 @@ class FieldTracker implements FieldTrackerInterface
             return $methodOrFields;
         }
 
-        // Legacy support is handled via TrackField helper
-        // New code should pass arrays directly
+        // Legacy support: method name passed as string
+        if (!empty($methodOrFields) && method_exists($this, $methodOrFields)) {
+            return $this->{$methodOrFields}();
+        }
+
         return [];
     }
 

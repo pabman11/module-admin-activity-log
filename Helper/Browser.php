@@ -5,7 +5,6 @@
  * @category   MageOS
  * @package    MageOS_AdminActivityLog
  * @copyright  Copyright (C) 2018 Kiwi Commerce Ltd (https://kiwicommerce.co.uk/)
- * @copyright  Copyright (C) 2025 MageOS (https://mage-os.org/)
  * @license    https://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 
@@ -15,12 +14,13 @@ namespace MageOS\AdminActivityLog\Helper;
 
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
+use Stringable;
 
 /**
  * Class Browser
  * @package MageOS\AdminActivityLog\Helper
  */
-class Browser extends AbstractHelper implements \Stringable
+class Browser extends AbstractHelper implements Stringable
 {
     /**
      * @var string

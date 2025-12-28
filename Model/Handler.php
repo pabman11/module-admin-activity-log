@@ -17,7 +17,7 @@ use Magento\Framework\App\Request\Http;
 use Magento\Framework\DataObject;
 use Magento\Framework\HTTP\Header;
 use Magento\Framework\UrlInterface;
-use MageOS\AdminActivityLog\Helper\TrackField as Helper;
+use MageOS\AdminActivityLog\Api\FieldTrackerInterface;
 
 /**
  * Class Handler
@@ -27,14 +27,14 @@ class Handler
 {
     /**
      * Handler constructor.
-     * @param Helper $helper
+     * @param FieldTrackerInterface $fieldTracker
      * @param Header $header
      * @param Http $request
      * @param UrlInterface $urlInterface
      * @param ActivityLogFactory $activityLogFactory
      */
     public function __construct(
-        protected readonly Helper $helper,
+        protected readonly FieldTrackerInterface $fieldTracker,
         protected readonly Header $header,
         protected readonly Http $request,
         protected readonly UrlInterface $urlInterface,
@@ -68,7 +68,7 @@ class Handler
     public function modelAdd(DataObject $model, string|array $methodOrFields): array
     {
         return $this->initLog(
-            $this->helper->getAddData($model, $methodOrFields)
+            $this->fieldTracker->getAddData($model, $methodOrFields)
         );
     }
 
@@ -81,7 +81,7 @@ class Handler
     public function modelEdit(DataObject $model, string|array $methodOrFields): array
     {
         return $this->initLog(
-            $this->helper->getEditData($model, $methodOrFields)
+            $this->fieldTracker->getEditData($model, $methodOrFields)
         );
     }
 
@@ -94,7 +94,7 @@ class Handler
     public function modelDelete(DataObject $model, string|array $methodOrFields): array
     {
         return $this->initLog(
-            $this->helper->getDeleteData($model, $methodOrFields)
+            $this->fieldTracker->getDeleteData($model, $methodOrFields)
         );
     }
 
