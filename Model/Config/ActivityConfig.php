@@ -21,9 +21,6 @@ use MageOS\AdminActivityLog\Model\Config;
 
 /**
  * Service class for admin activity configuration
- *
- * Provides configuration access for admin activity logging module.
- * This is the preferred way to access configuration over Helper\Data.
  */
 class ActivityConfig implements ActivityConfigInterface
 {

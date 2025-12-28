@@ -15,7 +15,7 @@ namespace MageOS\AdminActivityLog\Test\Unit\Helper;
 
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\DataObject;
-use MageOS\AdminActivityLog\Helper\Data;
+use MageOS\AdminActivityLog\Api\ActivityConfigInterface;
 use MageOS\AdminActivityLog\Helper\TrackField;
 use MageOS\AdminActivityLog\Model\Activity\SystemConfig;
 use MageOS\AdminActivityLog\Model\Activity\ThemeConfig;
@@ -30,7 +30,7 @@ class TrackFieldTest extends TestCase
     private SystemConfig&MockObject $systemConfig;
     private ThemeConfig&MockObject $themeConfig;
     private Config&MockObject $config;
-    private Data&MockObject $dataHelper;
+    private ActivityConfigInterface&MockObject $activityConfig;
     private TrackField $trackField;
 
     protected function setUp(): void
@@ -39,14 +39,14 @@ class TrackFieldTest extends TestCase
         $this->systemConfig = $this->createMock(SystemConfig::class);
         $this->themeConfig = $this->createMock(ThemeConfig::class);
         $this->config = $this->createMock(Config::class);
-        $this->dataHelper = $this->createMock(Data::class);
+        $this->activityConfig = $this->createMock(ActivityConfigInterface::class);
 
         $this->trackField = new TrackField(
             $this->context,
             $this->systemConfig,
             $this->themeConfig,
             $this->config,
-            $this->dataHelper
+            $this->activityConfig
         );
     }
 

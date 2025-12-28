@@ -14,16 +14,16 @@ declare(strict_types=1);
 namespace MageOS\AdminActivityLog\Observer;
 
 use Magento\Framework\Event\Observer;
-use MageOS\AdminActivityLog\Helper\Data as Helper;
+use MageOS\AdminActivityLog\Api\ActivityConfigInterface;
 use MageOS\AdminActivityLog\Model\Processor;
 
 class PostDispatch extends AbstractActivityObserver
 {
     public function __construct(
-        Helper $helper,
+        ActivityConfigInterface $activityConfig,
         private readonly Processor $processor
     ) {
-        parent::__construct($helper);
+        parent::__construct($activityConfig);
     }
 
     protected function process(Observer $observer): void

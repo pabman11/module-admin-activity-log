@@ -16,7 +16,7 @@ namespace MageOS\AdminActivityLog\Cron;
 use Exception;
 use Magento\Framework\App\ResourceConnection;
 use Magento\Framework\Stdlib\DateTime\DateTime;
-use MageOS\AdminActivityLog\Helper\Data as Helper;
+use MageOS\AdminActivityLog\Api\ActivityConfigInterface;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -41,7 +41,7 @@ class ClearLog
     public function __construct(
         protected readonly LoggerInterface $logger,
         protected readonly DateTime $dateTime,
-        protected readonly Helper $helper,
+        protected readonly ActivityConfigInterface $activityConfig,
         protected readonly ResourceConnection $resourceConnection
     ) {
     }
@@ -52,7 +52,7 @@ class ClearLog
     public function getCleanupDate(): ?string
     {
         $timestamp = $this->dateTime->gmtTimestamp();
-        $day = $this->helper->getConfigValue('CLEAR_LOG_DAYS');
+        $day = $this->activityConfig->getClearLogDays();
         if ($day) {
             $timestamp -= $day * 24 * 60 * 60;
             return $this->dateTime->gmtDate(self::DATE_FORMAT, $timestamp);
@@ -69,7 +69,7 @@ class ClearLog
     public function execute(): void
     {
         try {
-            if (!$this->helper->isEnable()) {
+            if (!$this->activityConfig->isEnabled()) {
                 return;
             }
 
@@ -82,7 +82,7 @@ class ClearLog
             $this->deleteInBatches('admin_activity', $date);
 
             // Delete login logs in batches if enabled
-            if ($this->helper->isLoginEnable()) {
+            if ($this->activityConfig->isLoginEnabled()) {
                 $this->deleteInBatches('admin_login_log', $date);
             }
         } catch (Exception $e) {

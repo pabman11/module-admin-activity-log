@@ -18,9 +18,6 @@ use Magento\Framework\DataObject;
 /**
  * Service interface for admin activity configuration
  *
- * Provides configuration access for admin activity logging module.
- * Replaces Helper\Data for proper service-oriented architecture.
- *
  * @api
  */
 interface ActivityConfigInterface

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace MageOS\AdminActivityLog\Ui\Component\Listing\Column\ActionType;
 
 use Magento\Framework\Option\ArrayInterface;
-use MageOS\AdminActivityLog\Helper\Data;
+use MageOS\AdminActivityLog\Api\ActivityConfigInterface;
 
 /**
  * Class Options
@@ -23,7 +23,7 @@ use MageOS\AdminActivityLog\Helper\Data;
 class Options implements ArrayInterface
 {
     public function __construct(
-        private readonly Data $helper
+        private readonly ActivityConfigInterface $activityConfig
     ) {
     }
 
@@ -34,7 +34,7 @@ class Options implements ArrayInterface
     public function toOptionArray(): array
     {
         $data = [];
-        $labelList = $this->helper->getAllActions();
+        $labelList = $this->activityConfig->getAllActions();
         foreach ($labelList as $key => $value) {
             $data[] = ['value' => $key, 'label' => __($value)];
         }

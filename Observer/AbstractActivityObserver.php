@@ -15,7 +15,7 @@ namespace MageOS\AdminActivityLog\Observer;
 
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
-use MageOS\AdminActivityLog\Helper\Data as Helper;
+use MageOS\AdminActivityLog\Api\ActivityConfigInterface;
 
 /**
  * Abstract base class for admin activity observers
@@ -27,7 +27,7 @@ use MageOS\AdminActivityLog\Helper\Data as Helper;
 abstract class AbstractActivityObserver implements ObserverInterface
 {
     public function __construct(
-        protected readonly Helper $helper
+        protected readonly ActivityConfigInterface $activityConfig
     ) {
     }
 
@@ -50,7 +50,7 @@ abstract class AbstractActivityObserver implements ObserverInterface
      */
     protected function isEnabled(): bool
     {
-        return $this->helper->isEnable();
+        return $this->activityConfig->isEnable();
     }
 
     /**

@@ -16,6 +16,7 @@ namespace MageOS\AdminActivityLog\Helper;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\DataObject;
+use MageOS\AdminActivityLog\Api\ActivityConfigInterface;
 use MageOS\AdminActivityLog\Model\Activity\SystemConfig;
 use MageOS\AdminActivityLog\Model\Activity\ThemeConfig;
 use MageOS\AdminActivityLog\Model\Config;
@@ -50,7 +51,7 @@ class TrackField extends AbstractHelper
         protected readonly SystemConfig $systemConfig,
         protected readonly ThemeConfig $themeConfig,
         protected readonly Config $config,
-        protected readonly Data $dataHelper
+        protected readonly ActivityConfigInterface $activityConfig
     ) {
         parent::__construct($context);
     }
@@ -660,7 +661,7 @@ class TrackField extends AbstractHelper
         $fieldArray = $this->getFields($methodOrFields);
         $skipFieldArray = $this->getSkipEditFieldData();
 
-        if ($this->dataHelper->checkIsWildCardModel($model)) {
+        if ($this->activityConfig->isWildCardModel($model)) {
             // Check for wildcard model types using method name or skip_fields pattern
             $isSystemConfig = $this->isSystemConfigMethod($methodOrFields);
             $isThemeConfig = $this->isThemeConfigMethod($methodOrFields);

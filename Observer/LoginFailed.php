@@ -15,22 +15,22 @@ namespace MageOS\AdminActivityLog\Observer;
 
 use Magento\Framework\Event\Observer;
 use Magento\User\Model\User;
+use MageOS\AdminActivityLog\Api\ActivityConfigInterface;
 use MageOS\AdminActivityLog\Api\LoginRepositoryInterface;
-use MageOS\AdminActivityLog\Helper\Data as Helper;
 
 class LoginFailed extends AbstractActivityObserver
 {
     public function __construct(
-        Helper $helper,
+        ActivityConfigInterface $activityConfig,
         private readonly User $user,
         private readonly LoginRepositoryInterface $loginRepository
     ) {
-        parent::__construct($helper);
+        parent::__construct($activityConfig);
     }
 
     protected function isEnabled(): bool
     {
-        return $this->helper->isLoginEnable();
+        return $this->activityConfig->isLoginEnabled();
     }
 
     protected function process(Observer $observer): void

@@ -14,12 +14,12 @@ declare(strict_types=1);
 namespace MageOS\AdminActivityLog\Model;
 
 use Magento\Framework\DataObject;
+use MageOS\AdminActivityLog\Api\ActivityConfigInterface;
 use MageOS\AdminActivityLog\Api\ActivityRepositoryInterface;
 use MageOS\AdminActivityLog\Api\Data\ActivityInterface;
 use MageOS\AdminActivityLog\Api\Data\ActivityLogDetailInterface;
 use MageOS\AdminActivityLog\Api\FieldCheckerInterface;
 use MageOS\AdminActivityLog\Api\ModelResolverInterface;
-use MageOS\AdminActivityLog\Helper\Data;
 use MageOS\AdminActivityLog\Model\Activity\SystemConfig;
 use MageOS\AdminActivityLog\Model\Activity\ThemeConfig;
 use MageOS\AdminActivityLog\Model\ResourceModel\Activity\Collection as ActivityCollection;
@@ -44,7 +44,7 @@ class ActivityRepository implements ActivityRepositoryInterface
         protected readonly ThemeConfig $themeConfig,
         protected readonly ModelResolverInterface $modelResolver,
         protected readonly FieldCheckerInterface $protectedFieldChecker,
-        protected readonly Data $dataHelper
+        protected readonly ActivityConfigInterface $activityConfig
     ) {
     }
 
@@ -121,7 +121,7 @@ class ActivityRepository implements ActivityRepositoryInterface
         $logData = $this->getActivityLog($activity->getId());
         $detailModel = $this->getActivityDetail($activity->getId());
 
-        if ($this->dataHelper->checkIsWildCardModel($detailModel->getModelClass())) {
+        if ($this->activityConfig->checkIsWildCardModel($detailModel->getModelClass())) {
             if ($activity->getModule() === self::THEME_MODULE) {
                 return $this->themeConfig->revertData($logData, $activity->getStoreId(), $activity->getScope());
             }
@@ -159,7 +159,7 @@ class ActivityRepository implements ActivityRepositoryInterface
      */
     public function getOldData(DataObject $model): DataObject|false
     {
-        if ($this->dataHelper->checkIsWildCardModel($model)) {
+        if ($this->activityConfig->checkIsWildCardModel($model)) {
             return $this->systemConfig->getOldData($model);
         }
 

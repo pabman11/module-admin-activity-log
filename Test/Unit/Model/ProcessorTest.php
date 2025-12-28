@@ -19,7 +19,7 @@ use Magento\Framework\HTTP\PhpEnvironment\RemoteAddress;
 use Magento\Framework\Message\ManagerInterface;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Store\Model\StoreManagerInterface;
-use MageOS\AdminActivityLog\Helper\Data as Helper;
+use MageOS\AdminActivityLog\Api\ActivityConfigInterface;
 use MageOS\AdminActivityLog\Model\Activity\SystemConfig;
 use MageOS\AdminActivityLog\Model\Config;
 use MageOS\AdminActivityLog\Model\Handler;
@@ -37,7 +37,7 @@ class ProcessorTest extends TestCase
     private Handler&MockObject $handler;
     private StoreManagerInterface&MockObject $storeManager;
     private DateTime&MockObject $dateTime;
-    private Helper&MockObject $helper;
+    private ActivityConfigInterface&MockObject $activityConfig;
     private ManagerInterface&MockObject $messageManager;
     private PostDispatch&MockObject $postDispatch;
     private SystemConfig&MockObject $systemConfig;
@@ -54,7 +54,7 @@ class ProcessorTest extends TestCase
         $this->handler = $this->createMock(Handler::class);
         $this->storeManager = $this->createMock(StoreManagerInterface::class);
         $this->dateTime = $this->createMock(DateTime::class);
-        $this->helper = $this->createMock(Helper::class);
+        $this->activityConfig = $this->createMock(ActivityConfigInterface::class);
         $this->messageManager = $this->createMock(ManagerInterface::class);
         $this->postDispatch = $this->createMock(PostDispatch::class);
         $this->systemConfig = $this->createMock(SystemConfig::class);
@@ -77,7 +77,7 @@ class ProcessorTest extends TestCase
             $this->handler,
             $this->storeManager,
             $this->dateTime,
-            $this->helper,
+            $this->activityConfig,
             $this->messageManager,
             $this->postDispatch,
             $this->systemConfig,

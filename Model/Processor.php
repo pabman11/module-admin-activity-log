@@ -20,7 +20,7 @@ use Magento\Framework\HTTP\PhpEnvironment\RemoteAddress;
 use Magento\Framework\Message\ManagerInterface;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Store\Model\StoreManagerInterface;
-use MageOS\AdminActivityLog\Helper\Data as Helper;
+use MageOS\AdminActivityLog\Api\ActivityConfigInterface;
 use MageOS\AdminActivityLog\Model\Activity\SystemConfig;
 use MageOS\AdminActivityLog\Model\Handler\PostDispatch;
 use MageOS\AdminActivityLog\Model\Processor\ActivityContext;
@@ -68,7 +68,7 @@ class Processor
         protected readonly Handler $handler,
         protected readonly StoreManagerInterface $storeManager,
         protected readonly DateTime $dateTime,
-        protected readonly Helper $helper,
+        protected readonly ActivityConfigInterface $activityConfig,
         protected readonly ManagerInterface $messageManager,
         protected readonly PostDispatch $postDispatch,
         private readonly SystemConfig $systemConfig,
@@ -101,7 +101,7 @@ class Processor
      */
     public function validate($model): bool
     {
-        if ($this->helper->checkIsWildCardModel($model)) {
+        if ($this->activityConfig->isWildCardModel($model)) {
             if (!empty($this->activityLogs)) {
                 return false;
             }
@@ -110,7 +110,7 @@ class Processor
         if ($this->eventConfig) {
             $usedModel = (array)$this->config->getEventModel($this->eventConfig['module']);
             $pathConst = $this->config->getActivityModuleConstant($this->eventConfig['module']);
-            if (!empty($this->helper->getConfigValue($pathConst))) {
+            if (!empty($this->activityConfig->getConfigValue($pathConst))) {
                 foreach ($usedModel as $module) {
                     if ($model instanceof $module) {
                         return true;
@@ -358,7 +358,7 @@ class Processor
             $this->requestContext->getForwardedIp()
         ));
         $activity->setUserAgent($this->handler->getHeader()->getHttpUserAgent());
-        $activity->setModule($this->helper->getActivityModuleName($this->eventConfig['module'] ?? ''));
+        $activity->setModule($this->activityConfig->getActivityModuleName($this->eventConfig['module'] ?? ''));
         $activity->setActionType($this->eventConfig['action'] ?? '');
         $activity->setFullaction($this->escapeString($this->lastAction, '/'));
         $activity->setStoreId(0);
@@ -555,7 +555,7 @@ class Processor
             return;
         }
 
-        if ($this->helper->isPageVisitEnable()
+        if ($this->activityConfig->isPageVisitEnabled()
             && $this->isValidAction($module, $this->lastAction)) {
             $activity = $this->initLog();
 

@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace MageOS\AdminActivityLog\Test\Unit\Model;
 
+use MageOS\AdminActivityLog\Api\ActivityConfigInterface;
 use MageOS\AdminActivityLog\Api\FieldCheckerInterface;
 use MageOS\AdminActivityLog\Api\ModelResolverInterface;
-use MageOS\AdminActivityLog\Helper\Data;
 use MageOS\AdminActivityLog\Model\Activity;
 use MageOS\AdminActivityLog\Model\Activity\SystemConfig;
 use MageOS\AdminActivityLog\Model\Activity\ThemeConfig;
@@ -41,7 +41,7 @@ class ActivityRepositoryTest extends TestCase
     private ThemeConfig&MockObject $themeConfig;
     private ModelResolverInterface&MockObject $modelResolver;
     private FieldCheckerInterface&MockObject $protectedFieldChecker;
-    private Data&MockObject $dataHelper;
+    private ActivityConfigInterface&MockObject $activityConfig;
     private ActivityRepository $repository;
 
     protected function setUp(): void
@@ -55,7 +55,7 @@ class ActivityRepositoryTest extends TestCase
         $this->themeConfig = $this->createMock(ThemeConfig::class);
         $this->modelResolver = $this->createMock(ModelResolverInterface::class);
         $this->protectedFieldChecker = $this->createMock(FieldCheckerInterface::class);
-        $this->dataHelper = $this->createMock(Data::class);
+        $this->activityConfig = $this->createMock(ActivityConfigInterface::class);
 
         $this->repository = new ActivityRepository(
             $this->activityFactory,
@@ -67,7 +67,7 @@ class ActivityRepositoryTest extends TestCase
             $this->themeConfig,
             $this->modelResolver,
             $this->protectedFieldChecker,
-            $this->dataHelper
+            $this->activityConfig
         );
     }
 

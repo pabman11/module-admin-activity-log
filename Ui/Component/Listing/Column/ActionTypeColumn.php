@@ -16,7 +16,7 @@ namespace MageOS\AdminActivityLog\Ui\Component\Listing\Column;
 use Magento\Framework\View\Element\UiComponent\ContextInterface;
 use Magento\Framework\View\Element\UiComponentFactory;
 use Magento\Ui\Component\Listing\Columns\Column;
-use MageOS\AdminActivityLog\Helper\Data as Helper;
+use MageOS\AdminActivityLog\Api\ActivityConfigInterface;
 
 /**
  * Class ActionTypeColumn
@@ -31,7 +31,7 @@ class ActionTypeColumn extends Column
     public function __construct(
         ContextInterface $context,
         UiComponentFactory $uiComponentFactory,
-        protected readonly Helper $helper,
+        protected readonly ActivityConfigInterface $activityConfig,
         array $components = [],
         array $data = []
     ) {
@@ -47,7 +47,7 @@ class ActionTypeColumn extends Column
         if (isset($dataSource['data']['items'])) {
             foreach ($dataSource['data']['items'] as & $item) {
                 if (isset($item['action_type'])) {
-                    $item['action_type'] = $this->helper->getActionTranslatedLabel($item['action_type']);
+                    $item['action_type'] = $this->activityConfig->getActionTranslatedLabel($item['action_type']);
                 }
             }
         }
