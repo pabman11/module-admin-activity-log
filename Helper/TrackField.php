@@ -25,6 +25,9 @@ use MageOS\AdminActivityLog\Model\Config;
  *
  * Skip fields configuration is now managed via adminactivity.xml.
  * This class provides methods to get tracked field data for add/edit/delete operations.
+ *
+ * @deprecated Use \MageOS\AdminActivityLog\Api\FieldTrackerInterface instead
+ * @see \MageOS\AdminActivityLog\Api\FieldTrackerInterface
  */
 class TrackField extends AbstractHelper
 {
