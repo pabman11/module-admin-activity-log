@@ -76,6 +76,15 @@
             </argument>
         </container>
 
+        <!-- Export Button -->
+        <exportButton name="export_button">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="selectProvider" xsi:type="string">admin_activity_listing.admin_activity_listing.admin_activity_columns.ids</item>
+                </item>
+            </argument>
+        </exportButton>
+
         <!-- Filters -->
         <filters name="listing_filters">
             <argument name="data" xsi:type="array">
@@ -110,6 +119,19 @@
                         <item name="dataScope" xsi:type="string">action_type</item>
                         <item name="caption" xsi:type="string" translate="true">All</item>
                         <item name="label" xsi:type="string" translate="true">Action Type</item>
+                    </item>
+                </argument>
+            </filterSelect>
+            <filterSelect name="admin_id">
+                <argument name="optionsProvider" xsi:type="configurableObject">
+                    <argument name="class" xsi:type="string">MageOS\AdminActivityLog\Ui\Component\Listing\Column\AdminUser\Options</argument>
+                </argument>
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="provider" xsi:type="string">admin_activity_listing.admin_activity_listing.listing_top.listing_filters</item>
+                        <item name="dataScope" xsi:type="string">admin_id</item>
+                        <item name="caption" xsi:type="string" translate="true">All Admin Users</item>
+                        <item name="label" xsi:type="string" translate="true">Admin User</item>
                     </item>
                 </argument>
             </filterSelect>
@@ -165,12 +187,15 @@
         </column>
 
         <!-- Activity Type Column -->
-        <column name="action_type" class="MageOS\AdminActivityLog\Ui\Component\Listing\Column\ActionTypeColumn">
+        <column name="action_type">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
-                    <item name="filter" xsi:type="string">false</item>
+                    <item name="filter" xsi:type="string">select</item>
+                    <item name="dataType" xsi:type="string">select</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/select</item>
                     <item name="label" xsi:type="string" translate="true">Activity Type</item>
                 </item>
+                <item name="options" xsi:type="object">MageOS\AdminActivityLog\Ui\Component\Listing\Column\ActionType\Options</item>
             </argument>
         </column>
 
@@ -195,10 +220,11 @@
             </argument>
         </column>
 
-        <!-- Fullaction Column -->
+        <!-- Fullaction Column (hidden by default) -->
         <column name="fullaction">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
+                    <item name="visible" xsi:type="boolean">false</item>
                     <item name="filter" xsi:type="string">text</item>
                     <item name="label" xsi:type="string" translate="true">Full Action</item>
                 </item>
@@ -226,12 +252,93 @@
             </argument>
         </column>
 
-        <!-- Item Path Column -->
+        <!-- Item Path Column (hidden by default) -->
         <column name="item_path">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
+                    <item name="visible" xsi:type="boolean">false</item>
                     <item name="filter" xsi:type="string">text</item>
                     <item name="label" xsi:type="string" translate="true">Path</item>
+                </item>
+            </argument>
+        </column>
+
+        <!-- Admin User Column (hidden) -->
+        <column name="admin_id">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="visible" xsi:type="boolean">false</item>
+                    <item name="filter" xsi:type="string">select</item>
+                    <item name="dataType" xsi:type="string">select</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/select</item>
+                    <item name="label" xsi:type="string" translate="true">Admin User</item>
+                </item>
+                <item name="options" xsi:type="object">MageOS\AdminActivityLog\Ui\Component\Listing\Column\AdminUser\Options</item>
+            </argument>
+        </column>
+
+        <!-- Scope Column (hidden) -->
+        <column name="scope">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="visible" xsi:type="boolean">false</item>
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">Scope</item>
+                </item>
+            </argument>
+        </column>
+
+        <!-- Forwarded IP Column (hidden) -->
+        <column name="forwarded_ip">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="visible" xsi:type="boolean">false</item>
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">Forwarded IP</item>
+                </item>
+            </argument>
+        </column>
+
+        <!-- User Agent Column (hidden) -->
+        <column name="user_agent">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="visible" xsi:type="boolean">false</item>
+                    <item name="label" xsi:type="string" translate="true">User Agent</item>
+                </item>
+            </argument>
+        </column>
+
+        <!-- Item URL Column (hidden) -->
+        <column name="item_url">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="visible" xsi:type="boolean">false</item>
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">Item URL</item>
+                </item>
+            </argument>
+        </column>
+
+        <!-- Revert By Column (hidden) -->
+        <column name="revert_by">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="visible" xsi:type="boolean">false</item>
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">Reverted By</item>
+                </item>
+            </argument>
+        </column>
+
+        <!-- Updated At Column (hidden) -->
+        <column name="updated_at" class="Magento\Ui\Component\Listing\Columns\Date">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="visible" xsi:type="boolean">false</item>
+                    <item name="filter" xsi:type="string">dateRange</item>
+                    <item name="dataType" xsi:type="string">date</item>
+                    <item name="label" xsi:type="string" translate="true">Updated At</item>
                 </item>
             </argument>
         </column>

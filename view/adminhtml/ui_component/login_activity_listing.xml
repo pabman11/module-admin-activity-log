@@ -76,6 +76,15 @@
             </argument>
         </container>
 
+        <!-- Export Button -->
+        <exportButton name="export_button">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="selectProvider" xsi:type="string">login_activity_listing.login_activity_listing.login_activity_columns.ids</item>
+                </item>
+            </argument>
+        </exportButton>
+
         <!-- Filters -->
         <filters name="listing_filters">
             <argument name="data" xsi:type="array">
@@ -187,12 +196,34 @@
             </argument>
         </column>
 
-        <!-- User Agent -->
+        <!-- User Agent (hidden by default) -->
         <column name="user_agent" class="MageOS\AdminActivityLog\Ui\Component\Listing\Column\UserAgentColumn">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
+                    <item name="visible" xsi:type="boolean">false</item>
                     <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
                     <item name="label" xsi:type="string" translate="true">User Agent</item>
+                </item>
+            </argument>
+        </column>
+
+        <!-- Forwarded IP Column (hidden) -->
+        <column name="forwarded_ip">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="visible" xsi:type="boolean">false</item>
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">Forwarded IP</item>
+                </item>
+            </argument>
+        </column>
+
+        <!-- Remarks Column (hidden) -->
+        <column name="remarks">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="visible" xsi:type="boolean">false</item>
+                    <item name="label" xsi:type="string" translate="true">Remarks</item>
                 </item>
             </argument>
         </column>
