@@ -62,6 +62,10 @@ class TrackField extends AbstractHelper
      */
     public function getProductFieldData(): array
     {
+        trigger_error(
+            'Method ' . __METHOD__ . ' is deprecated. Use skip_fields XML configuration instead.',
+            E_USER_DEPRECATED
+        );
         return [
             'form_key',
             'current_product_id',
@@ -93,6 +97,7 @@ class TrackField extends AbstractHelper
      */
     public function getCategoryFieldData(): array
     {
+        trigger_error('Method ' . __METHOD__ . ' is deprecated.', E_USER_DEPRECATED);
         return [
             'form_key',
             'updated_at',
@@ -108,6 +113,7 @@ class TrackField extends AbstractHelper
      */
     public function getCustomerFieldData(): array
     {
+        trigger_error('Method ' . __METHOD__ . ' is deprecated.', E_USER_DEPRECATED);
         return [
             'id',
             'attribute_set_id',
@@ -135,6 +141,7 @@ class TrackField extends AbstractHelper
      */
     public function getCustomerGroupFieldData(): array
     {
+        trigger_error('Method ' . __METHOD__ . ' is deprecated.', E_USER_DEPRECATED);
         return [
             'customer_group_id',
             'check_if_is_new'
@@ -149,6 +156,7 @@ class TrackField extends AbstractHelper
      */
     public function getCatalogPromotionFieldData(): array
     {
+        trigger_error('Method ' . __METHOD__ . ' is deprecated.', E_USER_DEPRECATED);
         return [
             'rule_id',
             'form_key',
@@ -164,6 +172,7 @@ class TrackField extends AbstractHelper
      */
     public function getCartPromotionFieldData(): array
     {
+        trigger_error('Method ' . __METHOD__ . ' is deprecated.', E_USER_DEPRECATED);
         return [
             'is_rss',
             'form_key',
@@ -180,6 +189,7 @@ class TrackField extends AbstractHelper
      */
     public function getEmailFieldData(): array
     {
+        trigger_error('Method ' . __METHOD__ . ' is deprecated.', E_USER_DEPRECATED);
         return [
             'template_id',
             'check_if_is_new',
@@ -202,6 +212,7 @@ class TrackField extends AbstractHelper
      */
     public function getPageFieldData(): array
     {
+        trigger_error('Method ' . __METHOD__ . ' is deprecated.', E_USER_DEPRECATED);
         return [
             'page_id',
             'form_key',
@@ -219,6 +230,7 @@ class TrackField extends AbstractHelper
      */
     public function getBlockFieldData(): array
     {
+        trigger_error('Method ' . __METHOD__ . ' is deprecated.', E_USER_DEPRECATED);
         return [
             'block_id',
             'form_key',
@@ -235,6 +247,7 @@ class TrackField extends AbstractHelper
      */
     public function getWidgetFieldData(): array
     {
+        trigger_error('Method ' . __METHOD__ . ' is deprecated.', E_USER_DEPRECATED);
         return [
             'check_if_is_new',
             'instance_id'
@@ -249,6 +262,7 @@ class TrackField extends AbstractHelper
      */
     public function getThemeConfigFieldData(): array
     {
+        trigger_error('Method ' . __METHOD__ . ' is deprecated.', E_USER_DEPRECATED);
         return [
             'back',
             'scope',
@@ -266,6 +280,7 @@ class TrackField extends AbstractHelper
      */
     public function getThemeScheduleFieldData(): array
     {
+        trigger_error('Method ' . __METHOD__ . ' is deprecated.', E_USER_DEPRECATED);
         return [
             'store_id',
             'check_if_is_new'
@@ -280,6 +295,7 @@ class TrackField extends AbstractHelper
      */
     public function getSystemConfigFieldData(): array
     {
+        trigger_error('Method ' . __METHOD__ . ' is deprecated.', E_USER_DEPRECATED);
         return [
             'check_if_is_new',
         ];
@@ -293,6 +309,7 @@ class TrackField extends AbstractHelper
      */
     public function getAttributeFieldData(): array
     {
+        trigger_error('Method ' . __METHOD__ . ' is deprecated.', E_USER_DEPRECATED);
         return [
             'form_key',
             'check_if_is_new',
@@ -310,6 +327,7 @@ class TrackField extends AbstractHelper
      */
     public function getAttributeSetFieldData(): array
     {
+        trigger_error('Method ' . __METHOD__ . ' is deprecated.', E_USER_DEPRECATED);
         return [
             'entity_type_id',
             'check_if_is_new',
@@ -325,6 +343,7 @@ class TrackField extends AbstractHelper
      */
     public function getReviewRatingFieldData(): array
     {
+        trigger_error('Method ' . __METHOD__ . ' is deprecated.', E_USER_DEPRECATED);
         return [
             'rating_id',
             'check_if_is_new'
@@ -339,6 +358,7 @@ class TrackField extends AbstractHelper
      */
     public function getReviewFieldData(): array
     {
+        trigger_error('Method ' . __METHOD__ . ' is deprecated.', E_USER_DEPRECATED);
         return [
             'form_key',
             'entity_id',
@@ -356,6 +376,7 @@ class TrackField extends AbstractHelper
      */
     public function getAdminUserFieldData(): array
     {
+        trigger_error('Method ' . __METHOD__ . ' is deprecated.', E_USER_DEPRECATED);
         return [
             'form_key',
             'password_confirmation',
@@ -375,6 +396,7 @@ class TrackField extends AbstractHelper
      */
     public function getAdminUserRoleFieldData(): array
     {
+        trigger_error('Method ' . __METHOD__ . ' is deprecated.', E_USER_DEPRECATED);
         return [
             'name',
             'check_if_is_new',
@@ -390,6 +412,7 @@ class TrackField extends AbstractHelper
      */
     public function getOrderFieldData(): array
     {
+        trigger_error('Method ' . __METHOD__ . ' is deprecated.', E_USER_DEPRECATED);
         return [
             'check_if_is_new',
             'created_at',
@@ -408,6 +431,7 @@ class TrackField extends AbstractHelper
      */
     public function getTaxRuleFieldData(): array
     {
+        trigger_error('Method ' . __METHOD__ . ' is deprecated.', E_USER_DEPRECATED);
         return [
             'form_key',
             'check_if_is_new',
@@ -424,6 +448,7 @@ class TrackField extends AbstractHelper
      */
     public function getTaxRateFieldData(): array
     {
+        trigger_error('Method ' . __METHOD__ . ' is deprecated.', E_USER_DEPRECATED);
         return [
             'form_key',
             'check_if_is_new',
@@ -439,6 +464,7 @@ class TrackField extends AbstractHelper
      */
     public function getUrlRewriteFieldData(): array
     {
+        trigger_error('Method ' . __METHOD__ . ' is deprecated.', E_USER_DEPRECATED);
         return [
             'url_rewrite_id',
             'store_id'
@@ -453,6 +479,7 @@ class TrackField extends AbstractHelper
      */
     public function getSearchTermFieldData(): array
     {
+        trigger_error('Method ' . __METHOD__ . ' is deprecated.', E_USER_DEPRECATED);
         return [
             'form_key',
             'check_if_is_new',
@@ -468,6 +495,7 @@ class TrackField extends AbstractHelper
      */
     public function getSearchSynonymsFieldData(): array
     {
+        trigger_error('Method ' . __METHOD__ . ' is deprecated.', E_USER_DEPRECATED);
         return [];
     }
 
@@ -479,6 +507,7 @@ class TrackField extends AbstractHelper
      */
     public function getSitemapFieldData(): array
     {
+        trigger_error('Method ' . __METHOD__ . ' is deprecated.', E_USER_DEPRECATED);
         return [
             'form_key',
             'check_if_is_new',
@@ -495,6 +524,7 @@ class TrackField extends AbstractHelper
      */
     public function getCheckoutAgreementFieldData(): array
     {
+        trigger_error('Method ' . __METHOD__ . ' is deprecated.', E_USER_DEPRECATED);
         return [
             'form_key',
             'check_if_is_new',
@@ -510,6 +540,7 @@ class TrackField extends AbstractHelper
      */
     public function getOrderStatusFieldData(): array
     {
+        trigger_error('Method ' . __METHOD__ . ' is deprecated.', E_USER_DEPRECATED);
         return [
             'form_key',
             'check_if_is_new'
@@ -524,6 +555,7 @@ class TrackField extends AbstractHelper
      */
     public function getSystemStoreFieldData(): array
     {
+        trigger_error('Method ' . __METHOD__ . ' is deprecated.', E_USER_DEPRECATED);
         return [
             'check_if_is_new'
         ];
@@ -537,6 +569,7 @@ class TrackField extends AbstractHelper
      */
     public function getIntegrationFieldData(): array
     {
+        trigger_error('Method ' . __METHOD__ . ' is deprecated.', E_USER_DEPRECATED);
         return [
             'form_key',
             'current_password',
