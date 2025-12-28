@@ -50,7 +50,7 @@ abstract class AbstractActivityObserver implements ObserverInterface
      */
     protected function isEnabled(): bool
     {
-        return $this->activityConfig->isEnable();
+        return $this->activityConfig->isEnabled();
     }
 
     /**
