@@ -168,6 +168,24 @@ class Data extends AbstractHelper
      */
     public static function isWildCardModel(DataObject|string $model): bool
     {
+        trigger_error(
+            'Static method ' . __METHOD__ . ' is deprecated. Use checkIsWildCardModel() instance method instead.',
+            E_USER_DEPRECATED
+        );
+        $className = is_string($model) ? $model : $model::class;
+        return in_array($className, self::$wildcardModels, true);
+    }
+
+    /**
+     * Check if model is a wildcard model (system config value)
+     *
+     * Instance method replacement for the deprecated static isWildCardModel().
+     *
+     * @param DataObject|string $model Model instance or class name
+     * @return bool True if the model is a wildcard model
+     */
+    public function checkIsWildCardModel(DataObject|string $model): bool
+    {
         $className = is_string($model) ? $model : $model::class;
         return in_array($className, self::$wildcardModels, true);
     }

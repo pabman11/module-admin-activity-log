@@ -49,7 +49,8 @@ class TrackField extends AbstractHelper
         Context $context,
         protected readonly SystemConfig $systemConfig,
         protected readonly ThemeConfig $themeConfig,
-        protected readonly Config $config
+        protected readonly Config $config,
+        protected readonly Data $dataHelper
     ) {
         parent::__construct($context);
     }
@@ -659,7 +660,7 @@ class TrackField extends AbstractHelper
         $fieldArray = $this->getFields($methodOrFields);
         $skipFieldArray = $this->getSkipEditFieldData();
 
-        if (Data::isWildCardModel($model)) {
+        if ($this->dataHelper->checkIsWildCardModel($model)) {
             // Check for wildcard model types using method name or skip_fields pattern
             $isSystemConfig = $this->isSystemConfigMethod($methodOrFields);
             $isThemeConfig = $this->isThemeConfigMethod($methodOrFields);

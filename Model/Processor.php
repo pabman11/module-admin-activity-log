@@ -111,7 +111,7 @@ class Processor
      */
     public function validate($model): bool
     {
-        if (Helper::isWildCardModel($model)) {
+        if ($this->helper->checkIsWildCardModel($model)) {
             if (!empty($this->activityLogs)) {
                 return false;
             }

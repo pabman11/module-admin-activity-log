@@ -9,6 +9,7 @@ use Magento\Framework\Json\Helper\Data as JsonHelper;
 use Magento\Store\Model\Store;
 use Magento\Store\Model\StoreManagerInterface;
 use MageOS\AdminActivityLog\Api\ActivityRepositoryInterface;
+use MageOS\AdminActivityLog\Api\FieldCheckerInterface;
 use MageOS\AdminActivityLog\Block\Adminhtml\ActivityLogListing;
 use MageOS\AdminActivityLog\Helper\Browser;
 use MageOS\AdminActivityLog\Model\Activity;
@@ -22,6 +23,7 @@ class ActivityLogListingTest extends TestCase
     private Context&MockObject $context;
     private ActivityRepositoryInterface&MockObject $activityRepository;
     private Browser&MockObject $browser;
+    private FieldCheckerInterface&MockObject $protectedFieldChecker;
     private JsonHelper&MockObject $jsonHelper;
     private DirectoryHelper&MockObject $directoryHelper;
     private StoreManagerInterface&MockObject $storeManager;
@@ -37,6 +39,7 @@ class ActivityLogListingTest extends TestCase
 
         $this->activityRepository = $this->createMock(ActivityRepositoryInterface::class);
         $this->browser = $this->createMock(Browser::class);
+        $this->protectedFieldChecker = $this->createMock(FieldCheckerInterface::class);
         $this->jsonHelper = $this->createMock(JsonHelper::class);
         $this->directoryHelper = $this->createMock(DirectoryHelper::class);
 
@@ -44,6 +47,7 @@ class ActivityLogListingTest extends TestCase
             $this->context,
             $this->activityRepository,
             $this->browser,
+            $this->protectedFieldChecker,
             [],
             $this->jsonHelper,
             $this->directoryHelper
@@ -142,11 +146,6 @@ class ActivityLogListingTest extends TestCase
         $this->browser->expects($this->once())->method('__toString')->willReturn($browser);
 
         $this->assertEquals($result, $this->block->getAdminDetails());
-    }
-
-    public function testGetActivityRepository(): void
-    {
-        $this->assertInstanceOf(ActivityRepositoryInterface::class, $this->block->getActivityRepository());
     }
 
 }

@@ -15,6 +15,7 @@ namespace MageOS\AdminActivityLog\Test\Unit\Helper;
 
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\DataObject;
+use MageOS\AdminActivityLog\Helper\Data;
 use MageOS\AdminActivityLog\Helper\TrackField;
 use MageOS\AdminActivityLog\Model\Activity\SystemConfig;
 use MageOS\AdminActivityLog\Model\Activity\ThemeConfig;
@@ -29,6 +30,7 @@ class TrackFieldTest extends TestCase
     private SystemConfig&MockObject $systemConfig;
     private ThemeConfig&MockObject $themeConfig;
     private Config&MockObject $config;
+    private Data&MockObject $dataHelper;
     private TrackField $trackField;
 
     protected function setUp(): void
@@ -37,12 +39,14 @@ class TrackFieldTest extends TestCase
         $this->systemConfig = $this->createMock(SystemConfig::class);
         $this->themeConfig = $this->createMock(ThemeConfig::class);
         $this->config = $this->createMock(Config::class);
+        $this->dataHelper = $this->createMock(Data::class);
 
         $this->trackField = new TrackField(
             $this->context,
             $this->systemConfig,
             $this->themeConfig,
-            $this->config
+            $this->config,
+            $this->dataHelper
         );
     }
 
@@ -64,11 +68,36 @@ class TrackFieldTest extends TestCase
 
     public function testGetFieldsWithMethodNameCallsMethod(): void
     {
-        $result = $this->trackField->getFields('getProductFieldData');
+        $result = $this->callDeprecatedMethod(fn() => $this->trackField->getFields('getProductFieldData'));
 
         $this->assertIsArray($result);
         $this->assertContains('form_key', $result);
         $this->assertContains('current_product_id', $result);
+    }
+
+    /**
+     * Helper method to call deprecated methods without triggering test failure
+     *
+     * @param callable $callback The callback that calls the deprecated method
+     * @return mixed The result of the callback
+     */
+    private function callDeprecatedMethod(callable $callback): mixed
+    {
+        $previousHandler = set_error_handler(function (int $errno, string $errstr) use (&$previousHandler): bool {
+            if ($errno === E_USER_DEPRECATED) {
+                return true; // Suppress deprecation warning
+            }
+            if ($previousHandler !== null) {
+                return $previousHandler($errno, $errstr);
+            }
+            return false;
+        });
+
+        try {
+            return $callback();
+        } finally {
+            restore_error_handler();
+        }
     }
 
     public function testGetFieldsWithInvalidMethodNameReturnsEmptyArray(): void
@@ -159,7 +188,7 @@ class TrackFieldTest extends TestCase
 
     public function testGetProductFieldDataReturnsExpectedFields(): void
     {
-        $result = $this->trackField->getProductFieldData();
+        $result = $this->callDeprecatedMethod(fn() => $this->trackField->getProductFieldData());
 
         $this->assertIsArray($result);
         $this->assertContains('form_key', $result);
@@ -170,7 +199,7 @@ class TrackFieldTest extends TestCase
 
     public function testGetCategoryFieldDataReturnsExpectedFields(): void
     {
-        $result = $this->trackField->getCategoryFieldData();
+        $result = $this->callDeprecatedMethod(fn() => $this->trackField->getCategoryFieldData());
 
         $this->assertIsArray($result);
         $this->assertContains('form_key', $result);
@@ -180,7 +209,7 @@ class TrackFieldTest extends TestCase
 
     public function testGetCustomerFieldDataReturnsExpectedFields(): void
     {
-        $result = $this->trackField->getCustomerFieldData();
+        $result = $this->callDeprecatedMethod(fn() => $this->trackField->getCustomerFieldData());
 
         $this->assertIsArray($result);
         $this->assertContains('form_key', $result);
@@ -190,7 +219,7 @@ class TrackFieldTest extends TestCase
 
     public function testGetSystemConfigFieldDataReturnsExpectedFields(): void
     {
-        $result = $this->trackField->getSystemConfigFieldData();
+        $result = $this->callDeprecatedMethod(fn() => $this->trackField->getSystemConfigFieldData());
 
         $this->assertIsArray($result);
         $this->assertContains('check_if_is_new', $result);
@@ -198,7 +227,7 @@ class TrackFieldTest extends TestCase
 
     public function testGetThemeConfigFieldDataReturnsExpectedFields(): void
     {
-        $result = $this->trackField->getThemeConfigFieldData();
+        $result = $this->callDeprecatedMethod(fn() => $this->trackField->getThemeConfigFieldData());
 
         $this->assertIsArray($result);
         $this->assertContains('back', $result);
@@ -262,7 +291,7 @@ class TrackFieldTest extends TestCase
 
     public function testGetAdminUserFieldDataReturnsExpectedFields(): void
     {
-        $result = $this->trackField->getAdminUserFieldData();
+        $result = $this->callDeprecatedMethod(fn() => $this->trackField->getAdminUserFieldData());
 
         $this->assertIsArray($result);
         $this->assertContains('form_key', $result);
@@ -273,7 +302,7 @@ class TrackFieldTest extends TestCase
 
     public function testGetOrderFieldDataReturnsExpectedFields(): void
     {
-        $result = $this->trackField->getOrderFieldData();
+        $result = $this->callDeprecatedMethod(fn() => $this->trackField->getOrderFieldData());
 
         $this->assertIsArray($result);
         $this->assertContains('check_if_is_new', $result);
@@ -284,7 +313,7 @@ class TrackFieldTest extends TestCase
 
     public function testGetIntegrationFieldDataReturnsExpectedFields(): void
     {
-        $result = $this->trackField->getIntegrationFieldData();
+        $result = $this->callDeprecatedMethod(fn() => $this->trackField->getIntegrationFieldData());
 
         $this->assertIsArray($result);
         $this->assertContains('form_key', $result);

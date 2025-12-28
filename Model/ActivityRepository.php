@@ -43,7 +43,8 @@ class ActivityRepository implements ActivityRepositoryInterface
         protected readonly SystemConfig $systemConfig,
         protected readonly ThemeConfig $themeConfig,
         protected readonly ModelResolverInterface $modelResolver,
-        protected readonly FieldCheckerInterface $protectedFieldChecker
+        protected readonly FieldCheckerInterface $protectedFieldChecker,
+        protected readonly Data $dataHelper
     ) {
     }
 
@@ -120,7 +121,7 @@ class ActivityRepository implements ActivityRepositoryInterface
         $logData = $this->getActivityLog($activity->getId());
         $detailModel = $this->getActivityDetail($activity->getId());
 
-        if (Data::isWildCardModel($detailModel->getModelClass())) {
+        if ($this->dataHelper->checkIsWildCardModel($detailModel->getModelClass())) {
             if ($activity->getModule() === self::THEME_MODULE) {
                 return $this->themeConfig->revertData($logData, $activity->getStoreId(), $activity->getScope());
             }
@@ -158,7 +159,7 @@ class ActivityRepository implements ActivityRepositoryInterface
      */
     public function getOldData(DataObject $model): DataObject|false
     {
-        if (Data::isWildCardModel($model)) {
+        if ($this->dataHelper->checkIsWildCardModel($model)) {
             return $this->systemConfig->getOldData($model);
         }
 
