@@ -40,7 +40,7 @@ php bin/magento setup:upgrade
 Navigate to **Stores → Configuration → Advanced → Admin → Admin Activity**
 
 #### General Settings
-- **Enable Admin Audit Logs**: Enable/disable the extension
+- **Enable Admin Activity Logs**: Enable/disable the extension
 - **Record Login Activity**: Track login and logout activities
 - **Record Page Visits**: Monitor admin page navigation
 - **Clear Admin Activity Logs After**: Set how many days to keep logs (default: 90 days)
