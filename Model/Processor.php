@@ -364,7 +364,9 @@ class Processor
 
         $activity->setScope($this->getScope());
         $activity->setRemoteIp($this->remoteAddress->getRemoteAddress());
-        $activity->setForwardedIp($this->httpRequest->getServer('HTTP_X_FORWARDED_FOR'));
+        $activity->setForwardedIp($this->sanitizeForwardedIp(
+            $this->httpRequest->getServer('HTTP_X_FORWARDED_FOR')
+        ));
         $activity->setUserAgent($this->handler->getHeader()->getHttpUserAgent());
         $activity->setModule($this->helper->getActivityModuleName($this->eventConfig['module'] ?? ''));
         $activity->setActionType($this->eventConfig['action'] ?? '');
@@ -613,5 +615,33 @@ class Processor
     public function getRemoteAddress(): RemoteAddress
     {
         return $this->remoteAddress;
+    }
+
+    /**
+     * Sanitize and validate X-Forwarded-For header value
+     *
+     * The X-Forwarded-For header can be spoofed and may contain arbitrary values.
+     * This method validates each IP in the header and returns only valid IPs.
+     *
+     * @param string|null $forwardedIp Raw X-Forwarded-For header value
+     * @return string|null Sanitized IP(s) or null if no valid IPs found
+     */
+    public function sanitizeForwardedIp(?string $forwardedIp): ?string
+    {
+        if ($forwardedIp === null || $forwardedIp === '') {
+            return null;
+        }
+
+        // X-Forwarded-For can contain multiple IPs: "client, proxy1, proxy2"
+        $ips = array_map('trim', explode(',', $forwardedIp));
+        $validIps = [];
+
+        foreach ($ips as $ip) {
+            if (filter_var($ip, FILTER_VALIDATE_IP)) {
+                $validIps[] = $ip;
+            }
+        }
+
+        return !empty($validIps) ? implode(', ', $validIps) : null;
     }
 }

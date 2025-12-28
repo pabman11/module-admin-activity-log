@@ -370,4 +370,83 @@ class ProcessorTest extends TestCase
         $this->assertSame('edit', $this->processor->getEventConfig('action'));
         $this->assertNull($this->processor->getEventConfig('nonexistent'));
     }
+
+    /**
+     * @dataProvider sanitizeForwardedIpDataProvider
+     */
+    public function testSanitizeForwardedIp(?string $input, ?string $expected): void
+    {
+        $result = $this->processor->sanitizeForwardedIp($input);
+
+        $this->assertSame($expected, $result);
+    }
+
+    /**
+     * @return array<string, array{input: ?string, expected: ?string}>
+     */
+    public static function sanitizeForwardedIpDataProvider(): array
+    {
+        return [
+            'null input' => [
+                'input' => null,
+                'expected' => null
+            ],
+            'empty string' => [
+                'input' => '',
+                'expected' => null
+            ],
+            'valid IPv4' => [
+                'input' => '192.168.1.1',
+                'expected' => '192.168.1.1'
+            ],
+            'valid IPv6' => [
+                'input' => '2001:0db8:85a3:0000:0000:8a2e:0370:7334',
+                'expected' => '2001:0db8:85a3:0000:0000:8a2e:0370:7334'
+            ],
+            'multiple valid IPs' => [
+                'input' => '192.168.1.1, 10.0.0.1, 172.16.0.1',
+                'expected' => '192.168.1.1, 10.0.0.1, 172.16.0.1'
+            ],
+            'invalid IP' => [
+                'input' => 'not-an-ip',
+                'expected' => null
+            ],
+            'mixed valid and invalid IPs' => [
+                'input' => '192.168.1.1, invalid, 10.0.0.1',
+                'expected' => '192.168.1.1, 10.0.0.1'
+            ],
+            'all invalid IPs' => [
+                'input' => 'invalid1, invalid2, not-ip',
+                'expected' => null
+            ],
+            'IP with extra spaces' => [
+                'input' => '  192.168.1.1  ,  10.0.0.1  ',
+                'expected' => '192.168.1.1, 10.0.0.1'
+            ],
+            'XSS attempt' => [
+                'input' => '<script>alert("xss")</script>',
+                'expected' => null
+            ],
+            'SQL injection attempt' => [
+                'input' => "192.168.1.1'; DROP TABLE users; --",
+                'expected' => null
+            ],
+            'partial valid IP' => [
+                'input' => '192.168.1',
+                'expected' => null
+            ],
+            'IP with port' => [
+                'input' => '192.168.1.1:8080',
+                'expected' => null
+            ],
+            'localhost IPv4' => [
+                'input' => '127.0.0.1',
+                'expected' => '127.0.0.1'
+            ],
+            'localhost IPv6' => [
+                'input' => '::1',
+                'expected' => '::1'
+            ],
+        ];
+    }
 }

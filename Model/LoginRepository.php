@@ -81,7 +81,9 @@ class LoginRepository implements LoginRepositoryInterface
         }
 
         $login->setRemoteIp($this->processor->getRemoteAddress()->getRemoteAddress());
-        $login->setForwardedIp((string)$this->processor->getRequest()->getServer('HTTP_X_FORWARDED_FOR'));
+        $login->setForwardedIp($this->processor->sanitizeForwardedIp(
+            $this->processor->getRequest()->getServer('HTTP_X_FORWARDED_FOR')
+        ));
         $login->setUserAgent($this->processor->getHandler()->getHeader()->getHttpUserAgent());
 
         return $login;
