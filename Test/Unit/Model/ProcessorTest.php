@@ -14,47 +14,37 @@ declare(strict_types=1);
 namespace MageOS\AdminActivityLog\Test\Unit\Model;
 
 use Magento\Backend\Model\Auth\Session;
-use Magento\Framework\App\Request\Http;
 use Magento\Framework\App\RequestInterface;
-use Magento\Framework\App\ResourceConnection;
 use Magento\Framework\HTTP\PhpEnvironment\RemoteAddress;
 use Magento\Framework\Message\ManagerInterface;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Store\Model\StoreManagerInterface;
-use MageOS\AdminActivityLog\Api\ActivityRepositoryInterface;
 use MageOS\AdminActivityLog\Helper\Data as Helper;
-use MageOS\AdminActivityLog\Model\Activity\Status;
 use MageOS\AdminActivityLog\Model\Activity\SystemConfig;
-use MageOS\AdminActivityLog\Model\ActivityFactory;
-use MageOS\AdminActivityLog\Model\ActivityLogDetailFactory;
 use MageOS\AdminActivityLog\Model\Config;
 use MageOS\AdminActivityLog\Model\Handler;
 use MageOS\AdminActivityLog\Model\Handler\PostDispatch;
 use MageOS\AdminActivityLog\Model\Processor;
+use MageOS\AdminActivityLog\Model\Processor\ActivityContext;
+use MageOS\AdminActivityLog\Model\Processor\RequestContext;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Psr\Log\LoggerInterface;
 
 class ProcessorTest extends TestCase
 {
     private Config&MockObject $config;
     private Session&MockObject $authSession;
     private Handler&MockObject $handler;
-    private RemoteAddress&MockObject $remoteAddress;
-    private ActivityFactory&MockObject $activityFactory;
-    private ActivityLogDetailFactory&MockObject $activityDetailFactory;
     private StoreManagerInterface&MockObject $storeManager;
     private DateTime&MockObject $dateTime;
-    private ActivityRepositoryInterface&MockObject $activityRepository;
     private Helper&MockObject $helper;
     private ManagerInterface&MockObject $messageManager;
-    private RequestInterface&MockObject $request;
-    private Http&MockObject $httpRequest;
-    private Status&MockObject $status;
     private PostDispatch&MockObject $postDispatch;
     private SystemConfig&MockObject $systemConfig;
-    private LoggerInterface&MockObject $logger;
-    private ResourceConnection&MockObject $resourceConnection;
+    private RequestContext&MockObject $requestContext;
+    private ActivityContext&MockObject $activityContext;
+    private RequestInterface&MockObject $request;
+    private RemoteAddress&MockObject $remoteAddress;
     private Processor $processor;
 
     protected function setUp(): void
@@ -62,41 +52,37 @@ class ProcessorTest extends TestCase
         $this->config = $this->createMock(Config::class);
         $this->authSession = $this->createMock(Session::class);
         $this->handler = $this->createMock(Handler::class);
-        $this->remoteAddress = $this->createMock(RemoteAddress::class);
-        $this->activityFactory = $this->createMock(ActivityFactory::class);
-        $this->activityDetailFactory = $this->createMock(ActivityLogDetailFactory::class);
         $this->storeManager = $this->createMock(StoreManagerInterface::class);
         $this->dateTime = $this->createMock(DateTime::class);
-        $this->activityRepository = $this->createMock(ActivityRepositoryInterface::class);
         $this->helper = $this->createMock(Helper::class);
         $this->messageManager = $this->createMock(ManagerInterface::class);
-        $this->request = $this->createMock(RequestInterface::class);
-        $this->httpRequest = $this->createMock(Http::class);
-        $this->status = $this->createMock(Status::class);
         $this->postDispatch = $this->createMock(PostDispatch::class);
         $this->systemConfig = $this->createMock(SystemConfig::class);
-        $this->logger = $this->createMock(LoggerInterface::class);
-        $this->resourceConnection = $this->createMock(ResourceConnection::class);
+
+        // Create mocks for RequestContext dependencies
+        $this->request = $this->createMock(RequestInterface::class);
+        $this->remoteAddress = $this->createMock(RemoteAddress::class);
+
+        // Create RequestContext mock
+        $this->requestContext = $this->createMock(RequestContext::class);
+        $this->requestContext->method('getRequest')->willReturn($this->request);
+        $this->requestContext->method('getRemoteAddress')->willReturn($this->remoteAddress);
+
+        // Create ActivityContext mock
+        $this->activityContext = $this->createMock(ActivityContext::class);
 
         $this->processor = new Processor(
             $this->config,
             $this->authSession,
             $this->handler,
-            $this->remoteAddress,
-            $this->activityFactory,
-            $this->activityDetailFactory,
             $this->storeManager,
             $this->dateTime,
-            $this->activityRepository,
             $this->helper,
             $this->messageManager,
-            $this->request,
-            $this->httpRequest,
-            $this->status,
             $this->postDispatch,
             $this->systemConfig,
-            $this->logger,
-            $this->resourceConnection
+            $this->requestContext,
+            $this->activityContext
         );
     }
 

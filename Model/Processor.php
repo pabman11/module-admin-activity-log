@@ -15,19 +15,16 @@ namespace MageOS\AdminActivityLog\Model;
 
 use Exception;
 use Magento\Backend\Model\Auth\Session;
-use Magento\Framework\App\Request\Http;
 use Magento\Framework\App\RequestInterface;
-use Magento\Framework\App\ResourceConnection;
 use Magento\Framework\HTTP\PhpEnvironment\RemoteAddress;
 use Magento\Framework\Message\ManagerInterface;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Store\Model\StoreManagerInterface;
-use MageOS\AdminActivityLog\Api\ActivityRepositoryInterface;
 use MageOS\AdminActivityLog\Helper\Data as Helper;
-use MageOS\AdminActivityLog\Model\Activity\Status;
 use MageOS\AdminActivityLog\Model\Activity\SystemConfig;
 use MageOS\AdminActivityLog\Model\Handler\PostDispatch;
-use Psr\Log\LoggerInterface;
+use MageOS\AdminActivityLog\Model\Processor\ActivityContext;
+use MageOS\AdminActivityLog\Model\Processor\RequestContext;
 
 /**
  * Processor for admin activity logging
@@ -69,21 +66,14 @@ class Processor
         protected readonly Config $config,
         protected readonly Session $authSession,
         protected readonly Handler $handler,
-        protected readonly RemoteAddress $remoteAddress,
-        protected readonly ActivityFactory $activityFactory,
-        protected readonly ActivityLogDetailFactory $activityDetailFactory,
         protected readonly StoreManagerInterface $storeManager,
         protected readonly DateTime $dateTime,
-        protected readonly ActivityRepositoryInterface $activityRepository,
         protected readonly Helper $helper,
         protected readonly ManagerInterface $messageManager,
-        protected readonly RequestInterface $request,
-        protected readonly Http $httpRequest,
-        protected readonly Status $status,
         protected readonly PostDispatch $postDispatch,
         private readonly SystemConfig $systemConfig,
-        private readonly LoggerInterface $logger,
-        private readonly ResourceConnection $resourceConnection
+        private readonly RequestContext $requestContext,
+        private readonly ActivityContext $activityContext
     ) {
     }
 
@@ -256,7 +246,7 @@ class Processor
             return true;
         }
 
-        $connection = $this->resourceConnection->getConnection();
+        $connection = $this->activityContext->getConnection();
 
         try {
             $connection->beginTransaction();
@@ -283,7 +273,7 @@ class Processor
             $this->activityLogs = [];
         } catch (Exception $e) {
             $connection->rollBack();
-            $this->logger->error('Failed to save admin activity logs', [
+            $this->activityContext->getLogger()->error('Failed to save admin activity logs', [
                 'exception' => $e->getMessage(),
                 'trace' => $e->getTraceAsString()
             ]);
@@ -308,8 +298,8 @@ class Processor
             return;
         }
 
-        $connection = $this->resourceConnection->getConnection();
-        $tableName = $this->resourceConnection->getTableName('admin_activity_log');
+        $connection = $this->activityContext->getConnection();
+        $tableName = $this->activityContext->getTableName('admin_activity_log');
 
         $insertData = [];
         foreach ($logs as $log) {
@@ -354,7 +344,7 @@ class Processor
     public function initLog(): Activity
     {
         /** @var Activity $activity */
-        $activity = $this->activityFactory->create();
+        $activity = $this->activityContext->createActivity();
 
         if ($this->authSession->isLoggedIn()) {
             $activity->setUsername($this->authSession->getUser()->getUsername());
@@ -363,9 +353,9 @@ class Processor
         }
 
         $activity->setScope($this->getScope());
-        $activity->setRemoteIp($this->remoteAddress->getRemoteAddress());
+        $activity->setRemoteIp($this->requestContext->getRemoteAddress()->getRemoteAddress());
         $activity->setForwardedIp($this->sanitizeForwardedIp(
-            $this->httpRequest->getServer('HTTP_X_FORWARDED_FOR')
+            $this->requestContext->getForwardedIp()
         ));
         $activity->setUserAgent($this->handler->getHeader()->getHttpUserAgent());
         $activity->setModule($this->helper->getActivityModuleName($this->eventConfig['module'] ?? ''));
@@ -418,7 +408,7 @@ class Processor
      */
     public function initActivityDetail($model)
     {
-        $activity = $this->activityDetailFactory->create()
+        $activity = $this->activityContext->createActivityDetail()
             ->setModelClass((string)$model::class)
             ->setItemId((int)$model->getId())
             ->setStatus('success')
@@ -471,9 +461,10 @@ class Processor
      */
     public function getScope(): string
     {
-        if ((int)$this->request->getParam('store') === 1 || $this->request->getParam('scope') === 'stores') {
+        $request = $this->requestContext->getRequest();
+        if ((int)$request->getParam('store') === 1 || $request->getParam('scope') === 'stores') {
             $scope = 'stores';
-        } elseif ((int)$this->request->getParam('website') === 1) {
+        } elseif ((int)$request->getParam('website') === 1) {
             $scope = 'website';
         } else {
             $scope = 'default';
@@ -496,28 +487,29 @@ class Processor
         ];
 
         try {
-            $activityModel = $this->activityFactory->create()->load($activityId);
+            $activityModel = $this->activityContext->createActivity()->load($activityId);
             if ($activityModel->isRevertable() === false && !empty($activityModel->getRevertBy())) {
                 $result['message'] = __('Activity data has already been reverted');
             } else {
-                if ((int)$activityModel->getId() !== 0 && $this->activityRepository->revertActivity($activityModel)) {
+                $activityRepository = $this->activityContext->getActivityRepository();
+                if ((int)$activityModel->getId() !== 0 && $activityRepository->revertActivity($activityModel)) {
                     $activityModel->setRevertBy($this->authSession->getUser()->getUsername());
                     $activityModel->setUpdatedAt($this->dateTime->gmtDate());
                     $activityModel->save();
 
                     $result['error'] = false;
-                    $this->status->markSuccess($activityId);
+                    $this->activityContext->getStatus()->markSuccess($activityId);
                     $this->messageManager->addSuccessMessage(__('Activity data has been reverted successfully'));
                 }
             }
         } catch (Exception $e) {
-            $this->logger->error('Failed to revert admin activity', [
+            $this->activityContext->getLogger()->error('Failed to revert admin activity', [
                 'activity_id' => $activityId,
                 'exception' => $e->getMessage(),
                 'trace' => $e->getTraceAsString()
             ]);
             $result['message'] = $e->getMessage();
-            $this->status->markFail($activityId);
+            $this->activityContext->getStatus()->markFail($activityId);
         }
 
         return $result;
@@ -609,12 +601,22 @@ class Processor
 
     public function getRequest(): RequestInterface
     {
-        return $this->request;
+        return $this->requestContext->getRequest();
     }
 
     public function getRemoteAddress(): RemoteAddress
     {
-        return $this->remoteAddress;
+        return $this->requestContext->getRemoteAddress();
+    }
+
+    public function getRequestContext(): RequestContext
+    {
+        return $this->requestContext;
+    }
+
+    public function getActivityContext(): ActivityContext
+    {
+        return $this->activityContext;
     }
 
     /**
