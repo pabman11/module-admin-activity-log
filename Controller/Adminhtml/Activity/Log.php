@@ -16,6 +16,7 @@ namespace MageOS\AdminActivityLog\Controller\Adminhtml\Activity;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\App\Action\HttpGetActionInterface;
+use Magento\Framework\App\Action\HttpPostActionInterface;
 use Magento\Framework\Controller\Result\Raw;
 use Magento\Framework\Controller\Result\RawFactory;
 use Magento\Framework\View\LayoutFactory;
@@ -24,7 +25,7 @@ use MageOS\AdminActivityLog\Block\Adminhtml\ActivityLogListing;
 /**
  * Display activity log details in modal
  */
-class Log extends Action implements HttpGetActionInterface
+class Log extends Action implements HttpGetActionInterface, HttpPostActionInterface
 {
     /**
      * ACL resource - uses same permission as viewing activity list

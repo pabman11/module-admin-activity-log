@@ -166,10 +166,24 @@
             </argument>
         </column>
 
+        <!-- Admin User Column -->
+        <column name="admin_id">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">select</item>
+                    <item name="dataType" xsi:type="string">select</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/select</item>
+                    <item name="label" xsi:type="string" translate="true">Admin User</item>
+                </item>
+                <item name="options" xsi:type="object">MageOS\AdminActivityLog\Ui\Component\Listing\Column\AdminUser\Options</item>
+            </argument>
+        </column>
+
         <!-- Username Column -->
         <column name="username">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
+                    <item name="visible" xsi:type="boolean">false</item>
                     <item name="filter" xsi:type="string">text</item>
                     <item name="label" xsi:type="string" translate="true">Username</item>
                 </item>
@@ -180,6 +194,7 @@
         <column name="name">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
+                    <item name="visible" xsi:type="boolean">false</item>
                     <item name="filter" xsi:type="string">text</item>
                     <item name="label" xsi:type="string" translate="true">Name</item>
                 </item>
@@ -260,20 +275,6 @@
                     <item name="filter" xsi:type="string">text</item>
                     <item name="label" xsi:type="string" translate="true">Path</item>
                 </item>
-            </argument>
-        </column>
-
-        <!-- Admin User Column (hidden) -->
-        <column name="admin_id">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="visible" xsi:type="boolean">false</item>
-                    <item name="filter" xsi:type="string">select</item>
-                    <item name="dataType" xsi:type="string">select</item>
-                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/select</item>
-                    <item name="label" xsi:type="string" translate="true">Admin User</item>
-                </item>
-                <item name="options" xsi:type="object">MageOS\AdminActivityLog\Ui\Component\Listing\Column\AdminUser\Options</item>
             </argument>
         </column>
 
@@ -359,12 +360,11 @@
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
-                    <item name="viewUrlPath" xsi:type="string">adminactivity/Activity/Log</item>
+                    <item name="viewUrlPath" xsi:type="string">adminactivity/activity/log</item>
                     <item name="urlEntityParamName" xsi:type="string">id</item>
                     <item name="label" xsi:type="string" translate="true">Action</item>
                 </item>
             </argument>
         </actionsColumn>
-
     </columns>
 </listing>
