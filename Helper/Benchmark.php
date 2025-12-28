@@ -19,15 +19,14 @@ use Magento\Framework\Profiler;
 use Psr\Log\LoggerInterface;
 
 /**
- * Class Benchmark
- * @package MageOS\AdminActivityLog\Helper
+ * Benchmark helper for performance profiling
  */
 class Benchmark extends AbstractHelper
 {
     /**
-     * Get Benchmark is enable or not
+     * Config path for benchmark enable flag
      */
-    protected const BENCHMARK_ENABLE = false;
+    public const XML_PATH_BENCHMARK_ENABLE = 'admin/admin_activity/developer/benchmark_enable';
 
     /**
      * @var String[] Start time of execution
@@ -47,12 +46,20 @@ class Benchmark extends AbstractHelper
     }
 
     /**
-     * log info about start time in millisecond
+     * Check if benchmark logging is enabled
+     */
+    public function isEnabled(): bool
+    {
+        return $this->scopeConfig->isSetFlag(self::XML_PATH_BENCHMARK_ENABLE);
+    }
+
+    /**
+     * Log info about start time in millisecond
      */
     public function start(string $method): void
     {
         $this->reset($method);
-        if (self::BENCHMARK_ENABLE) {
+        if ($this->isEnabled()) {
             $this->startTime[$method] = round(microtime(true) * 1000);
             $this->logger->info("Method: " . $method);
             $this->logger->info("Start time: " . $this->startTime[$method]);
@@ -61,11 +68,11 @@ class Benchmark extends AbstractHelper
     }
 
     /**
-     * log info about end time and time diiference in millisecond
+     * Log info about end time and time difference in millisecond
      */
     public function end(string $method): void
     {
-        if (self::BENCHMARK_ENABLE) {
+        if ($this->isEnabled()) {
             $this->endTime[$method] = round(microtime(true) * 1000);
             $difference = $this->endTime[$method] - $this->startTime[$method];
             if ($difference) {
