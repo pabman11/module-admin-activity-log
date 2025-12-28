@@ -107,26 +107,6 @@ class ItemColumn extends Column
     }
 
     /**
-     * Serialize attributes
-     * @param array<string, string> $keys
-     * @param string $valueSeparator
-     * @param string $fieldSeparator
-     * @param string $quote
-     */
-    public function serialize(
-        array $keys = [],
-        string $valueSeparator = '=',
-        string $fieldSeparator = ' ',
-        string $quote = '"'
-    ): string {
-        $data = [];
-        foreach ($keys as $key => $value) {
-            $data[] = $key . $valueSeparator . $quote . $value . $quote;
-        }
-        return implode($fieldSeparator, $data);
-    }
-
-    /**
      * Convert action to url
      */
     public function prepareUrl(string $url): string
