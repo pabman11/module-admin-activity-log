@@ -189,12 +189,12 @@ class ModelResolverTest extends TestCase
         $this->assertFalse($result);
     }
 
-    public function testIsAllowedModelClassReturnsTrueWhenNoAllowlistConfigured(): void
+    public function testIsAllowedModelClassReturnsFalseWhenNoAllowlistConfigured(): void
     {
-        // Without allowlist, all classes should be allowed (backward compatibility)
+        // Without allowlist, all classes should be disallowed
         $result = $this->modelResolver->isAllowedModelClass(Activity::class);
 
-        $this->assertTrue($result);
+        $this->assertFalse($result);
     }
 
     public function testIsAllowedModelClassReturnsTrueForConfiguredClass(): void

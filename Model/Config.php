@@ -105,7 +105,7 @@ class Config
             }
         }
 
-        return false;
+        return null;
     }
 
     /**

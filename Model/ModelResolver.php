@@ -95,11 +95,6 @@ class ModelResolver implements ModelResolverInterface
      */
     public function isAllowedModelClass(string $className): bool
     {
-        // If no allowlist is configured, allow all valid model classes (backward compatibility)
-        if (empty($this->allowedModelClasses)) {
-            return true;
-        }
-
         return in_array($className, $this->allowedModelClasses, true);
     }
 }
