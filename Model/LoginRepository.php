@@ -49,7 +49,7 @@ class LoginRepository implements LoginRepositoryInterface
      * Get login user
      * @return User|null
      */
-    public function getUser()
+    protected function getUser()
     {
         return $this->user;
     }

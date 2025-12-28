@@ -18,7 +18,6 @@ use MageOS\AdminActivityLog\Model\ResourceModel\Login\Collection;
 
 /**
  * Interface LoginRepositoryInterface
- * @api
  */
 interface LoginRepositoryInterface
 {
@@ -47,13 +46,6 @@ interface LoginRepositoryInterface
      * @return LoginRepositoryInterface
      */
     public function setUser(User $user): LoginRepositoryInterface;
-
-    /**
-     * Get the currently set user
-     *
-     * @return User|null
-     */
-    public function getUser(): ?User;
 
     /**
      * Track successful login
