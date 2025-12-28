@@ -19,6 +19,70 @@
     <preference for="MageOS\AdminActivityLog\Api\ModelResolverInterface" type="MageOS\AdminActivityLog\Model\ModelResolver" />
     <preference for="MageOS\AdminActivityLog\Api\FieldCheckerInterface" type="MageOS\AdminActivityLog\Model\FieldChecker" />
 
+    <!-- Allowed model classes for revert operations (security allowlist) -->
+    <type name="MageOS\AdminActivityLog\Model\ModelResolver">
+        <arguments>
+            <argument name="allowedModelClasses" xsi:type="array">
+                <!-- Catalog -->
+                <item name="catalog_product" xsi:type="string">Magento\Catalog\Model\Product</item>
+                <item name="catalog_product_action" xsi:type="string">Magento\Catalog\Model\Product\Action</item>
+                <item name="catalog_category" xsi:type="string">Magento\Catalog\Model\Category</item>
+                <item name="catalog_eav_attribute" xsi:type="string">Magento\Catalog\Model\ResourceModel\Eav\Attribute</item>
+                <!-- Customer -->
+                <item name="customer" xsi:type="string">Magento\Customer\Model\Customer</item>
+                <item name="customer_address" xsi:type="string">Magento\Customer\Model\Address</item>
+                <item name="customer_group" xsi:type="string">Magento\Customer\Model\Group</item>
+                <item name="newsletter_subscriber" xsi:type="string">Magento\Newsletter\Model\Subscriber</item>
+                <!-- CMS -->
+                <item name="cms_page" xsi:type="string">Magento\Cms\Model\Page</item>
+                <item name="cms_block" xsi:type="string">Magento\Cms\Model\Block</item>
+                <item name="widget_instance" xsi:type="string">Magento\Widget\Model\Widget\Instance</item>
+                <!-- Email -->
+                <item name="email_template" xsi:type="string">Magento\Email\Model\Template</item>
+                <item name="newsletter_template" xsi:type="string">Magento\Newsletter\Model\Template</item>
+                <!-- Promotions -->
+                <item name="catalog_rule" xsi:type="string">Magento\CatalogRule\Model\Rule</item>
+                <item name="sales_rule" xsi:type="string">Magento\SalesRule\Model\Rule</item>
+                <!-- Sales -->
+                <item name="sales_order" xsi:type="string">Magento\Sales\Model\Order</item>
+                <item name="sales_order_invoice" xsi:type="string">Magento\Sales\Model\Order\Invoice</item>
+                <item name="sales_order_shipment" xsi:type="string">Magento\Sales\Model\Order\Shipment</item>
+                <item name="sales_order_creditmemo" xsi:type="string">Magento\Sales\Model\Order\Creditmemo</item>
+                <item name="sales_order_address" xsi:type="string">Magento\Sales\Model\Order\Address</item>
+                <item name="sales_order_status" xsi:type="string">Magento\Sales\Model\Order\Status</item>
+                <item name="sales_order_status_history" xsi:type="string">Magento\Sales\Model\Order\Status\History</item>
+                <item name="sales_order_invoice_comment" xsi:type="string">Magento\Sales\Model\Order\Invoice\Comment</item>
+                <item name="sales_order_shipment_comment" xsi:type="string">Magento\Sales\Model\Order\Shipment\Comment</item>
+                <item name="sales_order_shipment_track" xsi:type="string">Magento\Sales\Model\Order\Shipment\Track</item>
+                <item name="sales_order_creditmemo_comment" xsi:type="string">Magento\Sales\Model\Order\Creditmemo\Comment</item>
+                <!-- Tax -->
+                <item name="tax_rule" xsi:type="string">Magento\Tax\Model\Calculation\Rule</item>
+                <item name="tax_rate" xsi:type="string">Magento\Tax\Model\Calculation\Rate</item>
+                <!-- Review -->
+                <item name="review" xsi:type="string">Magento\Review\Model\Review</item>
+                <item name="review_rating" xsi:type="string">Magento\Review\Model\Rating</item>
+                <!-- Store -->
+                <item name="store" xsi:type="string">Magento\Store\Model\Store</item>
+                <item name="store_website" xsi:type="string">Magento\Store\Model\Website</item>
+                <item name="store_group" xsi:type="string">Magento\Store\Model\Group</item>
+                <!-- SEO -->
+                <item name="url_rewrite" xsi:type="string">Magento\UrlRewrite\Model\UrlRewrite</item>
+                <item name="search_query" xsi:type="string">Magento\Search\Model\Query</item>
+                <item name="search_synonym_group" xsi:type="string">Magento\Search\Model\SynonymGroup</item>
+                <item name="sitemap" xsi:type="string">Magento\Sitemap\Model\Sitemap</item>
+                <!-- EAV -->
+                <item name="eav_attribute_set" xsi:type="string">Magento\Eav\Model\Entity\Attribute\Set</item>
+                <!-- Admin -->
+                <item name="admin_user" xsi:type="string">Magento\User\Model\User</item>
+                <item name="admin_role" xsi:type="string">Magento\Authorization\Model\Role</item>
+                <!-- Integration -->
+                <item name="integration" xsi:type="string">Magento\Integration\Model\Integration</item>
+                <!-- Checkout -->
+                <item name="checkout_agreement" xsi:type="string">Magento\CheckoutAgreements\Model\Agreement</item>
+            </argument>
+        </arguments>
+    </type>
+
     <!-- Protected fields configuration for activity logging -->
     <type name="MageOS\AdminActivityLog\Model\FieldChecker">
         <arguments>

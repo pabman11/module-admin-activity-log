@@ -50,4 +50,15 @@ interface ModelResolverInterface
      * @return bool
      */
     public function isValidModelClass(string $className): bool;
+
+    /**
+     * Check if a class name is in the allowed model classes list
+     *
+     * This provides an additional security layer to prevent instantiation
+     * of arbitrary model classes during revert operations.
+     *
+     * @param string $className Fully qualified class name
+     * @return bool
+     */
+    public function isAllowedModelClass(string $className): bool;
 }

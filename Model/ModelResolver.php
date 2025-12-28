@@ -29,8 +29,13 @@ use MageOS\AdminActivityLog\Api\ModelResolverInterface;
  */
 class ModelResolver implements ModelResolverInterface
 {
+    /**
+     * @param ObjectManagerInterface $objectManager
+     * @param array<string> $allowedModelClasses List of allowed model class names for security validation
+     */
     public function __construct(
-        private readonly ObjectManagerInterface $objectManager
+        private readonly ObjectManagerInterface $objectManager,
+        private readonly array $allowedModelClasses = []
     ) {
     }
 
@@ -39,6 +44,12 @@ class ModelResolver implements ModelResolverInterface
      */
     public function getModel(string $className): AbstractModel
     {
+        if (!$this->isAllowedModelClass($className)) {
+            throw new InvalidArgumentException(
+                sprintf('Class "%s" is not in the allowed model classes list', $className)
+            );
+        }
+
         if (!$this->isValidModelClass($className)) {
             throw new InvalidArgumentException(
                 sprintf('Class "%s" is not a valid AbstractModel', $className)
@@ -77,5 +88,18 @@ class ModelResolver implements ModelResolverInterface
         }
 
         return is_subclass_of($className, AbstractModel::class);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function isAllowedModelClass(string $className): bool
+    {
+        // If no allowlist is configured, allow all valid model classes (backward compatibility)
+        if (empty($this->allowedModelClasses)) {
+            return true;
+        }
+
+        return in_array($className, $this->allowedModelClasses, true);
     }
 }

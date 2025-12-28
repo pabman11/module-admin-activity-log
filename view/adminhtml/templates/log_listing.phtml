@@ -18,105 +18,119 @@ use MageOS\AdminActivityLog\Block\Adminhtml\ActivityLogListing;
 
 $collection = $block->getLogListing();
 $adminDetails = $block->getAdminDetails();
+$changeCount = is_countable($collection) ? count($collection) : 0;
 ?>
-<table class="activity-log-modal">
-    <tr>
-        <td>
-            <table class="admin-details-table">
-                <tr class="admin-details-row">
-                    <td class="admin-details-label"><?= $escaper->escapeHtml(__('Admin')) ?></td>
-                    <td class="admin-details-separator">:</td>
-                    <td class="admin-details-value"><?php
-                        if (!empty($adminDetails['username'])) {
-                            echo $escaper->escapeHtml($adminDetails['username']);
-                            if (!empty($adminDetails['name'])) {
-                                echo $escaper->escapeHtml(" (" . ucwords(strtolower($adminDetails['name'])) . ")");
-                            }
-                        }
-                        ?></td>
-                </tr>
-                <tr class="admin-details-row">
-                    <td class="admin-details-label"><?= $escaper->escapeHtml(__('Module')) ?></td>
-                    <td class="admin-details-separator">:</td>
-                    <td class="admin-details-value"><?= $escaper->escapeHtml($adminDetails['module']) ?></td>
-                </tr>
-                <tr class="admin-details-row">
-                    <td class="admin-details-label"><?= $escaper->escapeHtml(__('Action')) ?></td>
-                    <td class="admin-details-separator">:</td>
-                    <td class="admin-details-value"><?= $escaper->escapeHtml($adminDetails['fullaction']) ?></td>
-                </tr>
-                <tr class="admin-details-row">
-                    <td class="admin-details-label"><?= $escaper->escapeHtml(__('Scope')) ?></td>
-                    <td class="admin-details-separator">:</td>
-                    <td class="admin-details-value"><?= $escaper->escapeHtml($adminDetails['scope']) ?></td>
-                </tr>
-                <tr class="admin-details-row">
-                    <td class="admin-details-label"><?= $escaper->escapeHtml(__('Store')) ?></td>
-                    <td class="admin-details-separator">:</td>
-                    <td class="admin-details-value"><?= $escaper->escapeHtml($adminDetails['store_name']) ?></td>
-                </tr>
-                <tr class="admin-details-row">
-                    <td class="admin-details-label"><?= $escaper->escapeHtml(__('Path')) ?></td>
-                    <td class="admin-details-separator">:</td>
-                    <td class="admin-details-value"><?= $escaper->escapeHtml($adminDetails['path']) ?></td>
-                </tr>
-                <tr class="admin-details-row">
-                    <td class="admin-details-label"><?= $escaper->escapeHtml(__('User Agent')) ?></td>
-                    <td class="admin-details-separator">:</td>
-                    <td class="admin-details-value"><?= $escaper->escapeHtml(
-                            $adminDetails['browser'],
-                            ['strong', 'br']
-                        ) ?></td>
-                </tr>
-                <tr class="admin-details-row">
-                    <td class="admin-details-label"><?= $escaper->escapeHtml(__('Date')) ?></td>
-                    <td class="admin-details-separator">:</td>
-                    <td class="admin-details-value"><?= $escaper->escapeHtml($adminDetails['date']) ?></td>
-                </tr>
-            </table>
-        </td>
-    </tr>
-    <tr class="spacer-row">
-        <td></td>
-    </tr>
-    <?php
-    if (!empty($collection)): ?>
-        <tr>
-            <td>
-                <table class="activity-details-table">
+<div class="activity-log-modal">
+    <div class="admin__page-section">
+        <div class="admin__page-section-title">
+            <span class="title"><?= $escaper->escapeHtml(__('Activity Details')) ?></span>
+        </div>
+        <div class="admin__page-section-content">
+            <div class="admin-details-grid">
+                <div class="admin__field">
+                    <span class="admin__field-label"><?= $escaper->escapeHtml(__('Admin User')) ?></span>
+                    <span class="admin__field-value">
+                        <?php if (!empty($adminDetails['username'])): ?>
+                            <?= $escaper->escapeHtml($adminDetails['username']) ?>
+                            <?php if (!empty($adminDetails['name'])): ?>
+                                <span class="admin-name">(<?= $escaper->escapeHtml(ucwords(strtolower($adminDetails['name']))) ?>)</span>
+                            <?php endif; ?>
+                        <?php else: ?>
+                            <span class="empty-value"><?= $escaper->escapeHtml(__('Unknown')) ?></span>
+                        <?php endif; ?>
+                    </span>
+                </div>
+
+                <div class="admin__field">
+                    <span class="admin__field-label"><?= $escaper->escapeHtml(__('Date')) ?></span>
+                    <span class="admin__field-value"><?= $escaper->escapeHtml($adminDetails['date']) ?></span>
+                </div>
+
+                <div class="admin__field">
+                    <span class="admin__field-label"><?= $escaper->escapeHtml(__('Module')) ?></span>
+                    <span class="admin__field-value"><?= $escaper->escapeHtml($adminDetails['module']) ?></span>
+                </div>
+
+                <div class="admin__field">
+                    <span class="admin__field-label"><?= $escaper->escapeHtml(__('Action')) ?></span>
+                    <span class="admin__field-value"><?= $escaper->escapeHtml($adminDetails['fullaction']) ?></span>
+                </div>
+
+                <div class="admin__field">
+                    <span class="admin__field-label"><?= $escaper->escapeHtml(__('Scope')) ?></span>
+                    <span class="admin__field-value"><?= $escaper->escapeHtml($adminDetails['scope']) ?></span>
+                </div>
+
+                <div class="admin__field">
+                    <span class="admin__field-label"><?= $escaper->escapeHtml(__('Store')) ?></span>
+                    <span class="admin__field-value"><?= $escaper->escapeHtml($adminDetails['store_name']) ?></span>
+                </div>
+
+                <div class="admin__field full-width">
+                    <span class="admin__field-label"><?= $escaper->escapeHtml(__('Path')) ?></span>
+                    <span class="admin__field-value"><?= $escaper->escapeHtml($adminDetails['path']) ?></span>
+                </div>
+
+                <div class="admin__field full-width">
+                    <span class="admin__field-label"><?= $escaper->escapeHtml(__('User Agent')) ?></span>
+                    <span class="admin__field-value user-agent"><?= $escaper->escapeHtml($adminDetails['browser']) ?></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <?php if (!empty($collection)): ?>
+        <div class="admin__page-section">
+            <div class="admin__page-section-title">
+                <span class="title">
+                    <?= $escaper->escapeHtml(__('Field Changes')) ?>
+                    <span class="changes-count">(<?= $escaper->escapeHtml($changeCount) ?>)</span>
+                </span>
+            </div>
+            <div class="admin__page-section-content">
+                <table class="admin__table-secondary">
                     <thead>
-                    <tr>
-                        <th class="field-name-col"><?= $escaper->escapeHtml(__('Field Name')) ?></th>
-                        <th class="value-col"><?= $escaper->escapeHtml(__('Old Value')) ?></th>
-                        <th class="value-col"><?= $escaper->escapeHtml(__('New Value')) ?></th>
-                    </tr>
+                        <tr>
+                            <th class="col-field-name"><?= $escaper->escapeHtml(__('Field Name')) ?></th>
+                            <th class="col-old-value"><?= $escaper->escapeHtml(__('Old Value')) ?></th>
+                            <th class="col-new-value"><?= $escaper->escapeHtml(__('New Value')) ?></th>
+                        </tr>
                     </thead>
                     <tbody>
                     <?php
                     foreach ($collection as $item): ?>
+                        <?php $isProtected = $block->getProtectedFieldChecker()->isFieldProtected($item['field_name']); ?>
                         <tr>
-                            <td class="field-name-col">
-                                <?= $escaper->escapeHtml(ucfirst(str_replace('_', ' ', $item["field_name"]))) ?>
+                            <td class="col-field-name">
+                                <?= $escaper->escapeHtml(ucfirst(str_replace('_', ' ', $item['field_name']))) ?>
                             </td>
-                            <td class="value-col">
-                                    <textarea class="value-container" readonly><?php
-                                        if (!$block->getProtectedFieldChecker()->isFieldProtected($item['field_name'])):
-                                            echo $escaper->escapeHtml($item['old_value']);
-                                        endif ?></textarea>
+                            <td class="col-old-value">
+                                <?php if ($isProtected): ?>
+                                    <span class="protected-value"><?= $escaper->escapeHtml(__('Protected')) ?></span>
+                                <?php elseif (trim((string)$item['old_value']) === ''): ?>
+                                    <span class="empty-value"><?= $escaper->escapeHtml(__('(empty)')) ?></span>
+                                <?php else: ?>
+                                    <textarea class="value-container" readonly><?= $escaper->escapeHtml($item['old_value']) ?></textarea>
+                                <?php endif; ?>
                             </td>
-                            <td class="value-col">
-                                    <textarea class="value-container" readonly><?php
-                                        if (!$block->getProtectedFieldChecker()->isFieldProtected($item['field_name'])):
-                                            echo $escaper->escapeHtml($item['new_value']);
-                                        endif ?></textarea>
+                            <td class="col-new-value">
+                                <?php if ($isProtected): ?>
+                                    <span class="protected-value"><?= $escaper->escapeHtml(__('Protected')) ?></span>
+                                <?php elseif (trim((string)$item['new_value']) === ''): ?>
+                                    <span class="empty-value"><?= $escaper->escapeHtml(__('(empty)')) ?></span>
+                                <?php else: ?>
+                                    <textarea class="value-container" readonly><?= $escaper->escapeHtml($item['new_value']) ?></textarea>
+                                <?php endif; ?>
                             </td>
                         </tr>
-                    <?php
-                    endforeach; ?>
+                    <?php endforeach; ?>
                     </tbody>
                 </table>
-            </td>
-        </tr>
-    <?php
-    endif; ?>
-</table>
+            </div>
+        </div>
+    <?php else: ?>
+        <div class="no-changes-message">
+            <p><?= $escaper->escapeHtml(__('No field changes recorded for this activity.')) ?></p>
+        </div>
+    <?php endif; ?>
+</div>

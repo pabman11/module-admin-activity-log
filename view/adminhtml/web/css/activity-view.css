@@ -3,103 +3,220 @@
  *
  * @category   MageOS
  * @package    MageOS_AdminActivityLog
- * @copyright  Copyright (C) 2018 Kiwi Commerce Ltd (https://kiwicommerce.co.uk/)
  * @copyright  Copyright (C) 2025 MageOS (https://mage-os.org/)
  * @license    https://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 
-/* Activity Log Modal Styles */
+/* ============================================
+   Activity Log Modal
+   ============================================ */
+
 .activity-log-modal {
-    width: 100%;
-    border-spacing: 0;
-    border-collapse: collapse;
+    padding: 0 5px;
 }
 
-.activity-log-modal .admin-details-table {
-    width: 100%;
-    border-spacing: 1px;
+.activity-log-modal .admin__page-section {
+    margin-bottom: 2.5rem;
 }
 
-.activity-log-modal .admin-details-row {
-    height: 35px;
+.activity-log-modal .admin__page-section-title {
+    border-bottom-color: #ccc;
+    padding-top: 0;
 }
 
-.activity-log-modal .admin-details-row td {
-    padding: 8px 10px;
-    vertical-align: middle;
+.activity-log-modal .admin__page-section-title .title {
+    font-size: 1.6rem;
 }
 
-.activity-log-modal .admin-details-label {
-    font-size: 14px;
+.admin-details-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0 3rem;
+}
+
+.admin-details-grid .admin__field {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    padding: 0.8rem 0;
+    margin: 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.admin-details-grid .admin__field:last-child {
+    border-bottom: none;
+}
+
+.admin-details-grid .admin__field.full-width {
+    grid-column: 1 / -1;
+}
+
+.admin-details-grid .admin__field-label {
+    flex: 0 0 120px;
     font-weight: 600;
     color: #303030;
-    width: 120px;
-    white-space: nowrap;
+    font-size: 1.3rem;
 }
 
-.activity-log-modal .admin-details-separator {
-    width: 10px;
-    font-size: 14px;
-    font-weight: 600;
-    text-align: center;
-}
-
-.activity-log-modal .admin-details-value {
-    font-size: 14px;
+.admin-details-grid .admin__field-value {
+    flex: 1;
     color: #555;
+    font-size: 1.3rem;
+    word-break: break-word;
 }
 
-.activity-log-modal .spacer-row td {
-    height: 20px;
+.admin-details-grid .admin__field-value .admin-name {
+    color: #888;
 }
 
-/* Activity Details Table */
-.activity-log-modal .activity-details-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px;
+.admin-details-grid .admin__field-value.user-agent {
+    font-size: 1.2rem;
+    color: #666;
+    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+    background: #f8f8f8;
+    padding: 0.6rem 0.8rem;
+    border-radius: 3px;
 }
 
-.activity-log-modal .activity-details-table th {
-    font-size: 14px;
-    font-weight: 600;
-    height: 45px;
-    padding: 10px;
+.activity-log-modal .admin__table-secondary {
+    border: 1px solid #d6d6d6;
+    border-radius: 3px;
+}
+
+.activity-log-modal .admin__table-secondary thead th {
     background: #f5f5f5;
-    border: 1px solid #d6d6d6;
-    text-align: left;
+    border-bottom: 1px solid #d6d6d6;
+    font-weight: 600;
+    color: #333;
+    padding: 1.2rem 1.5rem;
 }
 
-.activity-log-modal .activity-details-table td {
-    padding: 10px;
-    border: 1px solid #d6d6d6;
+.activity-log-modal .admin__table-secondary tbody td {
+    padding: 1.2rem 1.5rem;
     vertical-align: top;
 }
 
-.activity-log-modal .activity-details-table .field-name-col {
-    width: 20%;
+.activity-log-modal .admin__table-secondary tbody tr:nth-child(odd) td {
+    background-color: #fafafa;
+}
+
+.activity-log-modal .admin__table-secondary tbody tr:hover td {
+    background-color: #f0f7fc;
+}
+
+.activity-log-modal .col-field-name {
+    width: 22%;
     font-weight: 500;
 }
 
-.activity-log-modal .activity-details-table .value-col {
-    width: 40%;
+.activity-log-modal .col-old-value,
+.activity-log-modal .col-new-value {
+    width: 39%;
 }
 
-/* Value Container Textarea */
+.activity-log-modal .col-old-value {
+    background-color: #fff8f8 !important;
+}
+
+.activity-log-modal .col-new-value {
+    background-color: #f8fff8 !important;
+}
+
+.activity-log-modal tbody tr:hover .col-old-value {
+    background-color: #ffefef !important;
+}
+
+.activity-log-modal tbody tr:hover .col-new-value {
+    background-color: #effff0 !important;
+}
+
+.activity-log-modal thead th.col-old-value {
+    border-left: 3px solid #d9534f;
+}
+
+.activity-log-modal thead th.col-new-value {
+    border-left: 3px solid #5cb85c;
+}
+
 textarea.value-container {
     resize: none;
     width: 100%;
+    min-height: 2rem;
+    max-height: 20rem;
     border: none;
     background: transparent;
     box-shadow: none;
-    height: auto;
     outline: none;
     display: block;
     overflow: hidden;
-    font-family: inherit;
-    font-size: 13px;
-    line-height: 1.4;
-    color: #555;
+    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+    font-size: 1.2rem;
+    line-height: 1.5;
+    color: #444;
     padding: 0;
     margin: 0;
+    cursor: default;
+}
+
+.protected-value {
+    display: inline-block;
+    padding: 0.3rem 0.8rem;
+    background: #f5f5f5;
+    border: 1px dashed #ccc;
+    border-radius: 3px;
+    font-size: 1.1rem;
+    color: #999;
+    font-style: italic;
+}
+
+.empty-value {
+    color: #bbb;
+    font-style: italic;
+    font-size: 1.2rem;
+}
+
+.no-changes-message {
+    text-align: center;
+    padding: 3rem 2rem;
+    background: #fafafa;
+    border: 1px dashed #ddd;
+    border-radius: 3px;
+    color: #888;
+}
+
+.no-changes-message p {
+    font-size: 1.3rem;
+    margin: 0;
+}
+
+.changes-count {
+    font-size: 1.2rem;
+    color: #888;
+    font-weight: 400;
+    margin-left: 0.5rem;
+}
+
+@media screen and (max-width: 768px) {
+    .admin-details-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-details-grid .admin__field.full-width {
+        grid-column: 1;
+    }
+
+    .activity-log-modal .admin__table-secondary thead th,
+    .activity-log-modal .admin__table-secondary tbody td {
+        padding: 1rem;
+        font-size: 1.2rem;
+    }
+
+    .activity-log-modal .col-field-name {
+        width: 28%;
+    }
+
+    .activity-log-modal .col-old-value,
+    .activity-log-modal .col-new-value {
+        width: 36%;
+    }
 }
