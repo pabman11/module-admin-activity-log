@@ -15,7 +15,6 @@ namespace MageOS\AdminActivityLog\Observer;
 
 use Magento\Framework\Event\Observer;
 use MageOS\AdminActivityLog\Api\ActivityRepositoryInterface;
-use MageOS\AdminActivityLog\Helper\Benchmark;
 use MageOS\AdminActivityLog\Helper\Data as Helper;
 use MageOS\AdminActivityLog\Model\Processor;
 
@@ -23,11 +22,10 @@ class SaveBefore extends AbstractActivityObserver
 {
     public function __construct(
         Helper $helper,
-        Benchmark $benchmark,
         private readonly Processor $processor,
         private readonly ActivityRepositoryInterface $activityRepository
     ) {
-        parent::__construct($helper, $benchmark);
+        parent::__construct($helper);
     }
 
     protected function process(Observer $observer): void

@@ -15,7 +15,6 @@ namespace MageOS\AdminActivityLog\Observer;
 
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
-use MageOS\AdminActivityLog\Helper\Benchmark;
 use MageOS\AdminActivityLog\Helper\Data as Helper;
 
 /**
@@ -23,19 +22,17 @@ use MageOS\AdminActivityLog\Helper\Data as Helper;
  *
  * Encapsulates common observer patterns:
  * - Module enable check
- * - Benchmark timing
  * - Error handling
  */
 abstract class AbstractActivityObserver implements ObserverInterface
 {
     public function __construct(
-        protected readonly Helper $helper,
-        protected readonly Benchmark $benchmark
+        protected readonly Helper $helper
     ) {
     }
 
     /**
-     * Execute observer with standard enable check and benchmarking
+     * Execute observer with standard enable check
      */
     public function execute(Observer $observer): void
     {
@@ -43,13 +40,7 @@ abstract class AbstractActivityObserver implements ObserverInterface
             return;
         }
 
-        $this->benchmark->start(static::class);
-
-        try {
-            $this->process($observer);
-        } finally {
-            $this->benchmark->end(static::class);
-        }
+        $this->process($observer);
     }
 
     /**

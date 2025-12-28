@@ -15,7 +15,6 @@ namespace MageOS\AdminActivityLog\Plugin;
 
 use Magento\Backend\Model\Auth;
 use MageOS\AdminActivityLog\Api\LoginRepositoryInterface;
-use MageOS\AdminActivityLog\Helper\Benchmark;
 use MageOS\AdminActivityLog\Helper\Data as Helper;
 
 /**
@@ -26,8 +25,7 @@ class AuthPlugin
 {
     public function __construct(
         private readonly Helper $helper,
-        private readonly LoginRepositoryInterface $loginRepository,
-        private readonly Benchmark $benchmark
+        private readonly LoginRepositoryInterface $loginRepository
     ) {
     }
 
@@ -36,15 +34,11 @@ class AuthPlugin
      */
     public function aroundLogout(Auth $auth, callable $proceed): void
     {
-        $this->benchmark->start(__METHOD__);
-
         if ($this->helper->isLoginEnable()) {
             $user = $auth->getAuthStorage()->getUser();
             $this->loginRepository->setUser($user)->addLogoutLog();
         }
 
         $proceed();
-
-        $this->benchmark->end(__METHOD__);
     }
 }

@@ -15,17 +15,15 @@ namespace MageOS\AdminActivityLog\Observer;
 
 use Magento\Framework\Event\Observer;
 use MageOS\AdminActivityLog\Api\LoginRepositoryInterface;
-use MageOS\AdminActivityLog\Helper\Benchmark;
 use MageOS\AdminActivityLog\Helper\Data as Helper;
 
 class LoginSuccess extends AbstractActivityObserver
 {
     public function __construct(
         Helper $helper,
-        Benchmark $benchmark,
         private readonly LoginRepositoryInterface $loginRepository
     ) {
-        parent::__construct($helper, $benchmark);
+        parent::__construct($helper);
     }
 
     protected function isEnabled(): bool
