@@ -25,6 +25,9 @@
     <preference for="MageOS\AdminActivityLog\Api\Data\ActivityLogDetailInterface" type="MageOS\AdminActivityLog\Model\ActivityLogDetail" />
     <preference for="MageOS\AdminActivityLog\Api\Data\LoginInterface" type="MageOS\AdminActivityLog\Model\Login" />
 
+    <!-- Configuration service -->
+    <preference for="MageOS\AdminActivityLog\Api\ActivityConfigInterface" type="MageOS\AdminActivityLog\Model\Config\ActivityConfig" />
+
     <!-- Allowed model classes for revert operations (security allowlist) -->
     <type name="MageOS\AdminActivityLog\Model\ModelResolver">
         <arguments>

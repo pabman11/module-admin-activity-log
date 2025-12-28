@@ -22,6 +22,9 @@ use MageOS\AdminActivityLog\Model\Config;
 
 /**
  * Configuration helper for admin activity logging
+ *
+ * @deprecated Use \MageOS\AdminActivityLog\Api\ActivityConfigInterface instead
+ * @see \MageOS\AdminActivityLog\Api\ActivityConfigInterface
  */
 class Data extends AbstractHelper
 {
@@ -58,6 +61,9 @@ class Data extends AbstractHelper
 
     /**
      * Check and return status of module
+     *
+     * @deprecated Use ActivityConfigInterface::isEnabled() instead
+     * @see \MageOS\AdminActivityLog\Api\ActivityConfigInterface::isEnabled()
      * @return bool
      */
     public function isEnable(): bool
@@ -67,6 +73,9 @@ class Data extends AbstractHelper
 
     /**
      * Check and return status for login activity
+     *
+     * @deprecated Use ActivityConfigInterface::isLoginEnabled() instead
+     * @see \MageOS\AdminActivityLog\Api\ActivityConfigInterface::isLoginEnabled()
      * @return bool
      */
     public function isLoginEnable(): bool
@@ -79,6 +88,9 @@ class Data extends AbstractHelper
 
     /**
      * Check and return status for page visit history
+     *
+     * @deprecated Use ActivityConfigInterface::isPageVisitEnabled() instead
+     * @see \MageOS\AdminActivityLog\Api\ActivityConfigInterface::isPageVisitEnabled()
      * @return bool
      */
     public function isPageVisitEnable(): bool
@@ -91,7 +103,10 @@ class Data extends AbstractHelper
 
     /**
      * Get value of system config from path
-     * @param $path
+     *
+     * @deprecated Use ActivityConfigInterface::getConfigValue() instead
+     * @see \MageOS\AdminActivityLog\Api\ActivityConfigInterface::getConfigValue()
+     * @param string $path
      * @return mixed|false
      */
     public function getConfigValue(string $path)
@@ -111,6 +126,9 @@ class Data extends AbstractHelper
 
     /**
      * Get translated label by action name
+     *
+     * @deprecated Use ActivityConfigInterface::getActionTranslatedLabel() instead
+     * @see \MageOS\AdminActivityLog\Api\ActivityConfigInterface::getActionTranslatedLabel()
      * @param string $action
      * @return string
      */
@@ -121,6 +139,9 @@ class Data extends AbstractHelper
 
     /**
      * Get all actions
+     *
+     * @deprecated Use ActivityConfigInterface::getAllActions() instead
+     * @see \MageOS\AdminActivityLog\Api\ActivityConfigInterface::getAllActions()
      * @return array
      */
     public function getAllActions(): array
@@ -130,6 +151,9 @@ class Data extends AbstractHelper
 
     /**
      * Get activity module name
+     *
+     * @deprecated Use ActivityConfigInterface::getActivityModuleName() instead
+     * @see \MageOS\AdminActivityLog\Api\ActivityConfigInterface::getActivityModuleName()
      */
     public function getActivityModuleName(string $module): string
     {
@@ -138,6 +162,9 @@ class Data extends AbstractHelper
 
     /**
      * Check if model is a wildcard model (system config value)
+     *
+     * @deprecated Use ActivityConfigInterface::isWildCardModel() instead
+     * @see \MageOS\AdminActivityLog\Api\ActivityConfigInterface::isWildCardModel()
      */
     public static function isWildCardModel(DataObject|string $model): bool
     {
