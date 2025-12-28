@@ -349,7 +349,7 @@ class Processor
         if ($this->authSession->isLoggedIn()) {
             $activity->setUsername($this->authSession->getUser()->getUsername());
             $activity->setName($this->authSession->getUser()->getName());
-            $activity->setAdminId($this->authSession->getUser()->getId());
+            $activity->setAdminId((int)$this->authSession->getUser()->getId());
         }
 
         $activity->setScope($this->getScope());
@@ -442,7 +442,7 @@ class Processor
     {
         $data = $model->getData();
         if (isset($data['scope_id'])) {
-            return $model->getScopeId();
+            return (int)$model->getScopeId();
         }
         if (isset($data['store_id'])) {
             $storeId = $model->getStoreId();
@@ -453,7 +453,7 @@ class Processor
             return (int)$storeId;
         }
 
-        return $this->storeManager->getStore()->getId();
+        return (int)$this->storeManager->getStore()->getId();
     }
 
     /**
