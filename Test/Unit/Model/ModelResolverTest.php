@@ -50,7 +50,7 @@ class ModelResolverTest extends TestCase
             ->with($className)
             ->willReturn($mockModel);
 
-        $result = $this->modelResolver->getModel($className);
+        $result = $this->modelResolverWithAllowlist->getModel($className);
 
         $this->assertSame($mockModel, $result);
     }
@@ -62,7 +62,7 @@ class ModelResolverTest extends TestCase
         $this->objectManager->expects($this->never())->method('create');
 
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage(sprintf('Class "%s" is not a valid AbstractModel', $className));
+        $this->expectExceptionMessage(sprintf('Class "%s" is not in the allowed model classes list', $className));
 
         $this->modelResolver->getModel($className);
     }
@@ -74,7 +74,7 @@ class ModelResolverTest extends TestCase
         $this->objectManager->expects($this->never())->method('create');
 
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage(sprintf('Class "%s" is not a valid AbstractModel', $className));
+        $this->expectExceptionMessage(sprintf('Class "%s" is not in the allowed model classes list', $className));
 
         $this->modelResolver->getModel($className);
     }
@@ -98,7 +98,7 @@ class ModelResolverTest extends TestCase
             ->with($entityId)
             ->willReturnSelf();
 
-        $result = $this->modelResolver->loadModel($className, $entityId);
+        $result = $this->modelResolverWithAllowlist->loadModel($className, $entityId);
 
         $this->assertSame($mockModel, $result);
     }
@@ -123,7 +123,7 @@ class ModelResolverTest extends TestCase
             ->with($entityId, $field)
             ->willReturnSelf();
 
-        $result = $this->modelResolver->loadModel($className, $entityId, $field);
+        $result = $this->modelResolverWithAllowlist->loadModel($className, $entityId, $field);
 
         $this->assertSame($mockModel, $result);
     }
@@ -147,7 +147,7 @@ class ModelResolverTest extends TestCase
             ->with($entityId)
             ->willReturnSelf();
 
-        $result = $this->modelResolver->loadModel($className, $entityId);
+        $result = $this->modelResolverWithAllowlist->loadModel($className, $entityId);
 
         $this->assertSame($mockModel, $result);
     }
