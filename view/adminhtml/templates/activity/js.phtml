@@ -76,7 +76,7 @@ $script = <<<JS
                         }
                     });
                 }
-                if (revertable) {
+                if (!!revertable) {
                     jQuery(".action-revert-activity").show();
                 } else {
                     jQuery(".action-revert-activity").hide();
