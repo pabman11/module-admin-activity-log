@@ -121,7 +121,7 @@ class ActivityRepository implements ActivityRepositoryInterface
         $logData = $this->getActivityLog($activity->getId());
         $detailModel = $this->getActivityDetail($activity->getId());
 
-        if ($this->activityConfig->checkIsWildCardModel($detailModel->getModelClass())) {
+        if ($this->activityConfig->isWildCardModel($detailModel->getModelClass())) {
             if ($activity->getModule() === self::THEME_MODULE) {
                 return $this->themeConfig->revertData($logData, $activity->getStoreId(), $activity->getScope());
             }
@@ -159,7 +159,7 @@ class ActivityRepository implements ActivityRepositoryInterface
      */
     public function getOldData(DataObject $model): DataObject|false
     {
-        if ($this->activityConfig->checkIsWildCardModel($model)) {
+        if ($this->activityConfig->isWildCardModel($model)) {
             return $this->systemConfig->getOldData($model);
         }
 
