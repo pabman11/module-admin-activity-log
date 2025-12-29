@@ -129,7 +129,7 @@ class FieldTracker implements FieldTrackerInterface
                 $newData = !empty($value) ? $value : '';
                 $oldData = !empty($model->getOrigData($key)) ? $model->getOrigData($key) : '';
                 if (!empty($newData) || !empty($oldData)) {
-                    if ($newData !== $oldData) {
+                    if ($newData != $oldData) {
                         $logData[$key] = [
                             'old_value' => $this->prepareValue($oldData),
                             'new_value' => $this->prepareValue($newData)
