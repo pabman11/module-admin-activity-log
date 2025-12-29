@@ -19,7 +19,7 @@
                     <enable>1</enable>
                     <login_activity>1</login_activity>
                     <page_visit>0</page_visit>
-                    <clearlog>7</clearlog>
+                    <clearlog>30</clearlog>
                 </general>
                 <module>
                     <order>1</order>

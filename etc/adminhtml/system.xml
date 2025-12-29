@@ -3,7 +3,6 @@
 /**
  * MageOS
  *
- *
  * @category   MageOS
  * @package    MageOS_AdminActivityLog
  * @copyright  Copyright (C) 2018 Kiwi Commerce Ltd (https://kiwicommerce.co.uk/)
@@ -16,26 +15,27 @@
         <section id="admin">
             <group id="admin_activity" translate="label" sortOrder="130" showInDefault="1" showInWebsite="0" showInStore="0">
                 <label>Admin Activity Logs</label>
-                <group id="general" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
-                    <label>General Configuration</label>
-                    <field id="enable" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
-                        <label>Enable Admin Activity Logs</label>
-                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                    </field>
-                    <field id="login_activity" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
-                        <label>Record Login Activity</label>
-                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                    </field>
-                    <field id="page_visit" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0">
-                        <label>Record Page Visits</label>
-                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                    </field>
-                    <field id="clearlog" translate="label comment" type="text" sortOrder="40" showInDefault="1" showInWebsite="0" showInStore="0">
-                        <label>Clear Admin Activity Logs After</label>
-                        <comment>Number of days</comment>
-                        <validate>validate-digits</validate>
-                    </field>
-                </group>
+                <field id="enable" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>Enable Admin Activity Logs</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <config_path>admin/admin_activity/general/enable</config_path>
+                </field>
+                <field id="login_activity" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>Record Login Activity</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <config_path>admin/admin_activity/general/login_activity</config_path>
+                </field>
+                <field id="page_visit" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>Record Page Visits</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <config_path>admin/admin_activity/general/page_visit</config_path>
+                </field>
+                <field id="clearlog" translate="label comment" type="text" sortOrder="40" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>Clear Admin Activity Logs After</label>
+                    <comment>Number of days</comment>
+                    <validate>validate-digits</validate>
+                    <config_path>admin/admin_activity/general/clearlog</config_path>
+                </field>
             </group>
         </section>
     </system>

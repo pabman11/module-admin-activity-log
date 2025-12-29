@@ -17,6 +17,7 @@ fork of the original [Magento Admin Activity Log](https://github.com/kiwicommerc
 - **Field-Level Changes**: Track specific field modifications with before/after values
 - **IP Address Logging**: Capture IP addresses and user agent information for security analysis
 - **Extensible Configuration**: Customize tracked entities and skip fields via XML configuration
+- **Revert Capability**: Restore previous values for supported entity types with a secure model allowlist
 
 ## 📋 Requirements
 
@@ -56,6 +57,20 @@ Click View on any log entry to see detailed info.
 ### Login Activity Monitoring
 
 Go to **System → Admin Activity → Admin Login Logs**
+
+## Architecture
+
+The module is built around interface-driven services for clean extensibility:
+
+| Interface | Description |
+|-----------|-------------|
+| `ActivityConfigInterface` | Configuration settings (enabled state, log retention) |
+| `FieldTrackerInterface` | Tracks field-level changes with before/after values |
+| `ModelResolverInterface` | Resolves and loads models for revert operations |
+| `ActivityRepositoryInterface` | CRUD operations for activity log entries |
+| `LoginRepositoryInterface` | CRUD operations for login log entries |
+
+All interfaces are marked `@api` and can be customized via DI preferences.
 
 ## Extensibility
 
@@ -98,10 +113,45 @@ Example configuration to add a custom entity:
 
 To exclude specific fields from being logged (e.g., timestamps, internal IDs), add them to the `skip_fields` node for the relevant module in your `adminactivity.xml`.
 
+### Extending the Revert Model Allowlist
+
+The revert feature uses a security allowlist to prevent instantiation of arbitrary model classes. To enable revert for custom entities, add your model classes to the allowlist via `di.xml`:
+
+```xml
+<type name="MageOS\AdminActivityLog\Model\ModelResolver">
+    <arguments>
+        <argument name="allowedModelClasses" xsi:type="array">
+            <item name="my_custom_entity" xsi:type="string">Vendor\Module\Model\CustomEntity</item>
+        </argument>
+    </arguments>
+</type>
+```
+
+### Protected Fields
+
+Sensitive fields (passwords, tokens, payment data) are automatically excluded from logging. To add custom protected fields:
+
+```xml
+<type name="MageOS\AdminActivityLog\Model\FieldChecker">
+    <arguments>
+        <argument name="protectedFields" xsi:type="array">
+            <item name="my_secret_field" xsi:type="string">my_secret_field</item>
+        </argument>
+    </arguments>
+</type>
+```
+
+## Security
+
+- **Revert Allowlist**: Only explicitly allowed model classes can be instantiated during revert operations, preventing arbitrary code execution.
+- **Protected Fields**: Sensitive data (passwords, API keys, tokens, payment info) is never logged, configured via DI.
+- **ACL Permissions**: Control access to logs and revert operations via permission rules.
+- **CSRF Protection**: All admin actions are protected with form keys.
+
 ## Performance Notes
 
 - **Page Visit Logging**: Disabled by default. Enable only if needed, as it creates a log entry for every admin page view.
-- **Database Indexes**: The module includes indexes on frequently queried columns for optimal performance.
+- **Database Indexes**: The module includes indexes on frequently queried columns for optimal filtering performance.
 - **Bulk Operations**: Log cleanup and activity logging use bulk database operations to minimize overhead.
 - **Field Truncation**: Large values are truncated at ~64KB to prevent database bloat.
 
