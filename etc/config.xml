@@ -15,12 +15,10 @@
     <default>
         <admin>
             <admin_activity>
-                <general>
-                    <enable>1</enable>
-                    <login_activity>1</login_activity>
-                    <page_visit>0</page_visit>
-                    <clearlog>30</clearlog>
-                </general>
+                <enable>1</enable>
+                <login_activity>1</login_activity>
+                <page_visit>0</page_visit>
+                <clearlog>30</clearlog>
                 <module>
                     <order>1</order>
                     <product>1</product>
@@ -41,3 +39,4 @@
         </admin>
     </default>
 </config>
+
