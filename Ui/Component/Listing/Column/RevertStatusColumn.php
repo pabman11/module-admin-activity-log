@@ -51,11 +51,15 @@ class RevertStatusColumn extends Column
                 $isRevertable = (bool)($item['is_revertable'] ?? false);
                 $revertBy = (string)($item['revert_by'] ?? '');
                 if ($isRevertable === true) {
-                    $item[$columnName] = '<span class="grid-severity-minor" title=""><span>Revert</span></span>';
+                    $item[$columnName] = '<span class="grid-severity-minor"><span>' . __('Yes') . '</span></span>';
                 } elseif ($isRevertable === false && !empty($revertBy)) {
                     $escapedRevertBy = $this->escaper->escapeHtml($revertBy);
-                    $item[$columnName] = '<span class="grid-severity-notice" title=""><span>Success</span></span>';
-                    $item[$columnName] .= '<br/><strong>Reverted By:</strong> ' . $escapedRevertBy;
+                    $item[$columnName] = '<span class="grid-severity-notice"><span>' . __('Done') . '</span></span>';
+                    $item[$columnName] .= sprintf(
+                        "<br/><strong>%s</strong> %s",
+                        __('Reverted By:'),
+                        $escapedRevertBy
+                    );
                 } else {
                     $item[$columnName] = '-';
                 }

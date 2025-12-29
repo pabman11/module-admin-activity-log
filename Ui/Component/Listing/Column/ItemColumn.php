@@ -83,7 +83,7 @@ class ItemColumn extends Column
             ['length' => $length, 'etc' => '...', 'remainder' => '', 'breakWords' => false]
         );
         $escaped = $this->escapeHtml($itemName);
-        return '<a ' . $this->getLinkAttributes() . ' >' . (is_string($escaped) ? $escaped : '') . '</a></li>';
+        return '<a ' . $this->getLinkAttributes() . ' >' . $escaped . '</a>';
     }
 
     /**
@@ -104,6 +104,26 @@ class ItemColumn extends Column
         }
 
         return '';
+    }
+
+    /**
+     * Serialize attributes
+     * @param array<string, string> $keys
+     * @param string $valueSeparator
+     * @param string $fieldSeparator
+     * @param string $quote
+     */
+    public function serialize(
+        $keys = [],
+        $valueSeparator = '=',
+        $fieldSeparator = ' ',
+        $quote = '"'
+    ) {
+        $data = [];
+        foreach ($keys as $key => $value) {
+            $data[] = $key . $valueSeparator . $quote . $value . $quote;
+        }
+        return implode($fieldSeparator, $data);
     }
 
     /**

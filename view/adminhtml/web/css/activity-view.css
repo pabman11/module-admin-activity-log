@@ -70,12 +70,7 @@
 }
 
 .admin-details-grid .admin__field-value.user-agent {
-    font-size: 1.2rem;
-    color: #666;
-    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
-    background: #f8f8f8;
-    padding: 0.6rem 0.8rem;
-    border-radius: 3px;
+    font-family: monospace;
 }
 
 .activity-log-modal .admin__table-secondary {
@@ -149,7 +144,7 @@ textarea.value-container {
     outline: none;
     display: block;
     overflow: hidden;
-    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+    font-family: monospace;
     font-size: 1.2rem;
     line-height: 1.5;
     color: #444;

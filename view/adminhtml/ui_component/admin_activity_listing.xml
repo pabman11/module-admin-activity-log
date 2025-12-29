@@ -350,7 +350,7 @@
                 <item name="config" xsi:type="array">
                     <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
                     <item name="urlEntityParamName" xsi:type="string">id</item>
-                    <item name="label" xsi:type="string" translate="true">Revert</item>
+                    <item name="label" xsi:type="string" translate="true">Revertable</item>
                 </item>
             </argument>
         </actionsColumn>

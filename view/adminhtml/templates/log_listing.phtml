@@ -67,10 +67,12 @@ $changeCount = is_countable($collection) ? count($collection) : 0;
                         <span class="admin__field-value"><?= $escaper->escapeHtml($adminDetails['store_name']) ?></span>
                     </div>
 
-                    <div class="admin__field full-width">
-                        <span class="admin__field-label"><?= $escaper->escapeHtml(__('Path')) ?></span>
-                        <span class="admin__field-value"><?= $escaper->escapeHtml($adminDetails['path']) ?></span>
-                    </div>
+                    <?php if (!empty($adminDetails['path'])): ?>
+                        <div class="admin__field full-width">
+                            <span class="admin__field-label"><?= $escaper->escapeHtml(__('Path')) ?></span>
+                            <span class="admin__field-value"><?= $escaper->escapeHtml($adminDetails['path']) ?></span>
+                        </div>
+                    <?php endif; ?>
 
                     <div class="admin__field full-width">
                         <span class="admin__field-label"><?= $escaper->escapeHtml(__('User Agent')) ?></span>
