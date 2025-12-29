@@ -27,10 +27,10 @@ class ActivityConfig implements ActivityConfigInterface
     /**
      * Configuration path constants
      */
-    public const ACTIVITY_ENABLE = 'admin/admin_activity/general/enable';
-    public const LOGIN_ACTIVITY_ENABLE = 'admin/admin_activity/general/login_activity';
-    public const PAGE_VISIT_ENABLE = 'admin/admin_activity/general/page_visit';
-    public const CLEAR_LOG_DAYS = 'admin/admin_activity/general/clearlog';
+    public const ACTIVITY_ENABLE = 'admin/admin_activity/enable';
+    public const LOGIN_ACTIVITY_ENABLE = 'admin/admin_activity/login_activity';
+    public const PAGE_VISIT_ENABLE = 'admin/admin_activity/page_visit';
+    public const CLEAR_LOG_DAYS = 'admin/admin_activity/clearlog';
     public const MODULE_ORDER = 'admin/admin_activity/module/order';
     public const MODULE_PRODUCT = 'admin/admin_activity/module/product';
     public const MODULE_CATEGORY = 'admin/admin_activity/module/category';
