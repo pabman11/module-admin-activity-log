@@ -74,13 +74,8 @@ class LoginRepository implements LoginRepositoryInterface
         /** @var Login $login */
         $login = $this->loginFactory->create();
 
-        $params = $this->processor->getRequest()->getParam('login');
-        if (!empty($params['username'])) {
-            $login->setUsername((string)$params['username']);
-        }
-
         $user = $this->getUser();
-        if ($user instanceof User && $user->getId()) {
+        if ($user instanceof User) {
             $login->setAdminId((int)$user->getId());
             $login->setUsername((string)$user->getUsername());
             $login->setName(ucwords((string)$user->getName()));

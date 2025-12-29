@@ -35,7 +35,8 @@ class LoginFailed extends AbstractActivityObserver
 
     protected function process(Observer $observer): void
     {
-        $user = null;
+        $user = $this->user;
+        $user->setUserName($observer->getUserName());
         if ($observer->getUserName()) {
             $user = $this->user->loadByUsername($observer->getUserName());
         }
