@@ -134,7 +134,7 @@ class ActivityConfig implements ActivityConfigInterface
      */
     public function getActivityModuleName(string $module): string
     {
-        return $this->config->getActivityModuleName($module);
+        return $this->config->getActivityModuleName($module) ?? $module;
     }
 
     /**

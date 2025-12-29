@@ -116,23 +116,23 @@ class Config
     public function getEventModel(string $module)
     {
         if (!array_key_exists($module, $this->xmlConfig)) {
-            return false;
+            return null;
         }
-        return $this->xmlConfig[$module]['model'];
+        return $this->xmlConfig[$module]['model'] ?? null;
     }
 
     /**
      * Return model label name
      * @param string $module
-     * @return mixed
+     * @return string|null
      */
-    public function getActivityModuleName(string $module)
+    public function getActivityModuleName(string $module): ?string
     {
         if (!array_key_exists($module, $this->xmlConfig)) {
-            return false;
+            return null;
         }
 
-        return $this->xmlConfig[$module]['label'];
+        return $this->xmlConfig[$module]['label'] ?? null;
     }
 
     /**
