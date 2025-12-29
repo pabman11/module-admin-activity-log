@@ -27,6 +27,17 @@ class Login extends AbstractModel implements LoginInterface
         $this->_init(ResourceModel\Login::class);
     }
 
+    public function getAdminId(): ?int
+    {
+        $value = $this->getData(self::ADMIN_ID);
+        return $value === null ? null : (int)$value;
+    }
+
+    public function setAdminId(?int $adminId): LoginInterface
+    {
+        return $this->setData(self::ADMIN_ID, $adminId);
+    }
+
     public function getUsername(): string
     {
         return (string)$this->getData(self::USERNAME);

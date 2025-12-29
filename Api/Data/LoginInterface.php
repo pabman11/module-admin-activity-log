@@ -18,6 +18,7 @@ namespace MageOS\AdminActivityLog\Api\Data;
  */
 interface LoginInterface
 {
+    public const ADMIN_ID     = 'admin_id';
     public const USERNAME     = 'username';
     public const NAME         = 'name';
     public const REMOTE_IP    = 'remote_ip';
@@ -27,6 +28,9 @@ interface LoginInterface
     public const STATUS       = 'status';
     public const REMARKS      = 'remarks';
     public const CREATED_AT   = 'created_at';
+
+    public function getAdminId(): ?int;
+    public function setAdminId(?int $adminId): self;
 
     public function getUsername(): string;
     public function setUsername(string $username): self;

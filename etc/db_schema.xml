@@ -90,6 +90,7 @@
     <!-- Login activity table for tracking login/logout -->
     <table name="admin_login_log" resource="default" engine="innodb">
         <column xsi:type="int" name="entity_id" unsigned="true" nullable="false" identity="true" comment="Primary key for the table"/>
+        <column xsi:type="int" name="admin_id" unsigned="true" nullable="true" comment="Admin user ID"/>
         <column xsi:type="varchar" name="username" nullable="false" length="40" default="" comment="Admin username"/>
         <column xsi:type="varchar" name="name" nullable="false" length="64" default="" comment="Full name of admin"/>
         <column xsi:type="varchar" name="remote_ip" nullable="false" length="40" default="" comment="IP address of logged in admin user"/>
@@ -115,6 +116,9 @@
         </index>
         <index referenceId="ADMIN_LOGIN_LOG_TYPE" indexType="btree">
             <column name="type"/>
+        </index>
+        <index referenceId="ADMIN_LOGIN_LOG_ADMIN_ID" indexType="btree">
+            <column name="admin_id"/>
         </index>
     </table>
 </schema>

@@ -25,6 +25,13 @@ class Activity extends AbstractModel implements ActivityInterface
         $this->_init(ResourceModel\Activity::class);
     }
 
+    public function getId()
+    {
+        $id = parent::getId();
+
+        return $id !== null ? (int)$id : null;
+    }
+
     public function getUsername(): string
     {
         return (string)$this->getData(self::USERNAME);

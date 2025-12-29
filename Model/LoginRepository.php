@@ -76,6 +76,7 @@ class LoginRepository implements LoginRepositoryInterface
 
         $user = $this->getUser();
         if ($user instanceof User) {
+            $login->setAdminId((int)$user->getId());
             $login->setUsername($user->getUsername());
             $login->setName(ucwords($user->getName()));
         }
