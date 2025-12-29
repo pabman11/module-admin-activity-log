@@ -153,6 +153,15 @@
 
     <!-- Columns -->
     <columns name="admin_activity_columns">
+        <!-- Selections Column for Export -->
+        <selectionsColumn name="ids">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="indexField" xsi:type="string">entity_id</item>
+                </item>
+            </argument>
+        </selectionsColumn>
+
         <!-- Date Column -->
         <column name="created_at" class="Magento\Ui\Component\Listing\Columns\Date">
             <argument name="data" xsi:type="array">
@@ -317,17 +326,6 @@
                     <item name="visible" xsi:type="boolean">false</item>
                     <item name="filter" xsi:type="string">text</item>
                     <item name="label" xsi:type="string" translate="true">Item URL</item>
-                </item>
-            </argument>
-        </column>
-
-        <!-- Revert By Column (hidden) -->
-        <column name="revert_by">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="visible" xsi:type="boolean">false</item>
-                    <item name="filter" xsi:type="string">text</item>
-                    <item name="label" xsi:type="string" translate="true">Reverted By</item>
                 </item>
             </argument>
         </column>

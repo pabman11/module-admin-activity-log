@@ -153,6 +153,15 @@
 
     <!-- Columns -->
     <columns name="login_activity_columns">
+        <!-- Selections Column for Export -->
+        <selectionsColumn name="ids">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="indexField" xsi:type="string">entity_id</item>
+                </item>
+            </argument>
+        </selectionsColumn>
+
         <!-- Date Column -->
         <column name="created_at" class="Magento\Ui\Component\Listing\Columns\Date">
             <argument name="data" xsi:type="array">
