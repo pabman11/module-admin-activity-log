@@ -208,6 +208,7 @@
                     <field>customer_id</field>
                     <field>parent_id</field>
                     <field>force_process</field>
+                    <field>ignore_validation_flag</field>
                 </skip_fields>
                 <configpath constant="MODULE_CUSTOMER" />
                 <editurl url="{{module}}/{{controller}}/edit/id/{{id}}" />
