@@ -95,6 +95,18 @@ class ModelResolver implements ModelResolverInterface
      */
     public function isAllowedModelClass(string $className): bool
     {
-        return in_array($className, $this->allowedModelClasses, true);
+        $className = str_replace('\Interceptor', '', $className);
+
+        if (in_array($className, $this->allowedModelClasses, true)) {
+            return true;
+        }
+
+        foreach ($this->allowedModelClasses as $allowedClass) {
+            if (is_subclass_of($className, $allowedClass)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
