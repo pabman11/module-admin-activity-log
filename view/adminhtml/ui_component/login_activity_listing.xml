@@ -188,6 +188,16 @@
             </argument>
         </column>
 
+        <!-- Username Column (hidden) -->
+        <column name="username">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">Username</item>
+                </item>
+            </argument>
+        </column>
+
         <!-- Admin User Column -->
         <column name="admin_id">
             <argument name="data" xsi:type="array">
@@ -198,17 +208,6 @@
                     <item name="label" xsi:type="string" translate="true">Admin User</item>
                 </item>
                 <item name="options" xsi:type="object">MageOS\AdminActivityLog\Ui\Component\Listing\Column\AdminUser\Options</item>
-            </argument>
-        </column>
-
-        <!-- Username Column (hidden) -->
-        <column name="username">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="visible" xsi:type="boolean">false</item>
-                    <item name="filter" xsi:type="string">text</item>
-                    <item name="label" xsi:type="string" translate="true">Username</item>
-                </item>
             </argument>
         </column>
 

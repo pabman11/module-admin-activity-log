@@ -20,8 +20,6 @@ use MageOS\AdminActivityLog\Api\Data\LoginInterface;
 
 class Login extends AbstractModel implements LoginInterface
 {
-    public const LOGIN_ACTIVITY_ID = 'entity_id';
-
     public function _construct(): void
     {
         $this->_init(ResourceModel\Login::class);
