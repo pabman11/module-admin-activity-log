@@ -10,6 +10,11 @@
             "name": "Kiwi Commerce Ltd",
             "email": "hello@kiwicommerce.co.uk",
             "homepage": "https://kiwicommerce.co.uk/"
+        },
+        {
+            "name": "Ryan Hoerr",
+            "email": "rhoerr@users.noreply.github.com",
+            "homepage": "https://mage-os.org/"
         }
     ],
     "require": {
