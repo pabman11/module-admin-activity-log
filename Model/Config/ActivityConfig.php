@@ -143,6 +143,13 @@ class ActivityConfig implements ActivityConfigInterface
     public function isWildCardModel(DataObject|string $model): bool
     {
         $className = is_string($model) ? $model : $model::class;
-        return in_array($className, $this->wildcardModels, true);
+
+        foreach ($this->wildcardModels as $wildcardClass) {
+            if ($className === $wildcardClass || is_subclass_of($className, $wildcardClass)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
