@@ -87,4 +87,11 @@ interface ActivityConfigInterface
      * @return bool
      */
     public function isWildCardModel(DataObject|string $model): bool;
+    
+    /**
+     * Get number of days to keep activity logs
+     *
+     * @return int Number of days
+     */
+    public function getClearLogDays(): int
 }
