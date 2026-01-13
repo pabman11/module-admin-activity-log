@@ -152,4 +152,15 @@ class ActivityConfig implements ActivityConfigInterface
 
         return false;
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function getClearLogDays(): int
+    {
+        return (int)$this->scopeConfig->getValue(
+            self::CLEAR_LOG_DAYS,
+            ScopeInterface::SCOPE_STORE
+        );
+    }
 }
